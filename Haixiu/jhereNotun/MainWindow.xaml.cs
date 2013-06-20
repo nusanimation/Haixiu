@@ -38,8 +38,12 @@ namespace WpfApplication1
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            label1.Content = "ahhaa";
-           app = new kinectApp(canvas1, canvas2, label1, image1);
+            label1.Content = "ahhaaaha";
+            labelFrame.Content = "frame";
+            globalVars.a1 = labelFrame;
+            globalVars.a2 = wDistLabel;
+
+            app = new kinectApp(canvas1, canvas2, label1, image1);
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -84,18 +88,18 @@ namespace WpfApplication1
 
         private void checkBox1_Click(object sender, RoutedEventArgs e)
         {
-            if (checkBox1.IsChecked == true)
-                globalVars.logSkele = true;
-            else
-                globalVars.logSkele = false;
+        //    if (checkBox1.IsChecked == true)
+        //        globalVars.logSkele = true;
+        //    else
+        //        globalVars.logSkele = false;
         }
 
         private void checkBox1_Checked(object sender, RoutedEventArgs e)
         {
-            if (checkBox1.IsChecked == true)
-                globalVars.logSkele = true;
-            else
-                globalVars.logSkele = false;
+        //    if (checkBox1.IsChecked == true)
+        //        globalVars.logSkele = true;
+        //    else
+        //        globalVars.logSkele = false;
             
         }
 
@@ -123,7 +127,7 @@ namespace WpfApplication1
 
             this.file = new fileWriter(null);
 
-            kinect = new Runtime();
+            kinect = Runtime.Kinects[0];
             if (kinect == null)
             {
                 globalVars.kinectOn = false;
@@ -145,8 +149,20 @@ namespace WpfApplication1
                 bi3.EndInit();
                 i.Source = bi3;
 
+                var parameters = new TransformSmoothParameters();
+                kinect.SkeletonEngine.TransformSmooth = true;
 
+                parameters.Smoothing = 0.5f;
+                parameters.Correction = 0.5f;
+                parameters.Prediction = 0.1f;
+                parameters.JitterRadius = 0.1f;
+                parameters.MaxDeviationRadius = 0.5f;
+
+                // Enable Smoothing
+                kinect.SkeletonEngine.SmoothParameters = parameters;
+                //sketopframeready
                 kinect.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(kinect_SkeletonFrameReady);
+
 
                 this.canvas = c;
                 this.topCanvas = top;
@@ -171,13 +187,11 @@ namespace WpfApplication1
                             drawJoint(skeleData, i);
                             topView(skeleData, JointID.ShoulderLeft, JointID.ShoulderRight);
 
-                            //feature logging
-                            if (globalVars.logFeatures == true)
-                                features.addFeatures(skeleData);
-
                         }
                     }
-
+                    //feature logging
+                    if (globalVars.logFeatures == true)
+                        features.addFeatures(skeleData);
 
                 }
                 
@@ -237,8 +251,10 @@ namespace WpfApplication1
         public void stopApp()
         {
             this.kinect.Uninitialize();
-            file.closeFile();
+            if(globalVars.logSkele == true)
+                this.file.closeFile();
         }
+
         public void moveCamera(int a)
         {
             this.kinect.NuiCamera.ElevationAngle = a;

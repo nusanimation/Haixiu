@@ -12,5 +12,7 @@
         <Image Height="50" HorizontalAlignment="Left" Margin="905,840,0,0" Name="image1" Stretch="Fill" VerticalAlignment="Top" Width="50" Source="/jhereNotun;component/red.png" ImageFailed="image1_ImageFailed" />
         <Label Content="Kinect State" Height="33" HorizontalAlignment="Left" Margin="894,900,0,0" Name="label2" VerticalAlignment="Top" Width="84" />
         <CheckBox Content="Log Kinect Skele" Height="33" HorizontalAlignment="Left" Margin="872,326,0,0" Name="checkBox1" VerticalAlignment="Top" Click="checkBox1_Click" Checked="checkBox1_Checked" />
+        <Label Content="totdistance" Height="28" HorizontalAlignment="Left" Margin="741,730,0,0" Name="wDistLabel" VerticalAlignment="Top" Width="206" DataContext="{Binding}" />
+        <Label Content="Label" Height="28" HorizontalAlignment="Left" Margin="887,373,0,0" Name="labelFrame" VerticalAlignment="Top" Width="91" />
     </Grid>
 </Window>
