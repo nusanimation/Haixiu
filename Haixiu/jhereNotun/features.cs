@@ -45,7 +45,7 @@ namespace WpfApplication1{
         public _quanta head, rShoulder, lShoulder;
         public _quanta spine;
         public _quanta lElbow, lWrist, lHand, rElbow, rWrist, rHand;
-        public double speedMps, handSpeedMps;
+        public double speedMps, lHandSpeedMps, lElbowSpeedMps, rHandSpeedMps, rElbowSpeedMps;
         public double[] peakAccel, avgAccel, peakDec, jerkIndex, roundedness;// indexes are [0,1,2,3] =lHand,lWrist,rHand,rWrist
         //refer to initFeatures
 
@@ -62,22 +62,36 @@ namespace WpfApplication1{
 
         private _feature feature;
         private SkeletonData sdata;
-        private double wDist, spineDist;
-        private _qbit wprev, spinePrev;
-        private double prevAccel, totAccel, prevSpeed, totJI;
+        private double[] wDist;
+        private double spineDist;
+        private _qbit[] wprev;
+        private _qbit spinePrev;
+        private double[] prevAccel, prevSpeed, totJI;
         private float baseX, baseY, baseZ;
 
         public startFeatures(){
             this.frame = 0;
-            this.wDist = 0;
+            this.wDist = new double[4]{0,0,0,0};
             this.spineDist = 0;
-            this.prevAccel = 0;
-            this.totAccel = 0;
-            this.prevSpeed = 0;
-            this.totJI = 0;
-            this.wprev.x = -100;
-            this.wprev.y = -100;
-            this.wprev.z = -100;
+            this.prevAccel = new double[4] { 0, 0, 0, 0 };
+
+            this.prevSpeed = new double[4] { 0, 0, 0, 0 };
+            this.totJI = new double[4] { 0, 0, 0, 0 };
+
+            this.wprev = new _qbit[4];
+            this.wprev[0].x = -100;
+            this.wprev[0].y = -100;
+            this.wprev[0].z = -100;
+            this.wprev[1].x = -100;
+            this.wprev[1].y = -100;
+            this.wprev[1].z = -100;
+            this.wprev[2].x = -100;
+            this.wprev[2].y = -100;
+            this.wprev[2].z = -100;
+            this.wprev[3].x = -100;
+            this.wprev[3].y = -100;
+            this.wprev[3].z = -100;
+
             this.spinePrev.x = -100;
             this.spinePrev.y = -100;
             this.spinePrev.z = -100;
@@ -505,69 +519,166 @@ namespace WpfApplication1{
         }
 
         private void pollDangDistance() {
-            double jIndex=0, f0=0;
-            if (this.wprev.x == -100)
+
+            double[] jIndex = new double[4] { 0,0,0,0 };
+            double f0=0;
+            if (this.wprev[0].x == -100)
             {
-                wDist = 0;
-                this.wprev.x = this.sdata.Joints[JointID.WristLeft].Position.X  - 0*1;
-                this.wprev.y = this.sdata.Joints[JointID.WristLeft].Position.Y  - 0*2;
-                this.wprev.z = this.sdata.Joints[JointID.WristLeft].Position.Z  - 0*3;
+                wDist[0] = 0;
+                this.wprev[0].x = this.sdata.Joints[JointID.WristLeft].Position.X - 0 * 1;
+                this.wprev[0].y = this.sdata.Joints[JointID.WristLeft].Position.Y - 0 * 2;
+                this.wprev[0].z = this.sdata.Joints[JointID.WristLeft].Position.Z - 0 * 3;
+                wDist[1] = 0;
+                this.wprev[1].x = this.sdata.Joints[JointID.WristRight].Position.X - 0 * 1;
+                this.wprev[1].y = this.sdata.Joints[JointID.WristRight].Position.Y - 0 * 2;
+                this.wprev[1].z = this.sdata.Joints[JointID.WristRight].Position.Z - 0 * 3;
+                wDist[2] = 0;
+                this.wprev[2].x = this.sdata.Joints[JointID.ElbowLeft].Position.X - 0 * 1;
+                this.wprev[2].y = this.sdata.Joints[JointID.ElbowLeft].Position.Y - 0 * 2;
+                this.wprev[2].z = this.sdata.Joints[JointID.ElbowLeft].Position.Z - 0 * 3;
+                wDist[3] = 0;
+                this.wprev[3].x = this.sdata.Joints[JointID.ElbowRight].Position.X - 0 * 1;
+                this.wprev[3].y = this.sdata.Joints[JointID.ElbowRight].Position.Y - 0 * 2;
+                this.wprev[3].z = this.sdata.Joints[JointID.ElbowRight].Position.Z - 0 * 3;
             }
-            else if (this.frame % 6 == 0 && this.wprev.x != -100)
+            else if (this.frame % 6 == 0 && this.wprev[0].x != -100)
             {
 
+                double[] S = new double[4];
+                S[0] = Math.Sqrt(Math.Pow((this.wprev[0].x - this.sdata.Joints[JointID.WristLeft].Position.X - 0 * 1), 2) + Math.Pow((this.wprev[0].y - this.sdata.Joints[JointID.WristLeft].Position.Y - 0 * 2), 2) + Math.Pow((this.wprev[0].z - this.sdata.Joints[JointID.WristLeft].Position.Z - 0 * 3), 2));
+                S[1] = Math.Sqrt(Math.Pow((this.wprev[0].x - this.sdata.Joints[JointID.WristRight].Position.X - 0 * 1), 2) + Math.Pow((this.wprev[0].y - this.sdata.Joints[JointID.WristRight].Position.Y - 0 * 2), 2) + Math.Pow((this.wprev[0].z - this.sdata.Joints[JointID.WristRight].Position.Z - 0 * 3), 2));
+                S[2] = Math.Sqrt(Math.Pow((this.wprev[0].x - this.sdata.Joints[JointID.ElbowLeft].Position.X - 0 * 1), 2) + Math.Pow((this.wprev[0].y - this.sdata.Joints[JointID.ElbowLeft].Position.Y - 0 * 2), 2) + Math.Pow((this.wprev[0].z - this.sdata.Joints[JointID.ElbowLeft].Position.Z - 0 * 3), 2));
+                S[3] = Math.Sqrt(Math.Pow((this.wprev[0].x - this.sdata.Joints[JointID.ElbowRight].Position.X - 0 * 1), 2) + Math.Pow((this.wprev[0].y - this.sdata.Joints[JointID.ElbowRight].Position.Y - 0 * 2), 2) + Math.Pow((this.wprev[0].z - this.sdata.Joints[JointID.ElbowRight].Position.Z - 0 * 3), 2));
 
-
-                double S = Math.Sqrt(Math.Pow((this.wprev.x - this.sdata.Joints[JointID.WristLeft].Position.X  - 0*1), 2) + Math.Pow((this.wprev.y - this.sdata.Joints[JointID.WristLeft].Position.Y  - 0*2), 2) + Math.Pow((this.wprev.z - this.sdata.Joints[JointID.WristLeft].Position.Z  - 0*3), 2));
-                wDist += S;
-                this.feature.dis += S + ",";
                 
-                a2.Content = wDist;//updating label
+                
+                wDist[0] += S[0];
+                wDist[1] += S[1];
+                wDist[2] += S[2];
+                wDist[3] += S[3];
 
-                if (this.prevSpeed == 0 && this.frame == 6)
+                //this.feature.dis += S + ",";
+                
+                a2.Content = wDist[0];//updating label
+
+                if (this.prevSpeed[0] == 0 && this.frame == 6)
                 {
-                    this.prevSpeed = S / 0.2;
-                    this.feature.sp += this.prevSpeed + ",";
-                    this.prevAccel = 0;
-                    this.feature.acc += this.prevAccel + ",";
+                    this.prevSpeed[0] = S[0] / 0.2;
+                    this.prevSpeed[1] = S[1] / 0.2;
+                    this.prevSpeed[2] = S[2] / 0.2;
+                    this.prevSpeed[3] = S[3] / 0.2;
+                    this.prevAccel[0] = 0;
+                    this.prevAccel[1] = 0;
+                    this.prevAccel[2] = 0;
+                    this.prevAccel[3] = 0;
+                    //this.feature.sp += this.prevSpeed + ",";
+                    //this.feature.acc += this.prevAccel + ",";
                 }
                 else
                 {
                     
                     //acceleration and jerk index calculation
-                    f0 = this.prevAccel;
-                    this.prevAccel = (2 * S - 2 * this.prevSpeed * 0.2) / 0.04; //s=ut+.5ft^2
-                    jIndex = (this.prevAccel - f0) / 0.2; //jerk Index = (f1-f0)/dt
-                    totJI += Math.Abs(jIndex);
+                    f0 = this.prevAccel[0];
+                    this.prevAccel[0] = (2 * S[0] - 2 * this.prevSpeed[0] * 0.2) / 0.04; //s=ut+.5ft^2
+                    jIndex[0] = (this.prevAccel[0] - f0) / 0.2; //jerk Index = (f1-f0)/dt
+                    totJI[0] += Math.Abs(jIndex[0]);
 
-                    if (this.feature.peakAccel[0] < this.prevAccel)
+                    if (this.feature.peakAccel[0] < this.prevAccel[0])
                     {
-                        this.feature.peakAccel[0] = this.prevAccel;
+                        this.feature.peakAccel[0] = this.prevAccel[0];
                     }
-                    else if (this.feature.peakDec[0] > this.prevAccel)
+                    else if (this.feature.peakDec[0] > this.prevAccel[0])
                     {
-                        this.feature.peakDec[0] = this.prevAccel;
+                        this.feature.peakDec[0] = this.prevAccel[0];
+                    }
+
+                    f0 = this.prevAccel[1];
+                    this.prevAccel[1] = (2 * S[1] - 2 * this.prevSpeed[1] * 0.2) / 0.04; //s=ut+.5ft^2
+                    jIndex[1] = (this.prevAccel[1] - f0) / 0.2; //jerk Index = (f1-f0)/dt
+                    totJI[1] += Math.Abs(jIndex[1]);
+
+                    if (this.feature.peakAccel[1] < this.prevAccel[1])
+                    {
+                        this.feature.peakAccel[1] = this.prevAccel[1];
+                    }
+                    else if (this.feature.peakDec[1] > this.prevAccel[1])
+                    {
+                        this.feature.peakDec[1] = this.prevAccel[1];
+                    }
+
+
+                    f0 = this.prevAccel[2];
+                    this.prevAccel[2] = (2 * S[2] - 2 * this.prevSpeed[2] * 0.2) / 0.04; //s=ut+.5ft^2
+                    jIndex[2] = (this.prevAccel[2] - f0) / 0.2; //jerk Index = (f1-f0)/dt
+                    totJI[2] += Math.Abs(jIndex[2]);
+
+                    if (this.feature.peakAccel[2] < this.prevAccel[2])
+                    {
+                        this.feature.peakAccel[2] = this.prevAccel[2];
+                    }
+                    else if (this.feature.peakDec[2] > this.prevAccel[2])
+                    {
+                        this.feature.peakDec[2] = this.prevAccel[2];
+                    }
+
+
+                    f0 = this.prevAccel[3];
+                    this.prevAccel[3] = (2 * S[3] - 2 * this.prevSpeed[3] * 0.2) / 0.04; //s=ut+.5ft^2
+                    jIndex[3] = (this.prevAccel[3] - f0) / 0.2; //jerk Index = (f1-f0)/dt
+                    totJI[3] += Math.Abs(jIndex[3]);
+
+                    if (this.feature.peakAccel[3] < this.prevAccel[3])
+                    {
+                        this.feature.peakAccel[3] = this.prevAccel[3];
+                    }
+                    else if (this.feature.peakDec[3] > this.prevAccel[3])
+                    {
+                        this.feature.peakDec[3] = this.prevAccel[3];
                     }
 
                     //this.totAccel += this.prevAccel; //now calculating the whole distance*2 / t^2
-                    this.feature.acc += this.prevAccel + ",";
-                   //this.prevSpeed = this.prevSpeed + this.prevAccel * 0.2; //v=u+ft
-                    this.prevSpeed = S / 0.2; // the v=u+ft was toohot to handle for negative speed values.
-                    this.feature.sp += this.prevSpeed + ",";
+                    //this.feature.acc += this.prevAccel + ",";
+                    //this.prevSpeed = this.prevSpeed + this.prevAccel * 0.2; //v=u+ft
+                    //this.feature.sp += this.prevSpeed + ",";
+                    this.prevSpeed[0] = S[0] / 0.2; // the v=u+ft was toohot to handle for negative speed values.
+                    this.prevSpeed[1] = S[1] / 0.2; 
+                    this.prevSpeed[2] = S[2] / 0.2; 
+                    this.prevSpeed[3] = S[3] / 0.2; 
+
                 }
 
 
-                this.wprev.x = this.sdata.Joints[JointID.WristLeft].Position.X  - 0*1;
-                this.wprev.y = this.sdata.Joints[JointID.WristLeft].Position.Y  - 0*2;
-                this.wprev.z = this.sdata.Joints[JointID.WristLeft].Position.Z  - 0*3;
+                this.wprev[0].x = this.sdata.Joints[JointID.WristLeft].Position.X - 0 * 1;
+                this.wprev[0].y = this.sdata.Joints[JointID.WristLeft].Position.Y - 0 * 2;
+                this.wprev[0].z = this.sdata.Joints[JointID.WristLeft].Position.Z - 0 * 3;
 
+                this.wprev[1].x = this.sdata.Joints[JointID.WristRight].Position.X - 0 * 1;
+                this.wprev[1].y = this.sdata.Joints[JointID.WristRight].Position.Y - 0 * 2;
+                this.wprev[1].z = this.sdata.Joints[JointID.WristRight].Position.Z - 0 * 3;
+
+                this.wprev[2].x = this.sdata.Joints[JointID.ElbowLeft].Position.X - 0 * 1;
+                this.wprev[2].y = this.sdata.Joints[JointID.ElbowLeft].Position.Y - 0 * 2;
+                this.wprev[2].z = this.sdata.Joints[JointID.ElbowLeft].Position.Z - 0 * 3;
+
+                this.wprev[3].x = this.sdata.Joints[JointID.ElbowRight].Position.X - 0 * 1;
+                this.wprev[3].y = this.sdata.Joints[JointID.ElbowRight].Position.Y - 0 * 2;
+                this.wprev[3].z = this.sdata.Joints[JointID.ElbowRight].Position.Z - 0 * 3;
 
             }
         }
         
         private void dangSpeed(){
-            feature.handSpeedMps = this.wDist * 30 / this.frame; // this is 30/frame because total distance / total time in second
-            feature.avgAccel[0] = this.wDist / Math.Pow(this.frame/30,2);
+
+            // this is 30/frame because total distance / total time in second
+            feature.lHandSpeedMps = this.wDist[0] * 30 / this.frame; 
+            feature.rHandSpeedMps = this.wDist[1] * 30 / this.frame; 
+            feature.lElbowSpeedMps = this.wDist[2] * 30 / this.frame; 
+            feature.rElbowSpeedMps = this.wDist[3] * 30 / this.frame; 
+
+            feature.avgAccel[0] = this.wDist[0] / Math.Pow(this.frame / 30, 2);
+            feature.avgAccel[1] = this.wDist[1] / Math.Pow(this.frame / 30, 2);
+            feature.avgAccel[2] = this.wDist[2] / Math.Pow(this.frame / 30, 2);
+            feature.avgAccel[3] = this.wDist[3] / Math.Pow(this.frame / 30, 2);
         }
 
         private void dangQuality() {
@@ -761,7 +872,10 @@ namespace WpfApplication1{
         }
 
         private void jerkIndex(){
-            this.feature.jerkIndex[0] = (-1 * this.totJI * 6) / (this.frame * this.feature.handSpeedMps);
+            this.feature.jerkIndex[0] = (-1 * this.totJI[0] * 6) / (this.frame * this.feature.lHandSpeedMps);
+            this.feature.jerkIndex[1] = (-1 * this.totJI[1] * 6) / (this.frame * this.feature.rHandSpeedMps);
+            this.feature.jerkIndex[2] = (-1 * this.totJI[2] * 6) / (this.frame * this.feature.lElbowSpeedMps);
+            this.feature.jerkIndex[3] = (-1 * this.totJI[3] * 6) / (this.frame * this.feature.rElbowSpeedMps);
         }
 
     }

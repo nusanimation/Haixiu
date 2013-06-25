@@ -39,11 +39,19 @@ namespace WpfApplication1
             String temp;
             temp = b;
 
-            for (int i = 1; ; ++i)
+            for (int i = 1;i<=10000 ; ++i)
             {
                 if (!File.Exists(a + temp + c))
                     return (a + temp + c);
                 temp = b + i;
+                if (i >= 9950)
+                {
+                    string messageBoxText = "You might want to copy your feature files and start again";
+                    string caption = "geez. too many feature files";
+                    MessageBoxButton button = MessageBoxButton.OK;
+                    MessageBoxImage icon = MessageBoxImage.Exclamation;
+                    MessageBox.Show(messageBoxText, caption, button, icon);
+                }
 
             } 
             return (a + temp + c);
@@ -107,9 +115,13 @@ namespace WpfApplication1
             file.Write("," + f.lWrist.maxx.x + "," + f.lWrist.maxx.y + "," + f.lWrist.maxx.z + "," + f.lWrist.maxy.x + "," + f.lWrist.maxy.y + "," + f.lWrist.maxy.z + "," + f.lWrist.maxz.x + "," + f.lWrist.maxz.y + "," + f.lWrist.maxz.z);
             file.Write("," + f.lWrist.minx.x + "," + f.lWrist.minx.y + "," + f.lWrist.minx.z + "," + f.lWrist.miny.x + "," + f.lWrist.miny.y + "," + f.lWrist.miny.z + "," + f.lWrist.minz.x + "," + f.lWrist.minz.y + "," + f.lWrist.minz.z);
 
-            file.Write("\n" + f.speedMps + "," + f.handSpeedMps + "," + f.peakAccel[0] + "," + f.peakDec[0] + "," + f.avgAccel[0] + "," + f.jerkIndex[0]);
+            file.Write("\n" + f.speedMps + "," + f.lHandSpeedMps + "," + f.peakAccel[0] + "," + f.peakDec[0] + "," + f.avgAccel[0] + "," + f.jerkIndex[0]);
+            file.Write("\n" + f.speedMps + "," + f.rHandSpeedMps + "," + f.peakAccel[1] + "," + f.peakDec[1] + "," + f.avgAccel[1] + "," + f.jerkIndex[1]);
+            file.Write("\n" + f.speedMps + "," + f.lElbowSpeedMps + "," + f.peakAccel[2] + "," + f.peakDec[2] + "," + f.avgAccel[2] + "," + f.jerkIndex[2]);
+            file.Write("\n" + f.speedMps + "," + f.rElbowSpeedMps + "," + f.peakAccel[3] + "," + f.peakDec[3] + "," + f.avgAccel[3] + "," + f.jerkIndex[3]);
 
-            file.WriteLine("\n"+f.acc+"\n"+f.sp+"\n"+f.dis);
+          // for testing. done. no longer needed.
+          //  file.WriteLine("\n"+f.acc+"\n"+f.sp+"\n"+f.dis);
 
             return true;
         }
