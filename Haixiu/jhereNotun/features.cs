@@ -173,8 +173,11 @@ namespace WpfApplication1{
             }
             
             this.sdata = s;
+            
             stableSkele();
             danglingSkele();
+            //underBeltSkele();
+
             ++frame;
             a1.Content = frame;
 
@@ -183,6 +186,7 @@ namespace WpfApplication1{
         public void saveFeatures(){
             speed();
             dangSpeed();
+            dangQuality();
             writeFeatures();
         }
         
@@ -196,8 +200,6 @@ namespace WpfApplication1{
         private void danglingSkele() {
             dangPos();
             pollDangDistance();
-            dangQuality();
-
         }
         
         private void stableSkele(){
@@ -536,7 +538,7 @@ namespace WpfApplication1{
                     f0 = this.prevAccel;
                     this.prevAccel = (2 * S - 2 * this.prevSpeed * 0.2) / 0.04; //s=ut+.5ft^2
                     jIndex = (this.prevAccel - f0) / 0.2; //jerk Index = (f1-f0)/dt
-                    totJI += jIndex;
+                    totJI += Math.Abs(jIndex);
 
                     if (this.feature.peakAccel[0] < this.prevAccel)
                     {
