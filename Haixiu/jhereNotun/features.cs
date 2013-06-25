@@ -46,8 +46,11 @@ namespace WpfApplication1{
         public _quanta spine;
         public _quanta lElbow, lWrist, lHand, rElbow, rWrist, rHand;
         public double speedMps, handSpeedMps;
-        public double[] peakAccel, avgAccel, jerkIndex, roundedness;// indexes are [0,1,2,3] =lHand,lWrist,rHand,rWrist
+        public double[] peakAccel, avgAccel, peakDec, jerkIndex, roundedness;// indexes are [0,1,2,3] =lHand,lWrist,rHand,rWrist
         //refer to initFeatures
+
+        //dummyFeatures
+        public String acc, dis, sp;
 
     };
 
@@ -59,14 +62,15 @@ namespace WpfApplication1{
 
         private _feature feature;
         private SkeletonData sdata;
-        private double wDist;
-        private _qbit wprev;
+        private double wDist, spineDist;
+        private _qbit wprev, spinePrev;
         private double prevAccel, totAccel, prevSpeed, totJI;
         private float baseX, baseY, baseZ;
 
         public startFeatures(){
             this.frame = 0;
             this.wDist = 0;
+            this.spineDist = 0;
             this.prevAccel = 0;
             this.totAccel = 0;
             this.prevSpeed = 0;
@@ -74,6 +78,9 @@ namespace WpfApplication1{
             this.wprev.x = -100;
             this.wprev.y = -100;
             this.wprev.z = -100;
+            this.spinePrev.x = -100;
+            this.spinePrev.y = -100;
+            this.spinePrev.z = -100;
 
             this.baseX = 0;
             this.baseY = 0;
@@ -90,8 +97,11 @@ namespace WpfApplication1{
 
             this.feature.jerkIndex = new double[4];
             this.feature.roundedness = new double[4];
-            this.feature.avgAccel = new double[4];
+            this.feature.avgAccel = new double[4]; 
+            this.feature.peakDec = new double[4];
             this.feature.peakAccel = new double[4];
+
+            this.feature.peakAccel[0] = this.feature.peakDec[0] = 0;
 
             this.feature.head.minx.x = 10; 
             this.feature.head.minx.y = 10; 
@@ -493,7 +503,7 @@ namespace WpfApplication1{
         }
 
         private void pollDangDistance() {
-            double jIndex=0, f0=0, f1=0;
+            double jIndex=0, f0=0;
             if (this.wprev.x == -100)
             {
                 wDist = 0;
@@ -501,36 +511,47 @@ namespace WpfApplication1{
                 this.wprev.y = this.sdata.Joints[JointID.WristLeft].Position.Y  - 0*2;
                 this.wprev.z = this.sdata.Joints[JointID.WristLeft].Position.Z  - 0*3;
             }
-            else if (this.frame % 5 == 0 && this.wprev.x != -100)
+            else if (this.frame % 6 == 0 && this.wprev.x != -100)
             {
 
 
 
                 double S = Math.Sqrt(Math.Pow((this.wprev.x - this.sdata.Joints[JointID.WristLeft].Position.X  - 0*1), 2) + Math.Pow((this.wprev.y - this.sdata.Joints[JointID.WristLeft].Position.Y  - 0*2), 2) + Math.Pow((this.wprev.z - this.sdata.Joints[JointID.WristLeft].Position.Z  - 0*3), 2));
                 wDist += S;
+                this.feature.dis += S + ",";
                 
-                a2.Content = wDist;
+                a2.Content = wDist;//updating label
 
                 if (this.prevSpeed == 0 && this.frame == 6)
                 {
                     this.prevSpeed = S / 0.2;
+                    this.feature.sp += this.prevSpeed + ",";
+                    this.prevAccel = 0;
+                    this.feature.acc += this.prevAccel + ",";
                 }
                 else
                 {
                     
                     //acceleration and jerk index calculation
                     f0 = this.prevAccel;
-                    f1= this.prevAccel = (2 * S - 2 * this.prevSpeed * 0.2) / 0.04; //s=ut+.5ft^2
-                    jIndex = (f1 - f0) / 0.2; //jerk Index = (f1-f0)/dt
+                    this.prevAccel = (2 * S - 2 * this.prevSpeed * 0.2) / 0.04; //s=ut+.5ft^2
+                    jIndex = (this.prevAccel - f0) / 0.2; //jerk Index = (f1-f0)/dt
                     totJI += jIndex;
 
                     if (this.feature.peakAccel[0] < this.prevAccel)
                     {
                         this.feature.peakAccel[0] = this.prevAccel;
                     }
+                    else if (this.feature.peakDec[0] > this.prevAccel)
+                    {
+                        this.feature.peakDec[0] = this.prevAccel;
+                    }
 
-                    this.totAccel += this.prevAccel;
-                    this.prevSpeed = this.prevSpeed + this.prevAccel * 0.2; //v=u+ft
+                    //this.totAccel += this.prevAccel; //now calculating the whole distance*2 / t^2
+                    this.feature.acc += this.prevAccel + ",";
+                   //this.prevSpeed = this.prevSpeed + this.prevAccel * 0.2; //v=u+ft
+                    this.prevSpeed = S / 0.2; // the v=u+ft was toohot to handle for negative speed values.
+                    this.feature.sp += this.prevSpeed + ",";
                 }
 
 
@@ -543,8 +564,8 @@ namespace WpfApplication1{
         }
         
         private void dangSpeed(){
-            feature.handSpeedMps = this.wDist * 30 / this.frame;
-            feature.avgAccel[0] = this.totAccel * 6 / this.frame;
+            feature.handSpeedMps = this.wDist * 30 / this.frame; // this is 30/frame because total distance / total time in second
+            feature.avgAccel[0] = this.wDist / Math.Pow(this.frame/30,2);
         }
 
         private void dangQuality() {
@@ -555,8 +576,8 @@ namespace WpfApplication1{
         
         private void speed(){
             
-            double distance = Math.Sqrt(Math.Pow((feature.spine.maxz.x - feature.spine.minz.x), 2) + Math.Pow((feature.spine.maxz.y - feature.spine.minz.y), 2) + Math.Pow((feature.spine.maxz.z - feature.spine.minz.z), 2));
-            feature.speedMps = (distance * 30) / this.frame;
+         //   double distance = Math.Sqrt(Math.Pow((feature.spine.maxz.x - feature.spine.minz.x), 2) + Math.Pow((feature.spine.maxz.y - feature.spine.minz.y), 2) + Math.Pow((feature.spine.maxz.z - feature.spine.minz.z), 2));
+            feature.speedMps = (spineDist * 6) / this.frame;
         }
         
         private void updateSpine (){
@@ -573,6 +594,20 @@ namespace WpfApplication1{
                 feature.spine.minz.x = sdata.Joints[JointID.Spine].Position.X  - 0*1;
                 feature.spine.minz.y = sdata.Joints[JointID.Spine].Position.Y  - 0*2;
                 feature.spine.minz.z = temp;
+            }
+            
+            
+            if (this.spinePrev.x == -100)
+            {
+                spineDist = 0;
+                this.spinePrev.x = this.sdata.Joints[JointID.Spine].Position.X  - 0*1;
+                this.spinePrev.y = this.sdata.Joints[JointID.Spine].Position.Y  - 0*2;
+                this.spinePrev.z = this.sdata.Joints[JointID.Spine].Position.Z  - 0*3;
+            }
+            else if (this.frame % 5 == 0 && this.spinePrev.x != -100)
+            {
+                double S = Math.Sqrt(Math.Pow((this.spinePrev.x - this.sdata.Joints[JointID.Spine].Position.X - 0 * 1), 2) + Math.Pow((this.spinePrev.y - this.sdata.Joints[JointID.Spine].Position.Y - 0 * 2), 2) + Math.Pow((this.spinePrev.z - this.sdata.Joints[JointID.Spine].Position.Z - 0 * 3), 2));
+                spineDist += S;
             }
         }
 

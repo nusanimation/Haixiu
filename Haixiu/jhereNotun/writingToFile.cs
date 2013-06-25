@@ -107,8 +107,10 @@ namespace WpfApplication1
             file.Write("," + f.lWrist.maxx.x + "," + f.lWrist.maxx.y + "," + f.lWrist.maxx.z + "," + f.lWrist.maxy.x + "," + f.lWrist.maxy.y + "," + f.lWrist.maxy.z + "," + f.lWrist.maxz.x + "," + f.lWrist.maxz.y + "," + f.lWrist.maxz.z);
             file.Write("," + f.lWrist.minx.x + "," + f.lWrist.minx.y + "," + f.lWrist.minx.z + "," + f.lWrist.miny.x + "," + f.lWrist.miny.y + "," + f.lWrist.miny.z + "," + f.lWrist.minz.x + "," + f.lWrist.minz.y + "," + f.lWrist.minz.z);
 
-            file.Write("," +"haha"+ f.speedMps + "," + f.handSpeedMps + "," + f.peakAccel[0] + "," + f.avgAccel[0] + "," + f.jerkIndex[0]);
-            
+            file.Write("\n" + f.speedMps + "," + f.handSpeedMps + "," + f.peakAccel[0] + "," + f.peakDec + "," + f.avgAccel[0] + "," + f.jerkIndex[0]);
+
+            file.WriteLine("\n"+f.acc+"\n"+f.sp+"\n"+f.dis);
+
             return true;
         }
 
