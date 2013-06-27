@@ -45,8 +45,13 @@ namespace WpfApplication1{
         public _quanta head, rShoulder, lShoulder;
         public _quanta spine;
         public _quanta lElbow, lWrist, lHand, rElbow, rWrist, rHand;
+        public _quanta lKnee, rKnee, lAnkle, rAnkle;
+        
         public double speedMps, lHandSpeedMps, lElbowSpeedMps, rHandSpeedMps, rElbowSpeedMps;
+        public double lKneeSpeedMps, rKneeSpeedMps, rAnkleSpeedMps, lAnkleSpeedMps;
+
         public double[] peakAccel, avgAccel, peakDec, jerkIndex, roundedness;// indexes are [0,1,2,3] =lHand,lWrist,rHand,rWrist
+        public double[] peakAccelLeg, avgAccelLeg, peakDecLeg, roundednessLeg;
         //refer to initFeatures
 
         //dummyFeatures
@@ -62,20 +67,23 @@ namespace WpfApplication1{
 
         private _feature feature;
         private SkeletonData sdata;
-        private double[] wDist;
+        private double[] wDist, wDistLeg;
         private double spineDist;
-        private _qbit[] wprev;
+        private _qbit[] wprev, wprevLeg;
         private _qbit spinePrev;
-        private double[] prevAccel, prevSpeed, totJI;
+        private double[] prevAccel, prevSpeed, prevAccelLeg, prevSpeedLeg, totJI;
         private float baseX, baseY, baseZ;
 
         public startFeatures(){
             this.frame = 0;
             this.wDist = new double[4]{0,0,0,0};
+            this.wDistLeg = new double[4]{0,0,0,0};
             this.spineDist = 0;
             this.prevAccel = new double[4] { 0, 0, 0, 0 };
+            this.prevAccelLeg = new double[4] { 0, 0, 0, 0 };
 
             this.prevSpeed = new double[4] { 0, 0, 0, 0 };
+            this.prevSpeedLeg = new double[4] { 0, 0, 0, 0 };
             this.totJI = new double[4] { 0, 0, 0, 0 };
 
             this.wprev = new _qbit[4];
@@ -91,6 +99,19 @@ namespace WpfApplication1{
             this.wprev[3].x = -100;
             this.wprev[3].y = -100;
             this.wprev[3].z = -100;
+            this.wprevLeg = new _qbit[4];
+            this.wprevLeg[0].x = -100;
+            this.wprevLeg[0].y = -100;
+            this.wprevLeg[0].z = -100;
+            this.wprevLeg[1].x = -100;
+            this.wprevLeg[1].y = -100;
+            this.wprevLeg[1].z = -100;
+            this.wprevLeg[2].x = -100;
+            this.wprevLeg[2].y = -100;
+            this.wprevLeg[2].z = -100;
+            this.wprevLeg[3].x = -100;
+            this.wprevLeg[3].y = -100;
+            this.wprevLeg[3].z = -100;
 
             this.spinePrev.x = -100;
             this.spinePrev.y = -100;
@@ -221,9 +242,353 @@ namespace WpfApplication1{
             headAndShoulders();
         }
         
-        private void underBeltSkele() { 
+        private void underBeltSkele() {
+            legPos();
+            legSpeed();
             //latter 
         }
+        private void legPos() {
+
+            //maxx, maxy, maxz
+            float temp = sdata.Joints[JointID.KneeLeft].Position.X - 0 * 1;
+            if (temp > feature.lKnee.maxx.x)
+            {
+                feature.lKnee.maxx.x = temp;
+                feature.lKnee.maxx.y = sdata.Joints[JointID.KneeLeft].Position.Y - 0 * 2;
+                feature.lKnee.maxx.z = sdata.Joints[JointID.KneeLeft].Position.Z - 0 * 3;
+            }
+            temp = sdata.Joints[JointID.KneeLeft].Position.Y - 0 * 2;
+            if (temp > feature.lKnee.maxy.y)
+            {
+                feature.lKnee.maxy.x = sdata.Joints[JointID.KneeLeft].Position.X - 0 * 1;
+                feature.lKnee.maxy.y = temp;
+                feature.lKnee.maxy.z = sdata.Joints[JointID.KneeLeft].Position.Z - 0 * 3;
+            }
+            temp = sdata.Joints[JointID.KneeLeft].Position.Z - 0 * 3;
+            if (temp > feature.lKnee.maxz.z)
+            {
+                feature.lKnee.maxz.x = sdata.Joints[JointID.KneeLeft].Position.X - 0 * 1;
+                feature.lKnee.maxz.y = sdata.Joints[JointID.KneeLeft].Position.Y - 0 * 2;
+                feature.lKnee.maxz.z = temp;
+            }
+
+            //minx, miny, minz
+            temp = sdata.Joints[JointID.KneeLeft].Position.X - 0 * 1;
+            if (temp < feature.lKnee.minx.x)
+            {
+                feature.lKnee.minx.x = temp;
+                feature.lKnee.minx.y = sdata.Joints[JointID.KneeLeft].Position.Y - 0 * 2;
+                feature.lKnee.minx.z = sdata.Joints[JointID.KneeLeft].Position.Z - 0 * 3;
+            }
+            temp = sdata.Joints[JointID.KneeLeft].Position.Y - 0 * 2;
+            if (temp < feature.lKnee.miny.y)
+            {
+                feature.lKnee.miny.x = sdata.Joints[JointID.KneeLeft].Position.X - 0 * 1;
+                feature.lKnee.miny.y = temp;
+                feature.lKnee.miny.z = sdata.Joints[JointID.KneeLeft].Position.Z - 0 * 3;
+            }
+            temp = sdata.Joints[JointID.KneeLeft].Position.Z - 0 * 3;
+            if (temp < feature.lKnee.minz.z)
+            {
+                feature.lKnee.minz.x = sdata.Joints[JointID.KneeLeft].Position.X - 0 * 1;
+                feature.lKnee.minz.y = sdata.Joints[JointID.KneeLeft].Position.Y - 0 * 2;
+                feature.lKnee.minz.z = temp;
+            }
+
+
+        //Ankle
+            //maxx, maxy, maxz
+            temp = sdata.Joints[JointID.AnkleLeft].Position.X - 0 * 1;
+            if (temp > feature.lAnkle.maxx.x)
+            {
+                feature.lAnkle.maxx.x = temp;
+                feature.lAnkle.maxx.y = sdata.Joints[JointID.AnkleLeft].Position.Y - 0 * 2;
+                feature.lAnkle.maxx.z = sdata.Joints[JointID.AnkleLeft].Position.Z - 0 * 3;
+            }
+            temp = sdata.Joints[JointID.AnkleLeft].Position.Y - 0 * 2;
+            if (temp > feature.lAnkle.maxy.y)
+            {
+                feature.lAnkle.maxy.x = sdata.Joints[JointID.AnkleLeft].Position.X - 0 * 1;
+                feature.lAnkle.maxy.y = temp;
+                feature.lAnkle.maxy.z = sdata.Joints[JointID.AnkleLeft].Position.Z - 0 * 3;
+            }
+            temp = sdata.Joints[JointID.AnkleLeft].Position.Z - 0 * 3;
+            if (temp > feature.lAnkle.maxz.z)
+            {
+                feature.lAnkle.maxz.x = sdata.Joints[JointID.AnkleLeft].Position.X - 0 * 1;
+                feature.lAnkle.maxz.y = sdata.Joints[JointID.AnkleLeft].Position.Y - 0 * 2;
+                feature.lAnkle.maxz.z = temp;
+            }
+
+            //minx, miny, minz
+            temp = sdata.Joints[JointID.AnkleLeft].Position.X - 0 * 1;
+            if (temp < feature.lAnkle.minx.x)
+            {
+                feature.lAnkle.minx.x = temp;
+                feature.lAnkle.minx.y = sdata.Joints[JointID.AnkleLeft].Position.Y - 0 * 2;
+                feature.lAnkle.minx.z = sdata.Joints[JointID.AnkleLeft].Position.Z - 0 * 3;
+            }
+            temp = sdata.Joints[JointID.AnkleLeft].Position.Y - 0 * 2;
+            if (temp < feature.lAnkle.miny.y)
+            {
+                feature.lAnkle.miny.x = sdata.Joints[JointID.AnkleLeft].Position.X - 0 * 1;
+                feature.lAnkle.miny.y = temp;
+                feature.lAnkle.miny.z = sdata.Joints[JointID.AnkleLeft].Position.Z - 0 * 3;
+            }
+            temp = sdata.Joints[JointID.AnkleLeft].Position.Z - 0 * 3;
+            if (temp < feature.lAnkle.minz.z)
+            {
+                feature.lAnkle.minz.x = sdata.Joints[JointID.AnkleLeft].Position.X - 0 * 1;
+                feature.lAnkle.minz.y = sdata.Joints[JointID.AnkleLeft].Position.Y - 0 * 2;
+                feature.lAnkle.minz.z = temp;
+            }
+
+
+            //rightKnee
+            //maxx, maxy, maxz
+            temp = sdata.Joints[JointID.KneeRight].Position.X - 0 * 1;
+            if (temp > feature.rKnee.maxx.x)
+            {
+                feature.rKnee.maxx.x = temp;
+                feature.rKnee.maxx.y = sdata.Joints[JointID.KneeRight].Position.Y - 0 * 2;
+                feature.rKnee.maxx.z = sdata.Joints[JointID.KneeRight].Position.Z - 0 * 3;
+            }
+            temp = sdata.Joints[JointID.KneeRight].Position.Y - 0 * 2;
+            if (temp > feature.rKnee.maxy.y)
+            {
+                feature.rKnee.maxy.x = sdata.Joints[JointID.KneeRight].Position.X - 0 * 1;
+                feature.rKnee.maxy.y = temp;
+                feature.rKnee.maxy.z = sdata.Joints[JointID.KneeRight].Position.Z - 0 * 3;
+            }
+            temp = sdata.Joints[JointID.KneeRight].Position.Z - 0 * 3;
+            if (temp > feature.rKnee.maxz.z)
+            {
+                feature.rKnee.maxz.x = sdata.Joints[JointID.KneeRight].Position.X - 0 * 1;
+                feature.rKnee.maxz.y = sdata.Joints[JointID.KneeRight].Position.Y - 0 * 2;
+                feature.rKnee.maxz.z = temp;
+            }
+
+            //minx, miny, minz
+            temp = sdata.Joints[JointID.KneeRight].Position.X - 0 * 1;
+            if (temp < feature.rKnee.minx.x)
+            {
+                feature.rKnee.minx.x = temp;
+                feature.rKnee.minx.y = sdata.Joints[JointID.KneeRight].Position.Y - 0 * 2;
+                feature.rKnee.minx.z = sdata.Joints[JointID.KneeRight].Position.Z - 0 * 3;
+            }
+            temp = sdata.Joints[JointID.KneeRight].Position.Y - 0 * 2;
+            if (temp < feature.rKnee.miny.y)
+            {
+                feature.rKnee.miny.x = sdata.Joints[JointID.KneeRight].Position.X - 0 * 1;
+                feature.rKnee.miny.y = temp;
+                feature.rKnee.miny.z = sdata.Joints[JointID.KneeRight].Position.Z - 0 * 3;
+            }
+            temp = sdata.Joints[JointID.KneeRight].Position.Z - 0 * 3;
+            if (temp < feature.rKnee.minz.z)
+            {
+                feature.rKnee.minz.x = sdata.Joints[JointID.KneeRight].Position.X - 0 * 1;
+                feature.rKnee.minz.y = sdata.Joints[JointID.KneeRight].Position.Y - 0 * 2;
+                feature.rKnee.minz.z = temp;
+            }
+
+
+            //right Ankle
+            //maxx, maxy, maxz
+            temp = sdata.Joints[JointID.AnkleRight].Position.X - 0 * 1;
+            if (temp > feature.rAnkle.maxx.x)
+            {
+                feature.rAnkle.maxx.x = temp;
+                feature.rAnkle.maxx.y = sdata.Joints[JointID.AnkleRight].Position.Y - 0 * 2;
+                feature.rAnkle.maxx.z = sdata.Joints[JointID.AnkleRight].Position.Z - 0 * 3;
+            }
+            temp = sdata.Joints[JointID.AnkleRight].Position.Y - 0 * 2;
+            if (temp > feature.rAnkle.maxy.y)
+            {
+                feature.rAnkle.maxy.x = sdata.Joints[JointID.AnkleRight].Position.X - 0 * 1;
+                feature.rAnkle.maxy.y = temp;
+                feature.rAnkle.maxy.z = sdata.Joints[JointID.AnkleRight].Position.Z - 0 * 3;
+            }
+            temp = sdata.Joints[JointID.AnkleRight].Position.Z - 0 * 3;
+            if (temp > feature.rAnkle.maxz.z)
+            {
+                feature.rAnkle.maxz.x = sdata.Joints[JointID.AnkleRight].Position.X - 0 * 1;
+                feature.rAnkle.maxz.y = sdata.Joints[JointID.AnkleRight].Position.Y - 0 * 2;
+                feature.rAnkle.maxz.z = temp;
+            }
+
+            //minx, miny, minz
+            temp = sdata.Joints[JointID.AnkleRight].Position.X - 0 * 1;
+            if (temp < feature.rAnkle.minx.x)
+            {
+                feature.rAnkle.minx.x = temp;
+                feature.rAnkle.minx.y = sdata.Joints[JointID.AnkleRight].Position.Y - 0 * 2;
+                feature.rAnkle.minx.z = sdata.Joints[JointID.AnkleRight].Position.Z - 0 * 3;
+            }
+            temp = sdata.Joints[JointID.AnkleRight].Position.Y - 0 * 2;
+            if (temp < feature.rAnkle.miny.y)
+            {
+                feature.rAnkle.miny.x = sdata.Joints[JointID.AnkleRight].Position.X - 0 * 1;
+                feature.rAnkle.miny.y = temp;
+                feature.rAnkle.miny.z = sdata.Joints[JointID.AnkleRight].Position.Z - 0 * 3;
+            }
+            temp = sdata.Joints[JointID.AnkleRight].Position.Z - 0 * 3;
+            if (temp < feature.rAnkle.minz.z)
+            {
+                feature.rAnkle.minz.x = sdata.Joints[JointID.AnkleRight].Position.X - 0 * 1;
+                feature.rAnkle.minz.y = sdata.Joints[JointID.AnkleRight].Position.Y - 0 * 2;
+                feature.rAnkle.minz.z = temp;
+            }
+
+        
+        }
+        private void legSpeed() { 
+           
+           // double f0=0;
+            if (this.wprevLeg[0].x == -100)
+            {
+                wDistLeg[0] = 0;
+                this.wprevLeg[0].x = this.sdata.Joints[JointID.AnkleLeft].Position.X - 0 * 1;
+                this.wprevLeg[0].y = this.sdata.Joints[JointID.AnkleLeft].Position.Y - 0 * 2;
+                this.wprevLeg[0].z = this.sdata.Joints[JointID.AnkleLeft].Position.Z - 0 * 3;
+                wDistLeg[1] = 0;
+                this.wprevLeg[1].x = this.sdata.Joints[JointID.AnkleRight].Position.X - 0 * 1;
+                this.wprevLeg[1].y = this.sdata.Joints[JointID.AnkleRight].Position.Y - 0 * 2;
+                this.wprevLeg[1].z = this.sdata.Joints[JointID.AnkleRight].Position.Z - 0 * 3;
+                wDistLeg[2] = 0;
+                this.wprevLeg[2].x = this.sdata.Joints[JointID.KneeLeft].Position.X - 0 * 1;
+                this.wprevLeg[2].y = this.sdata.Joints[JointID.KneeLeft].Position.Y - 0 * 2;
+                this.wprevLeg[2].z = this.sdata.Joints[JointID.KneeLeft].Position.Z - 0 * 3;
+                wDistLeg[3] = 0;
+                this.wprevLeg[3].x = this.sdata.Joints[JointID.KneeRight].Position.X - 0 * 1;
+                this.wprevLeg[3].y = this.sdata.Joints[JointID.KneeRight].Position.Y - 0 * 2;
+                this.wprevLeg[3].z = this.sdata.Joints[JointID.KneeRight].Position.Z - 0 * 3;
+            }
+            else if (this.frame % 6 == 0 && this.wprevLeg[0].x != -100)
+            {
+
+                double[] S = new double[4];
+                S[0] = Math.Sqrt(Math.Pow((this.wprevLeg[0].x - this.sdata.Joints[JointID.AnkleLeft].Position.X - 0 * 1), 2) + Math.Pow((this.wprevLeg[0].y - this.sdata.Joints[JointID.AnkleLeft].Position.Y - 0 * 2), 2) + Math.Pow((this.wprevLeg[0].z - this.sdata.Joints[JointID.AnkleLeft].Position.Z - 0 * 3), 2));
+                S[1] = Math.Sqrt(Math.Pow((this.wprevLeg[0].x - this.sdata.Joints[JointID.AnkleRight].Position.X - 0 * 1), 2) + Math.Pow((this.wprevLeg[0].y - this.sdata.Joints[JointID.AnkleRight].Position.Y - 0 * 2), 2) + Math.Pow((this.wprevLeg[0].z - this.sdata.Joints[JointID.AnkleRight].Position.Z - 0 * 3), 2));
+                S[2] = Math.Sqrt(Math.Pow((this.wprevLeg[0].x - this.sdata.Joints[JointID.KneeLeft].Position.X - 0 * 1), 2) + Math.Pow((this.wprevLeg[0].y - this.sdata.Joints[JointID.KneeLeft].Position.Y - 0 * 2), 2) + Math.Pow((this.wprevLeg[0].z - this.sdata.Joints[JointID.KneeLeft].Position.Z - 0 * 3), 2));
+                S[3] = Math.Sqrt(Math.Pow((this.wprevLeg[0].x - this.sdata.Joints[JointID.KneeRight].Position.X - 0 * 1), 2) + Math.Pow((this.wprevLeg[0].y - this.sdata.Joints[JointID.KneeRight].Position.Y - 0 * 2), 2) + Math.Pow((this.wprevLeg[0].z - this.sdata.Joints[JointID.KneeRight].Position.Z - 0 * 3), 2));
+
+
+
+                wDistLeg[0] += S[0];
+                wDistLeg[1] += S[1];
+                wDistLeg[2] += S[2];
+                wDistLeg[3] += S[3];
+
+                //this.feature.dis += S + ",";
+
+                // a2.Content = wDistLeg[0];//updating label
+
+                if (this.prevSpeedLeg[0] == 0 && this.frame == 6)
+                {
+                    this.prevSpeedLeg[0] = S[0] / 0.2;
+                    this.prevSpeedLeg[1] = S[1] / 0.2;
+                    this.prevSpeedLeg[2] = S[2] / 0.2;
+                    this.prevSpeedLeg[3] = S[3] / 0.2;
+                    this.prevAccelLeg[0] = 0;
+                    this.prevAccelLeg[1] = 0;
+                    this.prevAccelLeg[2] = 0;
+                    this.prevAccelLeg[3] = 0;
+                    //this.feature.sp += this.prevSpeedLeg + ",";
+                    //this.feature.acc += this.prevAccelLeg + ",";
+                }
+                else
+                {
+
+                    //acceleration and jerk index calculation
+                    //     f0 = this.prevAccelLeg[0];
+                    this.prevAccelLeg[0] = (2 * S[0] - 2 * this.prevSpeedLeg[0] * 0.2) / 0.04; //s=ut+.5ft^2
+                    //     jIndex[0] = (this.prevAccelLeg[0] - f0) / 0.2; //jerk Index = (f1-f0)/dt
+                    //     totJI[0] += Math.Abs(jIndex[0]);
+
+                    if (this.feature.peakAccelLeg[0] < this.prevAccelLeg[0])
+                    {
+                        this.feature.peakAccelLeg[0] = this.prevAccelLeg[0];
+                    }
+                    else if (this.feature.peakDecLeg[0] > this.prevAccelLeg[0])
+                    {
+                        this.feature.peakDecLeg[0] = this.prevAccelLeg[0];
+                    }
+
+                    //       f0 = this.prevAccelLeg[1];
+                    this.prevAccelLeg[1] = (2 * S[1] - 2 * this.prevSpeedLeg[1] * 0.2) / 0.04; //s=ut+.5ft^2
+                    //       jIndex[1] = (this.prevAccelLeg[1] - f0) / 0.2; //jerk Index = (f1-f0)/dt
+                    //       totJI[1] += Math.Abs(jIndex[1]);
+
+                    if (this.feature.peakAccelLeg[1] < this.prevAccelLeg[1])
+                    {
+                        this.feature.peakAccelLeg[1] = this.prevAccelLeg[1];
+                    }
+                    else if (this.feature.peakDecLeg[1] > this.prevAccelLeg[1])
+                    {
+                        this.feature.peakDecLeg[1] = this.prevAccelLeg[1];
+                    }
+
+
+                    //       f0 = this.prevAccelLeg[2];
+                    this.prevAccelLeg[2] = (2 * S[2] - 2 * this.prevSpeedLeg[2] * 0.2) / 0.04; //s=ut+.5ft^2
+                    //       jIndex[2] = (this.prevAccelLeg[2] - f0) / 0.2; //jerk Index = (f1-f0)/dt
+                    //       totJI[2] += Math.Abs(jIndex[2]);
+
+                    if (this.feature.peakAccelLeg[2] < this.prevAccelLeg[2])
+                    {
+                        this.feature.peakAccelLeg[2] = this.prevAccelLeg[2];
+                    }
+                    else if (this.feature.peakDecLeg[2] > this.prevAccelLeg[2])
+                    {
+                        this.feature.peakDecLeg[2] = this.prevAccelLeg[2];
+                    }
+
+
+                    //       f0 = this.prevAccelLeg[3];
+                    this.prevAccelLeg[3] = (2 * S[3] - 2 * this.prevSpeedLeg[3] * 0.2) / 0.04; //s=ut+.5ft^2
+                    //       jIndex[3] = (this.prevAccelLeg[3] - f0) / 0.2; //jerk Index = (f1-f0)/dt
+                    //       totJI[3] += Math.Abs(jIndex[3]);
+
+                    if (this.feature.peakAccelLeg[3] < this.prevAccelLeg[3])
+                    {
+                        this.feature.peakAccelLeg[3] = this.prevAccelLeg[3];
+                    }
+                    else if (this.feature.peakDecLeg[3] > this.prevAccelLeg[3])
+                    {
+                        this.feature.peakDecLeg[3] = this.prevAccelLeg[3];
+                    }
+
+                    //this.totAccel += this.prevAccelLeg; //now calculating the whole distance*2 / t^2
+                    //this.feature.acc += this.prevAccelLeg + ",";
+                    //this.prevSpeedLeg = this.prevSpeedLeg + this.prevAccelLeg * 0.2; //v=u+ft
+                    //this.feature.sp += this.prevSpeedLeg + ",";
+                    this.prevSpeedLeg[0] = S[0] / 0.2; // the v=u+ft was toohot to handle for negative speed values.
+                    this.prevSpeedLeg[1] = S[1] / 0.2;
+                    this.prevSpeedLeg[2] = S[2] / 0.2;
+                    this.prevSpeedLeg[3] = S[3] / 0.2;
+
+                }
+
+
+                this.wprevLeg[0].x = this.sdata.Joints[JointID.AnkleLeft].Position.X - 0 * 1;
+                this.wprevLeg[0].y = this.sdata.Joints[JointID.AnkleLeft].Position.Y - 0 * 2;
+                this.wprevLeg[0].z = this.sdata.Joints[JointID.AnkleLeft].Position.Z - 0 * 3;
+
+                this.wprevLeg[1].x = this.sdata.Joints[JointID.AnkleRight].Position.X - 0 * 1;
+                this.wprevLeg[1].y = this.sdata.Joints[JointID.AnkleRight].Position.Y - 0 * 2;
+                this.wprevLeg[1].z = this.sdata.Joints[JointID.AnkleRight].Position.Z - 0 * 3;
+
+                this.wprevLeg[2].x = this.sdata.Joints[JointID.KneeLeft].Position.X - 0 * 1;
+                this.wprevLeg[2].y = this.sdata.Joints[JointID.KneeLeft].Position.Y - 0 * 2;
+                this.wprevLeg[2].z = this.sdata.Joints[JointID.KneeLeft].Position.Z - 0 * 3;
+
+                this.wprevLeg[3].x = this.sdata.Joints[JointID.KneeRight].Position.X - 0 * 1;
+                this.wprevLeg[3].y = this.sdata.Joints[JointID.KneeRight].Position.Y - 0 * 2;
+                this.wprevLeg[3].z = this.sdata.Joints[JointID.KneeRight].Position.Z - 0 * 3;
+
+            }//else if
+        }
+
 
         private void dangPos() {
             //rElbow
@@ -872,10 +1237,10 @@ namespace WpfApplication1{
         }
 
         private void jerkIndex(){
-            this.feature.jerkIndex[0] = (-1 * this.totJI[0] * 6) / (this.frame * this.feature.lHandSpeedMps);
-            this.feature.jerkIndex[1] = (-1 * this.totJI[1] * 6) / (this.frame * this.feature.rHandSpeedMps);
-            this.feature.jerkIndex[2] = (-1 * this.totJI[2] * 6) / (this.frame * this.feature.lElbowSpeedMps);
-            this.feature.jerkIndex[3] = (-1 * this.totJI[3] * 6) / (this.frame * this.feature.rElbowSpeedMps);
+            this.feature.jerkIndex[0] = ( this.totJI[0] * 6) / (this.frame * this.feature.lHandSpeedMps);
+            this.feature.jerkIndex[1] = ( this.totJI[1] * 6) / (this.frame * this.feature.rHandSpeedMps);
+            this.feature.jerkIndex[2] = ( this.totJI[2] * 6) / (this.frame * this.feature.lElbowSpeedMps);
+            this.feature.jerkIndex[3] = ( this.totJI[3] * 6) / (this.frame * this.feature.rElbowSpeedMps);
         }
 
     }
