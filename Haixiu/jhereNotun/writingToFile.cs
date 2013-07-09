@@ -112,8 +112,8 @@ namespace WpfApplication1
             //file.Write(f.rWrist.maxx.x + "," + f.rWrist.maxx.y + "," + f.rWrist.maxx.z + "," + f.rWrist.maxy.x + "," + f.rWrist.maxy.y + "," + f.rWrist.maxy.z + "," + f.rWrist.maxz.x + "," + f.rWrist.maxz.y + "," + f.rWrist.maxz.z);
             //file.Write(f.rWrist.minx.x + "," + f.rWrist.minx.y + "," + f.rWrist.minx.z + "," + f.rWrist.miny.x + "," + f.rWrist.miny.y + "," + f.rWrist.miny.z + "," + f.rWrist.minz.x + "," + f.rWrist.minz.y + "," + f.rWrist.minz.z);
 
-            file.Write("," + f.lWrist.maxx.x + "," + f.lWrist.maxx.y + "," + f.lWrist.maxx.z + "," + f.lWrist.maxy.x + "," + f.lWrist.maxy.y + "," + f.lWrist.maxy.z + "," + f.lWrist.maxz.x + "," + f.lWrist.maxz.y + "," + f.lWrist.maxz.z);
-            file.Write("," + f.lWrist.minx.x + "," + f.lWrist.minx.y + "," + f.lWrist.minx.z + "," + f.lWrist.miny.x + "," + f.lWrist.miny.y + "," + f.lWrist.miny.z + "," + f.lWrist.minz.x + "," + f.lWrist.minz.y + "," + f.lWrist.minz.z);
+            file.Write("\n" + f.lWrist.maxx.x + "," + f.lWrist.maxx.y + "," + f.lWrist.maxx.z + "," + f.lWrist.maxy.x + "," + f.lWrist.maxy.y + "," + f.lWrist.maxy.z + "," + f.lWrist.maxz.x + "," + f.lWrist.maxz.y + "," + f.lWrist.maxz.z);
+            file.Write("\n" + f.lWrist.minx.x + "," + f.lWrist.minx.y + "," + f.lWrist.minx.z + "," + f.lWrist.miny.x + "," + f.lWrist.miny.y + "," + f.lWrist.miny.z + "," + f.lWrist.minz.x + "," + f.lWrist.minz.y + "," + f.lWrist.minz.z);
 
             file.Write("\n" + f.speedMps + "," + f.lHandSpeedMps + "," + f.peakAccel[0] + "," + f.peakDec[0] + "," + f.avgAccel[0] + "," + f.jerkIndex[0]);
             file.Write("\n" + f.speedMps + "," + f.rHandSpeedMps + "," + f.peakAccel[1] + "," + f.peakDec[1] + "," + f.avgAccel[1] + "," + f.jerkIndex[1]);
