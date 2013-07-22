@@ -38,10 +38,11 @@ namespace WpfApplication1
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            label1.Content = "ahhaaaha";
+            //label1.Content = "ahhaaaha";
             labelFrame.Content = "frame";
             globalVars.a1 = labelFrame;
             globalVars.a2 = wDistLabel;
+            globalVars.error = AnnError;
 
             app = new kinectApp(canvas1, canvas2, label1, image1);
         }
@@ -68,8 +69,8 @@ namespace WpfApplication1
             if (globalVars.kinectOn == true)
             {
                 globalVars.logFeatures = true;
-                button2.IsEnabled = true;
-                button1.IsEnabled = false;
+                recordFeature.IsEnabled = true;
+                stopRecord.IsEnabled = false;
             }
         }
 
@@ -77,7 +78,7 @@ namespace WpfApplication1
         {
             globalVars.logFeatures = false;
             globalVars.gFeature.saveFeatures();
-            button1.IsEnabled = true;
+            recordFeature.IsEnabled = true;
 
         }
 
@@ -101,6 +102,43 @@ namespace WpfApplication1
         //    else
         //        globalVars.logSkele = false;
             
+        }
+
+        private void button4_Click(object sender, RoutedEventArgs e)
+        {
+            ///Start Emotion Detection
+            
+
+        }
+
+        private void button3_Click(object sender, RoutedEventArgs e)
+        {
+            //String[] str =textBox1.Text.ToString().Split(':');
+            ///Start Learning
+            //System.Windows.MessageBox.Show(textBox1.Text.ToString(), "meh.", MessageBoxButton.OK, MessageBoxImage.Error);
+            try
+            {
+                
+                Learner L = new Learner(textBox1.Text.ToString());
+                
+            }
+            catch {
+                System.Windows.MessageBox.Show("Enter a filename", "meh.", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void textBox1_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //nothing
+        }
+
+        private void browsebtn_Click(object sender, RoutedEventArgs e)
+        {
+            
+            System.Windows.Forms.OpenFileDialog browse = new System.Windows.Forms.OpenFileDialog();
+            
+            if (browse.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                textBox1.Text = browse.FileName;
         }
 
 
@@ -145,7 +183,7 @@ namespace WpfApplication1
                 globalVars.kinectOn = true;
                 BitmapImage bi3 = new BitmapImage();
                 bi3.BeginInit();
-                bi3.UriSource = new Uri("C:\\Users\\workshop\\Documents\\Visual Studio 2010\\Projects\\jhereNotun\\jhereNotun\\green.png", UriKind.Absolute);
+                bi3.UriSource = new Uri("/Haixiu;component/images/green.png", UriKind.Relative);
                 bi3.EndInit();
                 i.Source = bi3;
 
@@ -250,9 +288,12 @@ namespace WpfApplication1
 
         public void stopApp()
         {
+            globalVars.needToStopLearning = true;
             this.kinect.Uninitialize();
             if(globalVars.logSkele == true)
                 this.file.closeFile();
+            globalVars.ANNthread.Join();
+            globalVars.ANNthread = null;
         }
 
         public void moveCamera(int a)

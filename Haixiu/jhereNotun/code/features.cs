@@ -16,7 +16,7 @@ using Microsoft.Research.Kinect.Nui;
 using Coding4Fun.Kinect.Wpf;
 using Microsoft.Xna.Framework;
 using Microsoft.Research.Kinect;
-
+using System.Threading;
 
 
 namespace WpfApplication1{
@@ -28,7 +28,10 @@ namespace WpfApplication1{
         public static bool logFeatures;
         public static startFeatures gFeature;
         public static bool kinectOn, logSkele;
-        public static Label a1,a2;
+        public static Label a1,a2, error;
+
+        public static Thread ANNthread;
+        public static bool needToStopLearning;
     }
 
     public struct _qbit
