@@ -39,10 +39,13 @@ namespace WpfApplication1
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             //label1.Content = "ahhaaaha";
-            labelFrame.Content = "frame";
+            //labelFrame.Content = "frame";
             globalVars.a1 = labelFrame;
             globalVars.a2 = wDistLabel;
             globalVars.error = AnnError;
+            globalVars.annIter = iterCount;
+            globalVars.saveANNbutn = saveANNbutn;
+
 
             app = new kinectApp(canvas1, canvas2, label1, image1);
         }
@@ -107,7 +110,17 @@ namespace WpfApplication1
         private void button4_Click(object sender, RoutedEventArgs e)
         {
             ///Start Emotion Detection
-            
+
+            try
+            {
+
+                recognizer R = new recognizer(loadANN.Text.ToString());
+
+            }
+            catch
+            {
+                System.Windows.MessageBox.Show("Enter a filename", "meh.", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
         }
 
@@ -140,6 +153,23 @@ namespace WpfApplication1
             if (browse.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 textBox1.Text = browse.FileName;
         }
+
+        private void button2_Click_1(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.OpenFileDialog browse1 = new System.Windows.Forms.OpenFileDialog();
+
+            if (browse1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                loadANN.Text = browse1.FileName;
+        }
+
+        private void button1_Click_1(object sender, RoutedEventArgs e)
+        {
+            //Save ANN Button
+            Learner.saveANNtoFile();
+
+        }
+
+
 
 
     }

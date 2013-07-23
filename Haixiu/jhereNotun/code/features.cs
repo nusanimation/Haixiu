@@ -28,7 +28,9 @@ namespace WpfApplication1{
         public static bool logFeatures;
         public static startFeatures gFeature;
         public static bool kinectOn, logSkele;
-        public static Label a1,a2, error;
+        
+        public static Label a1,a2, error, annIter;
+        public static Button saveANNbutn;
 
         public static Thread ANNthread;
         public static bool needToStopLearning;

@@ -21,7 +21,8 @@ namespace WpfApplication1
         private double momentum = 0.0;
         private double sigmoidAlphaValue = 2.0;
         private double learningErrorLimit = 0.1;
-       // private int sigmoidType = 0;
+        private int iteration = 0;
+        // private int sigmoidType = 0;
        // private bool saveStatisticsToFiles = false;
         private double[][] input = null;
         private double[][] output = null;
@@ -78,14 +79,14 @@ namespace WpfApplication1
         private void initANN()
         {
             
-            ActivationNetwork network = new ActivationNetwork((IActivationFunction)new SigmoidFunction(sigmoidAlphaValue), this.inputCount, 4, 6);
+            ActivationNetwork network = new ActivationNetwork((IActivationFunction)new SigmoidFunction(sigmoidAlphaValue), this.inputCount, 6, 6);
             BackPropagationLearning teacher = new BackPropagationLearning(network);
             // set learning rate and momentum
             teacher.LearningRate = this.learningRate;
             teacher.Momentum = this.momentum;
 
             // iterations
-            int iteration = 1;
+            iteration = 1;
 
             // statistic files
             StreamWriter errorsFile = null;
@@ -108,7 +109,7 @@ namespace WpfApplication1
                    // errorsList.Add(error);
 
                     //took me a fucking day for this. http://www.albahari.com/threading/part2.aspx
-                    Action action = () => globalVars.error.Content = error;
+                    Action action = () => { globalVars.error.Content = error; globalVars.annIter.Content = (iteration ) ;};
                     System.Windows.Application.Current.Dispatcher.Invoke(action);
                     //l.l1.TextChanged += new System.EventHandler(l.textBox1_TextChanged);
 //                    learningWindow.l1.Refresh();
@@ -120,7 +121,7 @@ namespace WpfApplication1
                     //    errorsFile.WriteLine(error);
                     }
 
-//                    iteration++;
+                    iteration++;
 
                     // check if we need to stop
                     if (error <= learningErrorLimit)
@@ -152,10 +153,12 @@ namespace WpfApplication1
                     errorsFile.Close();
             }
 
-            double[] in1 = new double[2]{.1,.1};
-            double[] out1 = new double[6];
-            out1 = network.Compute(in1);
-            System.Windows.MessageBox.Show("output: " + out1[0] + "\n" + out1[1] + "\n" + out1[2] + "\n" + out1[3] + "\n" + out1[4] + "\n" + out1[5], "meh.", MessageBoxButton.OK, MessageBoxImage.Information);
+
+
+
+            Action action1 = () => { Learner.savedNet = network; globalVars.saveANNbutn.IsEnabled = true; };
+            System.Windows.Application.Current.Dispatcher.Invoke(action1);
+
         }
 
     }
@@ -188,11 +191,19 @@ namespace WpfApplication1
 
     */
 
-    class Learner
+    public class Learner
     {
         private String filename;
         //private System.IO.StreamReader file;
         private String[] data;
+        public static ActivationNetwork savedNet = null;
+
+        public static void saveANNtoFile(String filename = "savedNeuralNet.dat") 
+        {
+            if (savedNet != null)
+                savedNet.Save(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) +@"\"+ filename);
+        
+        }
 
         public Learner(String str)
         {
@@ -239,6 +250,32 @@ namespace WpfApplication1
         }
 
     }
+    
+    public class recognizer
+    {
+        Network net;
+        public recognizer(String n) { 
+           //Set ANN
+            _feature f;
+            net = Network.Load(n);
+            recognizeFeature();
+            
+        }
+
+        private void recognizeFeature()//_feature f)
+        {
+            double[] in1 = new double[4] {0,0,.1,.5};
+            double[] out1 = new double[6];
+            out1 = net.Compute(in1);
+            System.Windows.MessageBox.Show("output: (" + Math.Round(out1[0]) + "-" + 
+                Math.Round(out1[1]) + "-" + Math.Round(out1[2]) + "), (" +
+                Math.Round(out1[3]) + "-" + Math.Round(out1[4]) + "-" +
+                Math.Round(out1[5])+")",
+                "Output for test .1,.5", MessageBoxButton.OK,
+                MessageBoxImage.Information);
+        }
+    }
 
 }
+
 
