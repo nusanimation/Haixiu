@@ -274,6 +274,9 @@ namespace WpfApplication1
                 "Output for test .1,.5", MessageBoxButton.OK,
                 MessageBoxImage.Information);
         }
+
+        public void recognizeEmotion(_feature f) { }
+
     }
 
 }

@@ -32,9 +32,7 @@
         <Label Content="D e t e c t i n g   M o d u l e ___________________________________________" IsEnabled="False" Margin="876,685,16,161" Name="label8" FlowDirection="RightToLeft" />
         <Label Content="Select NeuralNet Data" Height="23" HorizontalAlignment="Left" IsEnabled="False" Margin="877,732,0,0" Name="label9" VerticalAlignment="Top" Width="160" />
         <Rectangle Height="62" HorizontalAlignment="Left" Margin="877,400,0,0" Name="rectangle1" Stroke="Black" VerticalAlignment="Top" Width="266" StrokeThickness="0.5" />
-        <Label Content="D e t e c t i n g   M o d u l e " IsEnabled="False" Margin="63,10,935,836" Name="label10" />
-        <Rectangle Height="26" HorizontalAlignment="Left" Margin="10,11,0,0" Name="rectangle4" Stroke="Black" StrokeThickness="0.5" VerticalAlignment="Top" Width="211" />
         <Label Content="K i n e c t   C o n t r o l s" IsEnabled="False" Margin="1005,14,-7,832" Name="label11" />
-        <Label Content="Sensor Angle" Height="37" HorizontalAlignment="Left" Margin="853,178,0,0" Name="label12" VerticalAlignment="Top" Width="174" />
+        <Label Content="Sensor Angle" Height="37" HorizontalAlignment="Left" Margin="853,178,0,0" Name="label12" VerticalAlignment="Top" Width="91" />
     </Grid>
 </Window>

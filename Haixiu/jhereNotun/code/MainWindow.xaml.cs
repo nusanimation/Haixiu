@@ -69,20 +69,26 @@ namespace WpfApplication1
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
+            
+            //record feature
             if (globalVars.kinectOn == true)
             {
+                System.Windows.MessageBox.Show("output:",
+                  "Output for test .1,.5", MessageBoxButton.OK,
+                  MessageBoxImage.Information);
                 globalVars.logFeatures = true;
-                recordFeature.IsEnabled = true;
-                stopRecord.IsEnabled = false;
+                recordFeature.IsEnabled = false;
+                stopRecord.IsEnabled = true;
             }
         }
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
+            //stop recording
             globalVars.logFeatures = false;
             globalVars.gFeature.saveFeatures();
             recordFeature.IsEnabled = true;
-
+            stopRecord.IsEnabled = false;
         }
 
         private void image1_ImageFailed(object sender, ExceptionRoutedEventArgs e)
