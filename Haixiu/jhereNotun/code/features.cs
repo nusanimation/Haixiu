@@ -29,7 +29,7 @@ namespace WpfApplication1{
         public static startFeatures gFeature;
         public static bool kinectOn, logSkele;
         
-        public static Label a1,a2, error, annIter;
+        public static Label a1,a2, error, annIter, jerkLabel;
         public static Button saveANNbutn;
 
         public static Thread ANNthread;
@@ -81,18 +81,45 @@ namespace WpfApplication1{
         private float baseX, baseY, baseZ;
 
         public startFeatures(){
-            this.frame = 0;
-            this.wDist = new double[4]{0,0,0,0};
-            this.wDistLeg = new double[4]{0,0,0,0};
-            this.spineDist = 0;
-            this.prevAccel = new double[4] { 0, 0, 0, 0 };
-            this.prevAccelLeg = new double[4] { 0, 0, 0, 0 };
 
-            this.prevSpeed = new double[4] { 0, 0, 0, 0 };
-            this.prevSpeedLeg = new double[4] { 0, 0, 0, 0 };
-            this.totJI = new double[4] { 0, 0, 0, 0 };
+            this.wDist = new double[4];
+            this.wDistLeg = new double[4];
+            this.prevAccel = new double[4] ;
+            this.prevAccelLeg = new double[4];
+
+            this.prevSpeed = new double[4] ;
+            this.prevSpeedLeg = new double[4] ;
+            this.totJI = new double[4];
+
+            this.wprevLeg = new _qbit[4];
 
             this.wprev = new _qbit[4];
+
+
+            refreshVars();
+
+            //initFeatures is for the actual features while the prev inits are local vars.
+            initFeatures();
+
+        }
+
+        private void refreshVars() {
+
+            this.frame = 0;
+            this.spineDist = 0;
+
+            for (int i = 0; i < 4; i++)
+            {
+                this.wDist[i] = 0;
+                this.wDistLeg[i] = 0;
+                this.prevAccel[i] = 0;
+                this.prevAccelLeg[i] = 0;
+
+                this.prevSpeed[i] = 0;
+                this.prevSpeedLeg[i] = 0;
+                this.totJI[i] = 0;
+            }
+
             this.wprev[0].x = -100;
             this.wprev[0].y = -100;
             this.wprev[0].z = -100;
@@ -105,7 +132,8 @@ namespace WpfApplication1{
             this.wprev[3].x = -100;
             this.wprev[3].y = -100;
             this.wprev[3].z = -100;
-            this.wprevLeg = new _qbit[4];
+
+
             this.wprevLeg[0].x = -100;
             this.wprevLeg[0].y = -100;
             this.wprevLeg[0].z = -100;
@@ -126,13 +154,9 @@ namespace WpfApplication1{
             this.baseX = 0;
             this.baseY = 0;
             this.baseZ = 0;
-
-
-
-            //initFeatures is for the actual features while the prev inits are local vars.
-            initFeatures();
-
+         
         }
+
 
         private void initFeatures(){
 
@@ -452,7 +476,15 @@ namespace WpfApplication1{
             speed();
             dangSpeed();
             dangQuality();
-            writeFeatures();
+            try
+            {
+                writeFeatures();
+                refreshVars();
+            }
+            catch 
+            {
+                System.Windows.MessageBox.Show("cant record :( sorry dude.","error", MessageBoxButton.OK,MessageBoxImage.Error);
+            }
         }
         
         private void writeFeatures(){
@@ -1233,6 +1265,8 @@ namespace WpfApplication1{
                     jIndex[0] = (this.prevAccel[0] - f0) / 0.2; //jerk Index = (f1-f0)/dt
                     totJI[0] += Math.Abs(jIndex[0]);
 
+                    jerkLabel.Content = this.prevAccel[0] + ", " + f0 + ", " + totJI[0];
+                    
                     if (this.feature.peakAccel[0] < this.prevAccel[0])
                     {
                         this.feature.peakAccel[0] = this.prevAccel[0];

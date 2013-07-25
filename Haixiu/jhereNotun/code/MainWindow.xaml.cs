@@ -45,6 +45,7 @@ namespace WpfApplication1
             globalVars.error = AnnError;
             globalVars.annIter = iterCount;
             globalVars.saveANNbutn = saveANNbutn;
+            globalVars.jerkLabel = jerkLabel;
 
 
             app = new kinectApp(canvas1, canvas2, label1, image1);
@@ -73,9 +74,6 @@ namespace WpfApplication1
             //record feature
             if (globalVars.kinectOn == true)
             {
-                System.Windows.MessageBox.Show("output:",
-                  "Output for test .1,.5", MessageBoxButton.OK,
-                  MessageBoxImage.Information);
                 globalVars.logFeatures = true;
                 recordFeature.IsEnabled = false;
                 stopRecord.IsEnabled = true;
@@ -195,13 +193,17 @@ namespace WpfApplication1
         public kinectApp(Canvas c, Canvas top, Label l, Image i)
         {
             //update the feature
+
             
             this.features  = new startFeatures();
+            
             globalVars.gFeature = features;
 
             this.file = new fileWriter(null);
-
+            int iii = 0;
+            
             kinect = Runtime.Kinects[0];
+
             if (kinect == null)
             {
                 globalVars.kinectOn = false;

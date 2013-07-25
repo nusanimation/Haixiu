@@ -13,7 +13,7 @@
         <Label Content="Kinect State" Height="33" HorizontalAlignment="Right" Margin="1063,100,0,0" Name="label2" VerticalAlignment="Top" Width="84" />
         <CheckBox Content="Log Kinect Skele" Height="33" HorizontalAlignment="Left" Margin="1035,139,0,0" Name="checkBox1" VerticalAlignment="Top" Click="checkBox1_Click" Checked="checkBox1_Checked" />
         <Label Content="0" Height="28" HorizontalAlignment="Left" Margin="289,676,0,0" Name="labelFrame" VerticalAlignment="Top" Width="91" />
-        <Label Content="Total Righthand distance" Name="wDistLabel" DataContext="{Binding}" Margin="235,709,723,132" />
+        <Label Content="totRhnd" Name="wDistLabel" DataContext="{Binding}" Margin="235,709,723,132" />
         <Button Content="Start Learning" Height="46" HorizontalAlignment="Right" Margin="0,468,148,0" Name="startLearning" VerticalAlignment="Top" Width="135" Click="button3_Click" />
         <Button Content="Start Emotion Detection" Height="46" HorizontalAlignment="Left" Margin="876,807,0,0" Name="startDetect" VerticalAlignment="Top" Width="264" Click="button4_Click" />
         <Label Content="N/A" Height="33" HorizontalAlignment="Left" Margin="983,429,0,0" Name="AnnError" VerticalAlignment="Top" Width="147" />
@@ -34,5 +34,7 @@
         <Rectangle Height="62" HorizontalAlignment="Left" Margin="877,400,0,0" Name="rectangle1" Stroke="Black" VerticalAlignment="Top" Width="266" StrokeThickness="0.5" />
         <Label Content="K i n e c t   C o n t r o l s" IsEnabled="False" Margin="1005,14,-7,832" Name="label11" />
         <Label Content="Sensor Angle" Height="37" HorizontalAlignment="Left" Margin="853,178,0,0" Name="label12" VerticalAlignment="Top" Width="91" />
+        <Label Content="f1, f0, totJI" Height="30" HorizontalAlignment="Left" Margin="235,759,0,0" Name="label10" VerticalAlignment="Top" Width="61" />
+        <Label Content="0" Height="28" HorizontalAlignment="Left" Margin="302,759,0,0" Name="jerkLabel" VerticalAlignment="Top" Width="303" />
     </Grid>
 </Window>
