@@ -42,9 +42,9 @@ namespace WpfApplication1{
     }
     public struct _quanta
     {
-        public _qbit minx, maxx, wmeanx, meanx;
-        public _qbit miny, maxy, wmeany, meany;
-        public _qbit minz, maxz, wmeanz, meanz;
+        public _qbit minx, maxx;
+        public _qbit miny, maxy;
+        public _qbit minz, maxz;
     };
     public struct _feature
     {
@@ -63,9 +63,662 @@ namespace WpfApplication1{
         //dummyFeatures
         public String acc, dis, sp;
 
+
+        public _feature(double neg)
+        {
+            speedMps=0; lHandSpeedMps=0; lElbowSpeedMps=0; rHandSpeedMps=0; rElbowSpeedMps=0;
+            lKneeSpeedMps=0; rKneeSpeedMps=0; rAnkleSpeedMps=0; lAnkleSpeedMps=0;
+            acc = null; dis = null; sp = null;
+
+            this.jerkIndex   = new double[4] {0,0,0,0};
+            this.roundedness   = new double[4] {0,0,0,0};
+            this.avgAccel   = new double[4] {0,0,0,0};
+            this.peakDec   = new double[4] {0,0,0,0};
+            this.peakAccel   = new double[4] {0,0,0,0};
+
+            this.roundednessLeg   = new double[4] {0,0,0,0};
+            this.avgAccelLeg   = new double[4] {0,0,0,0};
+            this.peakDecLeg   = new double[4] {0,0,0,0};
+            this.peakAccelLeg   = new double[4] {0,0,0,0};
+            
+/*          this.peakAccel[0] = this.peakDec[0] = 0;
+            this.peakAccel[1] = this.peakDec[1] = 0;
+            this.peakAccel[2] = this.peakDec[2] = 0;
+            this.peakAccel[3] = this.peakDec[3] = 0;
+*/
+   
+            this.head.minx.x = 10;
+            this.head.minx.y = 10;
+            this.head.minx.z = 10;
+            this.head.miny.x = 10;
+            this.head.miny.y = 10;
+            this.head.miny.z = 10;
+            this.head.minz.x = 10;
+            this.head.minz.y = 10;
+            this.head.minz.z = 10;
+
+            this.head.maxx.x = -10;
+            this.head.maxx.y = -10;
+            this.head.maxx.z = -10;
+            this.head.maxy.x = -10;
+            this.head.maxy.y = -10;
+            this.head.maxy.z = -10;
+            this.head.maxz.x = -10;
+            this.head.maxz.y = -10;
+            this.head.maxz.z = -10;
+
+
+            this.lShoulder.minx.x = 10;
+            this.lShoulder.minx.y = 10;
+            this.lShoulder.minx.z = 10;
+            this.lShoulder.miny.x = 10;
+            this.lShoulder.miny.y = 10;
+            this.lShoulder.miny.z = 10;
+            this.lShoulder.minz.x = 10;
+            this.lShoulder.minz.y = 10;
+            this.lShoulder.minz.z = 10;
+
+            this.lShoulder.maxx.x = -10;
+            this.lShoulder.maxx.y = -10;
+            this.lShoulder.maxx.z = -10;
+            this.lShoulder.maxy.x = -10;
+            this.lShoulder.maxy.y = -10;
+            this.lShoulder.maxy.z = -10;
+            this.lShoulder.maxz.x = -10;
+            this.lShoulder.maxz.y = -10;
+            this.lShoulder.maxz.z = -10;
+
+            
+            this.rShoulder.maxx.x = -10;
+            this.rShoulder.maxx.y = -10;
+            this.rShoulder.maxx.z = -10;
+            this.rShoulder.maxy.x = -10;
+            this.rShoulder.maxy.y = -10;
+            this.rShoulder.maxy.z = -10;
+            this.rShoulder.maxz.x = -10;
+            this.rShoulder.maxz.y = -10;
+            this.rShoulder.maxz.z = -10;
+
+            this.rShoulder.minx.x = 10;
+            this.rShoulder.minx.y = 10;
+            this.rShoulder.minx.z = 10;
+            this.rShoulder.miny.x = 10;
+            this.rShoulder.miny.y = 10;
+            this.rShoulder.miny.z = 10;
+            this.rShoulder.minz.x = 10;
+            this.rShoulder.minz.y = 10;
+            this.rShoulder.minz.z = 10;
+
+
+            this.spine.maxx.x = -10;
+            this.spine.maxx.y = -10;
+            this.spine.maxx.z = -10;
+            this.spine.maxy.x = -10;
+            this.spine.maxy.y = -10;
+            this.spine.maxy.z = -10;
+            this.spine.maxz.x = -10;
+            this.spine.maxz.y = -10;
+            this.spine.maxz.z = -10;
+
+            this.spine.minx.x = 10;
+            this.spine.minx.y = 10;
+            this.spine.minx.z = 10;
+            this.spine.miny.x = 10;
+            this.spine.miny.y = 10;
+            this.spine.miny.z = 10;
+            this.spine.minz.x = 10;
+            this.spine.minz.y = 10;
+            this.spine.minz.z = 10;
+
+            
+            //Lwrist
+            this.lWrist.minx.x = 10;
+            this.lWrist.minx.y = 10;
+            this.lWrist.minx.z = 10;
+            this.lWrist.miny.x = 10;
+            this.lWrist.miny.y = 10;
+            this.lWrist.miny.z = 10;
+            this.lWrist.minz.x = 10;
+            this.lWrist.minz.y = 10;
+            this.lWrist.minz.z = 10;
+
+            this.lWrist.maxx.x = -10;
+            this.lWrist.maxx.y = -10;
+            this.lWrist.maxx.z = -10;
+            this.lWrist.maxy.x = -10;
+            this.lWrist.maxy.y = -10;
+            this.lWrist.maxy.z = -10;
+            this.lWrist.maxz.x = -10;
+            this.lWrist.maxz.y = -10;
+            this.lWrist.maxz.z = -10;
+
+            //Rwrist
+            this.rWrist.minx.x = 10;
+            this.rWrist.minx.y = 10;
+            this.rWrist.minx.z = 10;
+            this.rWrist.miny.x = 10;
+            this.rWrist.miny.y = 10;
+            this.rWrist.miny.z = 10;
+            this.rWrist.minz.x = 10;
+            this.rWrist.minz.y = 10;
+            this.rWrist.minz.z = 10;
+
+            this.rWrist.maxx.x = -10;
+            this.rWrist.maxx.y = -10;
+            this.rWrist.maxx.z = -10;
+            this.rWrist.maxy.x = -10;
+            this.rWrist.maxy.y = -10;
+            this.rWrist.maxy.z = -10;
+            this.rWrist.maxz.x = -10;
+            this.rWrist.maxz.y = -10;
+            this.rWrist.maxz.z = -10;
+
+            //Lwrist
+            this.lHand.minx.x = 10;
+            this.lHand.minx.y = 10;
+            this.lHand.minx.z = 10;
+            this.lHand.miny.x = 10;
+            this.lHand.miny.y = 10;
+            this.lHand.miny.z = 10;
+            this.lHand.minz.x = 10;
+            this.lHand.minz.y = 10;
+            this.lHand.minz.z = 10;
+
+            this.lHand.maxx.x = -10;
+            this.lHand.maxx.y = -10;
+            this.lHand.maxx.z = -10;
+            this.lHand.maxy.x = -10;
+            this.lHand.maxy.y = -10;
+            this.lHand.maxy.z = -10;
+            this.lHand.maxz.x = -10;
+            this.lHand.maxz.y = -10;
+            this.lHand.maxz.z = -10;
+
+            //Rwrist
+            this.rHand.minx.x = 10;
+            this.rHand.minx.y = 10;
+            this.rHand.minx.z = 10;
+            this.rHand.miny.x = 10;
+            this.rHand.miny.y = 10;
+            this.rHand.miny.z = 10;
+            this.rHand.minz.x = 10;
+            this.rHand.minz.y = 10;
+            this.rHand.minz.z = 10;
+
+            this.rHand.maxx.x = -10;
+            this.rHand.maxx.y = -10;
+            this.rHand.maxx.z = -10;
+            this.rHand.maxy.x = -10;
+            this.rHand.maxy.y = -10;
+            this.rHand.maxy.z = -10;
+            this.rHand.maxz.x = -10;
+            this.rHand.maxz.y = -10;
+            this.rHand.maxz.z = -10;
+
+
+            //Lwrist
+            this.lElbow.minx.x = 10;
+            this.lElbow.minx.y = 10;
+            this.lElbow.minx.z = 10;
+            this.lElbow.miny.x = 10;
+            this.lElbow.miny.y = 10;
+            this.lElbow.miny.z = 10;
+            this.lElbow.minz.x = 10;
+            this.lElbow.minz.y = 10;
+            this.lElbow.minz.z = 10;
+
+            this.lElbow.maxx.x = -10;
+            this.lElbow.maxx.y = -10;
+            this.lElbow.maxx.z = -10;
+            this.lElbow.maxy.x = -10;
+            this.lElbow.maxy.y = -10;
+            this.lElbow.maxy.z = -10;
+            this.lElbow.maxz.x = -10;
+            this.lElbow.maxz.y = -10;
+            this.lElbow.maxz.z = -10;
+
+            //Rwrist
+            this.rElbow.minx.x = 10;
+            this.rElbow.minx.y = 10;
+            this.rElbow.minx.z = 10;
+            this.rElbow.miny.x = 10;
+            this.rElbow.miny.y = 10;
+            this.rElbow.miny.z = 10;
+            this.rElbow.minz.x = 10;
+            this.rElbow.minz.y = 10;
+            this.rElbow.minz.z = 10;
+
+            this.rElbow.maxx.x = -10;
+            this.rElbow.maxx.y = -10;
+            this.rElbow.maxx.z = -10;
+            this.rElbow.maxy.x = -10;
+            this.rElbow.maxy.y = -10;
+            this.rElbow.maxy.z = -10;
+            this.rElbow.maxz.x = -10;
+            this.rElbow.maxz.y = -10;
+            this.rElbow.maxz.z = -10;
+
+            //Lwrist
+            this.lAnkle.minx.x = 10;
+            this.lAnkle.minx.y = 10;
+            this.lAnkle.minx.z = 10;
+            this.lAnkle.miny.x = 10;
+            this.lAnkle.miny.y = 10;
+            this.lAnkle.miny.z = 10;
+            this.lAnkle.minz.x = 10;
+            this.lAnkle.minz.y = 10;
+            this.lAnkle.minz.z = 10;
+
+            this.lAnkle.maxx.x = -10;
+            this.lAnkle.maxx.y = -10;
+            this.lAnkle.maxx.z = -10;
+            this.lAnkle.maxy.x = -10;
+            this.lAnkle.maxy.y = -10;
+            this.lAnkle.maxy.z = -10;
+            this.lAnkle.maxz.x = -10;
+            this.lAnkle.maxz.y = -10;
+            this.lAnkle.maxz.z = -10;
+
+            //Rwrist
+            this.rAnkle.minx.x = 10;
+            this.rAnkle.minx.y = 10;
+            this.rAnkle.minx.z = 10;
+            this.rAnkle.miny.x = 10;
+            this.rAnkle.miny.y = 10;
+            this.rAnkle.miny.z = 10;
+            this.rAnkle.minz.x = 10;
+            this.rAnkle.minz.y = 10;
+            this.rAnkle.minz.z = 10;
+
+            this.rAnkle.maxx.x = -10;
+            this.rAnkle.maxx.y = -10;
+            this.rAnkle.maxx.z = -10;
+            this.rAnkle.maxy.x = -10;
+            this.rAnkle.maxy.y = -10;
+            this.rAnkle.maxy.z = -10;
+            this.rAnkle.maxz.x = -10;
+            this.rAnkle.maxz.y = -10;
+            this.rAnkle.maxz.z = -10;
+
+
+            //Lwrist
+            this.lKnee.minx.x = 10;
+            this.lKnee.minx.y = 10;
+            this.lKnee.minx.z = 10;
+            this.lKnee.miny.x = 10;
+            this.lKnee.miny.y = 10;
+            this.lKnee.miny.z = 10;
+            this.lKnee.minz.x = 10;
+            this.lKnee.minz.y = 10;
+            this.lKnee.minz.z = 10;
+
+            this.lKnee.maxx.x = -10;
+            this.lKnee.maxx.y = -10;
+            this.lKnee.maxx.z = -10;
+            this.lKnee.maxy.x = -10;
+            this.lKnee.maxy.y = -10;
+            this.lKnee.maxy.z = -10;
+            this.lKnee.maxz.x = -10;
+            this.lKnee.maxz.y = -10;
+            this.lKnee.maxz.z = -10;
+
+            //Rwrist
+            this.rKnee.minx.x = 10;
+            this.rKnee.minx.y = 10;
+            this.rKnee.minx.z = 10;
+            this.rKnee.miny.x = 10;
+            this.rKnee.miny.y = 10;
+            this.rKnee.miny.z = 10;
+            this.rKnee.minz.x = 10;
+            this.rKnee.minz.y = 10;
+            this.rKnee.minz.z = 10;
+
+            this.rKnee.maxx.x = -10;
+            this.rKnee.maxx.y = -10;
+            this.rKnee.maxx.z = -10;
+            this.rKnee.maxy.x = -10;
+            this.rKnee.maxy.y = -10;
+            this.rKnee.maxy.z = -10;
+            this.rKnee.maxz.x = -10;
+            this.rKnee.maxz.y = -10;
+            this.rKnee.maxz.z = -10;
+
+
+            /*          this.head.meanx.x = -10;
+                        this.head.meanx.y = -10;
+                        this.head.meanx.z = -10;
+                        this.head.wmean.x = -10;
+                        this.head.wmean.y = -10;
+                        this.head.wmean.z = -10;
+             */
+        }
+    
     };
 
+    public static class initFeatures { 
+    
+        public static void initToZero(this _feature f)
+        {
 
+            for (int iii = 0; iii < 4; iii++)
+            {
+                f.jerkIndex[iii] = 0;
+                f.roundedness[iii] = 0;
+                f.avgAccel[iii] = 0;
+                f.peakDec[iii] = 0;
+                f.peakAccel[iii] = 0;
+
+                f.roundednessLeg[iii] = 0;
+                f.avgAccelLeg[iii] = 0;
+                f.peakDecLeg[iii] = 0;
+                f.peakAccelLeg[iii] = 0;
+            }
+            f.head.minx.x = 10;
+            f.head.minx.y = 10;
+            f.head.minx.z = 10;
+            f.head.miny.x = 10;
+            f.head.miny.y = 10;
+            f.head.miny.z = 10;
+            f.head.minz.x = 10;
+            f.head.minz.y = 10;
+            f.head.minz.z = 10;
+
+            f.head.maxx.x = -10;
+            f.head.maxx.y = -10;
+            f.head.maxx.z = -10;
+            f.head.maxy.x = -10;
+            f.head.maxy.y = -10;
+            f.head.maxy.z = -10;
+            f.head.maxz.x = -10;
+            f.head.maxz.y = -10;
+            f.head.maxz.z = -10;
+
+
+            f.lShoulder.minx.x = 10;
+            f.lShoulder.minx.y = 10;
+            f.lShoulder.minx.z = 10;
+            f.lShoulder.miny.x = 10;
+            f.lShoulder.miny.y = 10;
+            f.lShoulder.miny.z = 10;
+            f.lShoulder.minz.x = 10;
+            f.lShoulder.minz.y = 10;
+            f.lShoulder.minz.z = 10;
+
+            f.lShoulder.maxx.x = -10;
+            f.lShoulder.maxx.y = -10;
+            f.lShoulder.maxx.z = -10;
+            f.lShoulder.maxy.x = -10;
+            f.lShoulder.maxy.y = -10;
+            f.lShoulder.maxy.z = -10;
+            f.lShoulder.maxz.x = -10;
+            f.lShoulder.maxz.y = -10;
+            f.lShoulder.maxz.z = -10;
+
+
+            f.rShoulder.maxx.x = -10;
+            f.rShoulder.maxx.y = -10;
+            f.rShoulder.maxx.z = -10;
+            f.rShoulder.maxy.x = -10;
+            f.rShoulder.maxy.y = -10;
+            f.rShoulder.maxy.z = -10;
+            f.rShoulder.maxz.x = -10;
+            f.rShoulder.maxz.y = -10;
+            f.rShoulder.maxz.z = -10;
+
+            f.rShoulder.minx.x = 10;
+            f.rShoulder.minx.y = 10;
+            f.rShoulder.minx.z = 10;
+            f.rShoulder.miny.x = 10;
+            f.rShoulder.miny.y = 10;
+            f.rShoulder.miny.z = 10;
+            f.rShoulder.minz.x = 10;
+            f.rShoulder.minz.y = 10;
+            f.rShoulder.minz.z = 10;
+
+
+            f.spine.maxx.x = -10;
+            f.spine.maxx.y = -10;
+            f.spine.maxx.z = -10;
+            f.spine.maxy.x = -10;
+            f.spine.maxy.y = -10;
+            f.spine.maxy.z = -10;
+            f.spine.maxz.x = -10;
+            f.spine.maxz.y = -10;
+            f.spine.maxz.z = -10;
+
+            f.spine.minx.x = 10;
+            f.spine.minx.y = 10;
+            f.spine.minx.z = 10;
+            f.spine.miny.x = 10;
+            f.spine.miny.y = 10;
+            f.spine.miny.z = 10;
+            f.spine.minz.x = 10;
+            f.spine.minz.y = 10;
+            f.spine.minz.z = 10;
+
+
+            //Lwrist
+            f.lWrist.minx.x = 10;
+            f.lWrist.minx.y = 10;
+            f.lWrist.minx.z = 10;
+            f.lWrist.miny.x = 10;
+            f.lWrist.miny.y = 10;
+            f.lWrist.miny.z = 10;
+            f.lWrist.minz.x = 10;
+            f.lWrist.minz.y = 10;
+            f.lWrist.minz.z = 10;
+
+            f.lWrist.maxx.x = -10;
+            f.lWrist.maxx.y = -10;
+            f.lWrist.maxx.z = -10;
+            f.lWrist.maxy.x = -10;
+            f.lWrist.maxy.y = -10;
+            f.lWrist.maxy.z = -10;
+            f.lWrist.maxz.x = -10;
+            f.lWrist.maxz.y = -10;
+            f.lWrist.maxz.z = -10;
+
+            //Rwrist
+            f.rWrist.minx.x = 10;
+            f.rWrist.minx.y = 10;
+            f.rWrist.minx.z = 10;
+            f.rWrist.miny.x = 10;
+            f.rWrist.miny.y = 10;
+            f.rWrist.miny.z = 10;
+            f.rWrist.minz.x = 10;
+            f.rWrist.minz.y = 10;
+            f.rWrist.minz.z = 10;
+
+            f.rWrist.maxx.x = -10;
+            f.rWrist.maxx.y = -10;
+            f.rWrist.maxx.z = -10;
+            f.rWrist.maxy.x = -10;
+            f.rWrist.maxy.y = -10;
+            f.rWrist.maxy.z = -10;
+            f.rWrist.maxz.x = -10;
+            f.rWrist.maxz.y = -10;
+            f.rWrist.maxz.z = -10;
+
+            //Lwrist
+            f.lHand.minx.x = 10;
+            f.lHand.minx.y = 10;
+            f.lHand.minx.z = 10;
+            f.lHand.miny.x = 10;
+            f.lHand.miny.y = 10;
+            f.lHand.miny.z = 10;
+            f.lHand.minz.x = 10;
+            f.lHand.minz.y = 10;
+            f.lHand.minz.z = 10;
+
+            f.lHand.maxx.x = -10;
+            f.lHand.maxx.y = -10;
+            f.lHand.maxx.z = -10;
+            f.lHand.maxy.x = -10;
+            f.lHand.maxy.y = -10;
+            f.lHand.maxy.z = -10;
+            f.lHand.maxz.x = -10;
+            f.lHand.maxz.y = -10;
+            f.lHand.maxz.z = -10;
+
+            //Rwrist
+            f.rHand.minx.x = 10;
+            f.rHand.minx.y = 10;
+            f.rHand.minx.z = 10;
+            f.rHand.miny.x = 10;
+            f.rHand.miny.y = 10;
+            f.rHand.miny.z = 10;
+            f.rHand.minz.x = 10;
+            f.rHand.minz.y = 10;
+            f.rHand.minz.z = 10;
+
+            f.rHand.maxx.x = -10;
+            f.rHand.maxx.y = -10;
+            f.rHand.maxx.z = -10;
+            f.rHand.maxy.x = -10;
+            f.rHand.maxy.y = -10;
+            f.rHand.maxy.z = -10;
+            f.rHand.maxz.x = -10;
+            f.rHand.maxz.y = -10;
+            f.rHand.maxz.z = -10;
+
+
+            //Lwrist
+            f.lElbow.minx.x = 10;
+            f.lElbow.minx.y = 10;
+            f.lElbow.minx.z = 10;
+            f.lElbow.miny.x = 10;
+            f.lElbow.miny.y = 10;
+            f.lElbow.miny.z = 10;
+            f.lElbow.minz.x = 10;
+            f.lElbow.minz.y = 10;
+            f.lElbow.minz.z = 10;
+
+            f.lElbow.maxx.x = -10;
+            f.lElbow.maxx.y = -10;
+            f.lElbow.maxx.z = -10;
+            f.lElbow.maxy.x = -10;
+            f.lElbow.maxy.y = -10;
+            f.lElbow.maxy.z = -10;
+            f.lElbow.maxz.x = -10;
+            f.lElbow.maxz.y = -10;
+            f.lElbow.maxz.z = -10;
+
+            //Rwrist
+            f.rElbow.minx.x = 10;
+            f.rElbow.minx.y = 10;
+            f.rElbow.minx.z = 10;
+            f.rElbow.miny.x = 10;
+            f.rElbow.miny.y = 10;
+            f.rElbow.miny.z = 10;
+            f.rElbow.minz.x = 10;
+            f.rElbow.minz.y = 10;
+            f.rElbow.minz.z = 10;
+
+            f.rElbow.maxx.x = -10;
+            f.rElbow.maxx.y = -10;
+            f.rElbow.maxx.z = -10;
+            f.rElbow.maxy.x = -10;
+            f.rElbow.maxy.y = -10;
+            f.rElbow.maxy.z = -10;
+            f.rElbow.maxz.x = -10;
+            f.rElbow.maxz.y = -10;
+            f.rElbow.maxz.z = -10;
+
+            //Lwrist
+            f.lAnkle.minx.x = 10;
+            f.lAnkle.minx.y = 10;
+            f.lAnkle.minx.z = 10;
+            f.lAnkle.miny.x = 10;
+            f.lAnkle.miny.y = 10;
+            f.lAnkle.miny.z = 10;
+            f.lAnkle.minz.x = 10;
+            f.lAnkle.minz.y = 10;
+            f.lAnkle.minz.z = 10;
+
+            f.lAnkle.maxx.x = -10;
+            f.lAnkle.maxx.y = -10;
+            f.lAnkle.maxx.z = -10;
+            f.lAnkle.maxy.x = -10;
+            f.lAnkle.maxy.y = -10;
+            f.lAnkle.maxy.z = -10;
+            f.lAnkle.maxz.x = -10;
+            f.lAnkle.maxz.y = -10;
+            f.lAnkle.maxz.z = -10;
+
+            //Rwrist
+            f.rAnkle.minx.x = 10;
+            f.rAnkle.minx.y = 10;
+            f.rAnkle.minx.z = 10;
+            f.rAnkle.miny.x = 10;
+            f.rAnkle.miny.y = 10;
+            f.rAnkle.miny.z = 10;
+            f.rAnkle.minz.x = 10;
+            f.rAnkle.minz.y = 10;
+            f.rAnkle.minz.z = 10;
+
+            f.rAnkle.maxx.x = -10;
+            f.rAnkle.maxx.y = -10;
+            f.rAnkle.maxx.z = -10;
+            f.rAnkle.maxy.x = -10;
+            f.rAnkle.maxy.y = -10;
+            f.rAnkle.maxy.z = -10;
+            f.rAnkle.maxz.x = -10;
+            f.rAnkle.maxz.y = -10;
+            f.rAnkle.maxz.z = -10;
+
+
+            //Lwrist
+            f.lKnee.minx.x = 10;
+            f.lKnee.minx.y = 10;
+            f.lKnee.minx.z = 10;
+            f.lKnee.miny.x = 10;
+            f.lKnee.miny.y = 10;
+            f.lKnee.miny.z = 10;
+            f.lKnee.minz.x = 10;
+            f.lKnee.minz.y = 10;
+            f.lKnee.minz.z = 10;
+
+            f.lKnee.maxx.x = -10;
+            f.lKnee.maxx.y = -10;
+            f.lKnee.maxx.z = -10;
+            f.lKnee.maxy.x = -10;
+            f.lKnee.maxy.y = -10;
+            f.lKnee.maxy.z = -10;
+            f.lKnee.maxz.x = -10;
+            f.lKnee.maxz.y = -10;
+            f.lKnee.maxz.z = -10;
+
+            //Rwrist
+            f.rKnee.minx.x = 10;
+            f.rKnee.minx.y = 10;
+            f.rKnee.minx.z = 10;
+            f.rKnee.miny.x = 10;
+            f.rKnee.miny.y = 10;
+            f.rKnee.miny.z = 10;
+            f.rKnee.minz.x = 10;
+            f.rKnee.minz.y = 10;
+            f.rKnee.minz.z = 10;
+
+            f.rKnee.maxx.x = -10;
+            f.rKnee.maxx.y = -10;
+            f.rKnee.maxx.z = -10;
+            f.rKnee.maxy.x = -10;
+            f.rKnee.maxy.y = -10;
+            f.rKnee.maxy.z = -10;
+            f.rKnee.maxz.x = -10;
+            f.rKnee.maxz.y = -10;
+            f.rKnee.maxz.z = -10;
+
+
+            /*          f.head.meanx.x = -10;
+                        f.head.meanx.y = -10;
+                        f.head.meanx.z = -10;
+                        f.head.wmean.x = -10;
+                        f.head.wmean.y = -10;
+                        f.head.wmean.z = -10;
+             */
+        }
+}
 
     public class startFeatures : globalVars
     {
@@ -78,7 +731,9 @@ namespace WpfApplication1{
         private _qbit[] wprev, wprevLeg;
         private _qbit spinePrev;
         private double[] prevAccel, prevSpeed, prevAccelLeg, prevSpeedLeg, totJI;
+
         private float baseX, baseY, baseZ;
+        private float spineX, spineY, spineZ;
 
         public startFeatures(){
 
@@ -98,8 +753,10 @@ namespace WpfApplication1{
 
             refreshVars();
 
+            //passing a double value to the constructor is very important otherwise the default structconstructor is called and thigs don't get initialised. problem: objectreference error in feature arrays.
+            feature = new _feature(0.0);
             //initFeatures is for the actual features while the prev inits are local vars.
-            initFeatures();
+            //initFeatures();
 
         }
 
@@ -107,6 +764,9 @@ namespace WpfApplication1{
 
             this.frame = 0;
             this.spineDist = 0;
+            this.spineX=0;
+            this.spineY = 0;
+            this.spineZ=0;
 
             for (int i = 0; i < 4; i++)
             {
@@ -157,14 +817,19 @@ namespace WpfApplication1{
          
         }
 
-
+        
         private void initFeatures(){
 
             this.feature.jerkIndex = new double[4];
             this.feature.roundedness = new double[4];
-            this.feature.avgAccel = new double[4]; 
+            this.feature.avgAccel = new double[4];
             this.feature.peakDec = new double[4];
             this.feature.peakAccel = new double[4];
+
+            this.feature.roundednessLeg = new double[4];
+            this.feature.avgAccelLeg = new double[4];
+            this.feature.peakDecLeg = new double[4];
+            this.feature.peakAccelLeg = new double[4];
 
             this.feature.peakAccel[0] = this.feature.peakDec[0] = 0;
 
@@ -439,18 +1104,27 @@ namespace WpfApplication1{
  */
         }
 
+
+
+
         public void addFeatures(SkeletonData s)
         {   
             //creating base to substract from raw sensor posiiton to normalize values
+            this.sdata = s;
+
             if (baseZ == 0)
             {   
-                this.baseX = s.Joints[JointID.Spine].Position.X;
-                this.baseY = s.Joints[JointID.Spine].Position.Y;
-                this.baseZ = s.Joints[JointID.Spine].Position.Z;
+                this.baseX = this.spineX = s.Joints[JointID.Spine].Position.X;
+                this.baseY = this.spineY = s.Joints[JointID.Spine].Position.Y;
+                this.baseZ = this.spineZ = s.Joints[JointID.Spine].Position.Z;
             }
-            
-            this.sdata = s;
-            
+
+                //here the positions are being normalised wrt spine position
+            else{            
+                this.baseX = sdata.Joints[JointID.Head].Position.X + spineX;
+                this.baseY = sdata.Joints[JointID.Head].Position.Y + spineY;
+                this.baseZ = sdata.Joints[JointID.Head].Position.Y + spineZ;
+            }
             //foreach (JointID i in jid){
             //        double a = Math.Round(this.sdata.Joints[i].Position.X, 3);
             //        SkeletonPoint pos = new SkeletonPoint()
@@ -480,6 +1154,7 @@ namespace WpfApplication1{
             {
                 writeFeatures();
                 refreshVars();
+                feature.initToZero();
             }
             catch 
             {
@@ -1264,14 +1939,16 @@ namespace WpfApplication1{
                     this.prevAccel[0] = (2 * S[0] - 2 * this.prevSpeed[0] * 0.2) / 0.04; //s=ut+.5ft^2
                     jIndex[0] = (this.prevAccel[0] - f0) / 0.2; //jerk Index = (f1-f0)/dt
                     totJI[0] += Math.Abs(jIndex[0]);
-
+                   // System.Windows.MessageBox.Show(", " +this.prevAccel[0],                "test", MessageBoxButton.OK,                MessageBoxImage.Information);
                     jerkLabel.Content = this.prevAccel[0] + ", " + f0 + ", " + totJI[0];
                     
-                    if (this.feature.peakAccel[0] < this.prevAccel[0])
+              //      if (feature.peakAccel[0] < this.prevAccel[0])
                     {
-                        this.feature.peakAccel[0] = this.prevAccel[0];
+                        feature.peakAccel[0] = this.prevAccel[0];
                     }
-                    else if (this.feature.peakDec[0] > this.prevAccel[0])
+                  
+                    //else 
+                    if (this.feature.peakDec[0] > this.prevAccel[0])
                     {
                         this.feature.peakDec[0] = this.prevAccel[0];
                     }

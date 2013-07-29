@@ -200,7 +200,7 @@ namespace WpfApplication1
             globalVars.gFeature = features;
 
             this.file = new fileWriter(null);
-            int iii = 0;
+
             
             kinect = Runtime.Kinects[0];
 

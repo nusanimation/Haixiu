@@ -26,7 +26,7 @@ namespace WpfApplication1
        // private bool saveStatisticsToFiles = false;
         private double[][] input = null;
         private double[][] output = null;
-
+        private int numberOfOutputs = 1;
         private int inputCount;
 
 
@@ -42,22 +42,22 @@ namespace WpfApplication1
             foreach (String line in data)
             {
                 String[] values = line.Split(',');
-                input[i] = new double[values.Length-6];
+                input[i] = new double[values.Length - numberOfOutputs];
                 j = 0;
                 op=0;
                 foreach (String asd in values)
                 {
                    // System.Windows.MessageBox.Show(i + ", "+j, "meh.", MessageBoxButton.OK, MessageBoxImage.Information);
-                    inputCount = values.Length-6;
-                    if (j >= values.Length - 6)
+                    inputCount = values.Length - numberOfOutputs;
+                    if (j >= values.Length - numberOfOutputs)
                     {
                         if (output[i] == null)
-                            output[i] = new double[6];
+                            output[i] = new double[numberOfOutputs];
                         output[i][op] = Convert.ToDouble(asd);
                         op++;
                     }
                     else
-                        input[i][j] = Convert.ToDouble(asd)/3;
+                        input[i][j] = Convert.ToDouble(asd)/1;
 
                     j++;
                     
@@ -78,8 +78,10 @@ namespace WpfApplication1
 
         private void initANN()
         {
-            
-            ActivationNetwork network = new ActivationNetwork((IActivationFunction)new SigmoidFunction(sigmoidAlphaValue), this.inputCount, 6, 6);
+
+            ActivationNetwork network1 = new ActivationNetwork((IActivationFunction)new SigmoidFunction(sigmoidAlphaValue), this.inputCount, 10, numberOfOutputs);
+            ActivationNetwork network = new ActivationNetwork((IActivationFunction)new BipolarSigmoidFunction(sigmoidAlphaValue), this.inputCount, 6, numberOfOutputs);
+
             BackPropagationLearning teacher = new BackPropagationLearning(network);
             // set learning rate and momentum
             teacher.LearningRate = this.learningRate;
@@ -256,7 +258,7 @@ namespace WpfApplication1
         Network net;
         public recognizer(String n) { 
            //Set ANN
-            _feature f;
+            //_feature f;
             net = Network.Load(n);
             recognizeFeature();
             
@@ -264,13 +266,12 @@ namespace WpfApplication1
 
         private void recognizeFeature()//_feature f)
         {
-            double[] in1 = new double[4] {0,0,.1,.5};
-            double[] out1 = new double[6];
+
+            //test temporary input. should output -1
+            double[] in1 = new double[20] { 0.037189215, 0.180040649, -0.053652214, 0.01666492, 0.325432837, 0.349161804, 0.565248496, -0.565248496, 0.032319109, 0.814480138, 0.183926317, 0.031133446, -0.028280744, 0.017024585, 0.158424658, 0.348701319, 0.621881948, -0.621881948, 0.032276486, 0.843584363 };
+            double[] out1 = new double[1];
             out1 = net.Compute(in1);
-            System.Windows.MessageBox.Show("output: (" + Math.Round(out1[0]) + "-" + 
-                Math.Round(out1[1]) + "-" + Math.Round(out1[2]) + "), (" +
-                Math.Round(out1[3]) + "-" + Math.Round(out1[4]) + "-" +
-                Math.Round(out1[5])+")",
+            System.Windows.MessageBox.Show("output: (" + Math.Round(out1[0]) +")",
                 "Output for test .1,.5", MessageBoxButton.OK,
                 MessageBoxImage.Information);
         }
