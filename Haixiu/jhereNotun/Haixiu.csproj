@@ -130,6 +130,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="code\dynamicDetection.cs" />
     <Compile Include="code\NeuralNet.cs" />
     <Compile Include="Properties\Settings.cs" />
     <Page Include="code\MainWindow.xaml">

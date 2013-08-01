@@ -724,16 +724,16 @@ namespace WpfApplication1{
     {
         protected int frame;
 
-        private _feature feature;
-        private SkeletonData sdata;
-        private double[] wDist, wDistLeg;
-        private double spineDist;
-        private _qbit[] wprev, wprevLeg;
-        private _qbit spinePrev;
-        private double[] prevAccel, prevSpeed, prevAccelLeg, prevSpeedLeg, totJI;
+        protected _feature feature;
+        protected SkeletonData sdata;
+        protected double[] wDist, wDistLeg;
+        protected double spineDist;
+        protected _qbit[] wprev, wprevLeg;
+        protected _qbit spinePrev;
+        protected double[] prevAccel, prevSpeed, prevAccelLeg, prevSpeedLeg, totJI;
 
-        private float baseX, baseY, baseZ;
-        private float spineX, spineY, spineZ;
+        protected float baseX, baseY, baseZ;
+        protected float spineX, spineY, spineZ;
 
         public startFeatures(){
 
@@ -760,7 +760,7 @@ namespace WpfApplication1{
 
         }
 
-        private void refreshVars() {
+        protected void refreshVars() {
 
             this.frame = 0;
             this.spineDist = 0;
@@ -1105,8 +1105,6 @@ namespace WpfApplication1{
         }
 
 
-
-
         public void addFeatures(SkeletonData s)
         {   
             //creating base to substract from raw sensor posiiton to normalize values
@@ -1169,17 +1167,17 @@ namespace WpfApplication1{
             
         }
         
-        private void danglingSkele() {
+        protected void danglingSkele() {
             dangPos();
             pollDangDistance();
         }
         
-        private void stableSkele(){
+        protected void stableSkele(){
             updateSpine();
             headAndShoulders();
         }
         
-        private void underBeltSkele() {
+        protected void underBeltSkele() {
             legPos();
             legSpeed();
             //latter 
@@ -1548,7 +1546,7 @@ namespace WpfApplication1{
         }
 
 
-        private void dangPos() {
+        protected void dangPos() {
             //rElbow
             //maxx, maxy, maxz
             float temp = sdata.Joints[JointID.ElbowRight].Position.X  - this.baseX;
@@ -1841,9 +1839,15 @@ namespace WpfApplication1{
 
         }
 
-        private void pollDangDistance() {
+        protected double[][] pollDangDistance() {
 
             double[] jIndex = new double[4] { 0,0,0,0 };
+            double[] S = new double[4] { 0, 0, 0, 0 };
+
+            double[][] returnVal = new double[2][];
+            returnVal[0] = new double[4] { 0, 0, 0, 0 };
+            returnVal[1] = new double[4] { 0, 0, 0, 0 };
+
             double f0=0;
             if (this.wprev[0].x == -100)
             {
@@ -1867,7 +1871,6 @@ namespace WpfApplication1{
             else if (this.frame % 6 == 0 && this.wprev[0].x != -100)
             {
 
-                double[] S = new double[4];
 
                 if ((this.wprev[0].x - this.sdata.Joints[JointID.WristLeft].Position.X - 0 * 2) >= 0.005 || (this.wprev[0].y - this.sdata.Joints[JointID.WristLeft].Position.Y - 0 * 2) >= 0.005 || (this.wprev[0].z - this.sdata.Joints[JointID.WristLeft].Position.Z - 0 * 2) >= 0.005)
                 {
@@ -2008,10 +2011,21 @@ namespace WpfApplication1{
 
                 }
 
+                returnVal[0][0] = S[0];
+                returnVal[0][1] = S[1];
+                returnVal[0][2] = S[2];
+                returnVal[0][3] = S[3];
 
-
+                returnVal[1][0] = jIndex[0];
+                returnVal[1][1] = jIndex[1];
+                returnVal[1][2] = jIndex[2];
+                returnVal[1][3] = jIndex[3];
+           
 
             }
+
+            return returnVal;
+        
         }
         
         private void dangSpeed(){
@@ -2028,20 +2042,22 @@ namespace WpfApplication1{
             feature.avgAccel[3] = this.wDist[3] / Math.Pow(this.frame / 30, 2);
         }
 
-        private void dangQuality() {
+        protected void dangQuality() {
             roundedness();
             jerkIndex();
 
         }
         
-        private void speed(){
+        protected void speed(){
             
          //   double distance = Math.Sqrt(Math.Pow((feature.spine.maxz.x - feature.spine.minz.x), 2) + Math.Pow((feature.spine.maxz.y - feature.spine.minz.y), 2) + Math.Pow((feature.spine.maxz.z - feature.spine.minz.z), 2));
             feature.speedMps = (spineDist * 6) / this.frame;
         }
         
-        private void updateSpine (){
+        protected double updateSpine (){
             float temp = sdata.Joints[JointID.Spine].Position.Z  - 0*3;
+            double S = 0;
+                
             if (temp > feature.spine.maxz.z)
             {
                 feature.spine.maxz.x = sdata.Joints[JointID.Spine].Position.X  - 0*1;
@@ -2063,11 +2079,11 @@ namespace WpfApplication1{
                 this.spinePrev.x = this.sdata.Joints[JointID.Spine].Position.X  - 0*1;
                 this.spinePrev.y = this.sdata.Joints[JointID.Spine].Position.Y  - 0*2;
                 this.spinePrev.z = this.sdata.Joints[JointID.Spine].Position.Z  - 0*3;
+                
             }
             else if (this.frame % 5 == 0 && this.spinePrev.x != -100)
             {
-
-                double S=0;
+                S = 0;
                 if ((this.spinePrev.x - this.sdata.Joints[JointID.Spine].Position.X - 0 * 2) >= 0.005 || (this.spinePrev.y - this.sdata.Joints[JointID.Spine].Position.Y - 0 * 2) >= 0.005 || (this.spinePrev.z - this.sdata.Joints[JointID.Spine].Position.Z - 0 * 2) >= 0.005)
                 {
 
@@ -2078,9 +2094,10 @@ namespace WpfApplication1{
                 }
                 spineDist += S;
             }
+            return S;
         }
 
-        private void headAndShoulders(){
+        protected void headAndShoulders(){
             //maxx, maxy, maxz
             float temp = sdata.Joints[JointID.Head].Position.X  - this.baseX;
             if (temp > feature.head.maxx.x)

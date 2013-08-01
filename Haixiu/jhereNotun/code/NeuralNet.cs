@@ -253,6 +253,7 @@ namespace WpfApplication1
 
     }
     
+    
     public class recognizer
     {
         Network net;
@@ -264,6 +265,7 @@ namespace WpfApplication1
             
         }
 
+        //this now has no fucking use.
         private void recognizeFeature()//_feature f)
         {
 
@@ -276,7 +278,13 @@ namespace WpfApplication1
                 MessageBoxImage.Information);
         }
 
-        public void recognizeEmotion(_feature f) { }
+        public double[] recognizeEmotion(double[] featureVals) 
+        {
+            double[] out1 = new double[1];
+            out1 = net.Compute(featureVals);
+
+            return out1;
+        }
 
     }
 
