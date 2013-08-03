@@ -27,13 +27,15 @@ namespace WpfApplication1{
                                 JointID.Spine, JointID.WristLeft, JointID.WristRight};
         public static bool logFeatures;
         public static startFeatures gFeature;
-        public static bool kinectOn, logSkele;
+        public static bool kinectOn, logSkele, detectorOn;
         
-        public static Label a1,a2, error, annIter, jerkLabel;
+        public static Label a1,a2, error, annIter, jerkLabel, AnnOutput;
         public static Button saveANNbutn;
 
         public static Thread ANNthread;
         public static bool needToStopLearning;
+
+        public static dynamicDetection detector;
     }
 
     public struct _qbit
@@ -2028,7 +2030,7 @@ namespace WpfApplication1{
         
         }
         
-        private void dangSpeed(){
+        protected void dangSpeed(){
 
             // this is 30/frame because total distance / total time in second
             feature.lHandSpeedMps = this.wDist[0] * 30 / this.frame; 

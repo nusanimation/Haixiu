@@ -42,68 +42,15 @@
     <Reference Include="AForge.Controls">
       <HintPath>..\NeuralNetwork\neuro_dlls\AForge.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="AForge.DebuggerVisualizers %282010%29">
-      <HintPath>..\NeuralNetwork\neuro_dlls\AForge.DebuggerVisualizers (2010).dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Fuzzy">
-      <HintPath>..\NeuralNetwork\neuro_dlls\AForge.Fuzzy.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Genetic">
-      <HintPath>..\NeuralNetwork\neuro_dlls\AForge.Genetic.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Imaging">
-      <HintPath>..\NeuralNetwork\neuro_dlls\AForge.Imaging.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Imaging.Formats">
-      <HintPath>..\NeuralNetwork\neuro_dlls\AForge.Imaging.Formats.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Imaging.IPPrototyper">
-      <HintPath>..\NeuralNetwork\neuro_dlls\AForge.Imaging.IPPrototyper.dll</HintPath>
-    </Reference>
     <Reference Include="AForge.MachineLearning">
       <HintPath>..\NeuralNetwork\neuro_dlls\AForge.MachineLearning.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Math">
-      <HintPath>..\NeuralNetwork\neuro_dlls\AForge.Math.dll</HintPath>
     </Reference>
     <Reference Include="AForge.Neuro">
       <HintPath>..\NeuralNetwork\neuro_dlls\AForge.Neuro.dll</HintPath>
     </Reference>
-    <Reference Include="AForge.Robotics.Lego">
-      <HintPath>..\NeuralNetwork\neuro_dlls\AForge.Robotics.Lego.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Robotics.Surveyor">
-      <HintPath>..\NeuralNetwork\neuro_dlls\AForge.Robotics.Surveyor.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Robotics.TeRK">
-      <HintPath>..\NeuralNetwork\neuro_dlls\AForge.Robotics.TeRK.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Video">
-      <HintPath>..\NeuralNetwork\neuro_dlls\AForge.Video.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Video.DirectShow">
-      <HintPath>..\NeuralNetwork\neuro_dlls\AForge.Video.DirectShow.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Video.FFMPEG">
-      <HintPath>..\NeuralNetwork\neuro_dlls\AForge.Video.FFMPEG.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Video.Kinect">
-      <HintPath>..\NeuralNetwork\neuro_dlls\AForge.Video.Kinect.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Video.VFW">
-      <HintPath>..\NeuralNetwork\neuro_dlls\AForge.Video.VFW.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Video.Ximea">
-      <HintPath>..\NeuralNetwork\neuro_dlls\AForge.Video.Ximea.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Vision">
-      <HintPath>..\NeuralNetwork\neuro_dlls\AForge.Vision.dll</HintPath>
-    </Reference>
-    <Reference Include="Coding4Fun.Kinect.Wpf">
-      <HintPath>..\..\..\..\kinect\c4f1.1\Coding4Fun.Kinect.Wpf.dll</HintPath>
-    </Reference>
-    <Reference Include="IPPrototyper">
-      <HintPath>..\NeuralNetwork\neuro_dlls\IPPrototyper.exe</HintPath>
+    <Reference Include="Coding4Fun.Kinect.Wpf, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdPartyLlibrary\Coding4Fun.Kinect.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Research.Kinect, Version=1.0.0.45, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />

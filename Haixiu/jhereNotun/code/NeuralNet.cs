@@ -261,10 +261,10 @@ namespace WpfApplication1
            //Set ANN
             //_feature f;
             net = Network.Load(n);
-            recognizeFeature();
+            //recognizeFeature();
             
         }
-
+         
         //this now has no fucking use.
         private void recognizeFeature()//_feature f)
         {

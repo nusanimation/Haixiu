@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using Microsoft.Research.Kinect.Nui;
 using System.Windows;
+using System.IO;
 
-namespace WpfApplication1.code
+namespace WpfApplication1
 {
-    class dynamicDetection : startFeatures
+    public class dynamicDetection : startFeatures
     {
         //private _feature feat;
         //private SkeletonData skeleGrow;
+        private System.IO.StreamWriter file;
         double[] featureSet;
         private recognizer recog;
         private int iter;
@@ -24,9 +26,12 @@ namespace WpfApplication1.code
         {
             //init motherfucking neural net
             this.recog = new recognizer(s);
+            this.file = new System.IO.StreamWriter("C:\\Users\\workshop\\Desktop\\11122.csv");
 
             this.iter = 0;
+            this.frame = 0;
             this.feature = new _feature(0.0);
+
             this.featureSet = new double[20];
 
             this.wDist = new double[4];
@@ -47,10 +52,10 @@ namespace WpfApplication1.code
         }
 
         public int detect(SkeletonData s) {
-            iter++;
+            iter++; frame++;
             calculateFeature(s);
            
-            if (iter == 30) {
+            if (iter%30 == 0) {
                 sendToANN(feature);
             }
             return iter;
@@ -83,12 +88,31 @@ namespace WpfApplication1.code
                 this.featureSet[19] = f.jerkIndex[3] / 120;
             }
             catch { 
-                System.Windows.MessageBox.Show("Not Enough Memory.", "error", 
+                System.Windows.MessageBox.Show("Not Enough Memory or whatever.", "featureset error", 
                     MessageBoxButton.OK, MessageBoxImage.Error); 
             }
 
-            this.recog.recognizeEmotion(featureSet);
+            try
+            {
+               for (int i =0; i<20;i++){
+                   file.Write(this.featureSet[i]+",");
+               }
+               file.WriteLine(" ");
 
+
+                double[] output;
+                output = this.recog.recognizeEmotion(this.featureSet);
+                globalVars.AnnOutput.Content = output[0];
+
+                //preparing for he next iter of detection
+                refreshVars();
+                feature.initToZero();
+            }
+            catch
+            {
+                System.Windows.MessageBox.Show("Detection Module failed for some reason",
+                    "detection error",MessageBoxButton.OK, MessageBoxImage.Error);
+            }
          }
 
 
@@ -113,6 +137,7 @@ namespace WpfApplication1.code
             stableSkele();
             danglingSkele();
             speed();
+            dangSpeed();
             dangQuality();
             //underBeltSkele();
 
@@ -132,6 +157,9 @@ namespace WpfApplication1.code
             double[][] op = pollDangDistance();
         }
          * */
+    //    ~dynamicDetection() {
+    //        file.Close();
 
+    //    }
     }
 }

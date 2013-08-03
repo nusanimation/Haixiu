@@ -36,5 +36,6 @@
         <Label Content="Sensor Angle" Height="37" HorizontalAlignment="Left" Margin="853,178,0,0" Name="label12" VerticalAlignment="Top" Width="91" />
         <Label Content="f1, f0, totJI" Height="30" HorizontalAlignment="Left" Margin="235,759,0,0" Name="label10" VerticalAlignment="Top" Width="61" />
         <Label Content="0" Height="28" HorizontalAlignment="Left" Margin="302,759,0,0" Name="jerkLabel" VerticalAlignment="Top" Width="303" />
+        <Label Content="Output" Height="64" HorizontalAlignment="Center" Margin="892,585,32,226" Name="outputLabel" VerticalAlignment="Center" Width="235" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="24" />
     </Grid>
 </Window>

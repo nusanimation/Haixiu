@@ -46,6 +46,7 @@ namespace WpfApplication1
             globalVars.annIter = iterCount;
             globalVars.saveANNbutn = saveANNbutn;
             globalVars.jerkLabel = jerkLabel;
+            globalVars.AnnOutput = outputLabel;
 
 
             app = new kinectApp(canvas1, canvas2, label1, image1);
@@ -117,9 +118,11 @@ namespace WpfApplication1
 
             try
             {
+                //elow, this was for just a test purpose
+                //recognizer R = new recognizer(loadANN.Text.ToString());
 
-                recognizer R = new recognizer(loadANN.Text.ToString());
-
+                globalVars.detector = new dynamicDetection(loadANN.Text.ToString());
+                globalVars.detectorOn = true;
             }
             catch
             {
@@ -268,7 +271,11 @@ namespace WpfApplication1
                     //feature logging
                     if (globalVars.logFeatures == true)
                         features.addFeatures(skeleData);
+                 
+                    //feature detection
 
+                    if (globalVars.detectorOn == true)
+                        globalVars.detector.detect(skeleData);
                 }
                 
             }
