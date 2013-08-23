@@ -15,6 +15,7 @@ using Microsoft.Research.Kinect.Nui;
 using Coding4Fun.Kinect.Wpf;
 using Microsoft.Xna.Framework;
 
+//using System.Windows.Forms;
 
 namespace WpfApplication1
 {
@@ -31,6 +32,10 @@ namespace WpfApplication1
         public MainWindow()
         {
             InitializeComponent();
+
+            globalVars.resultChart = lineChart;
+            globalVars.chart = new resultViz();
+
             slider1.Value = (double)-3;
             slider1.Maximum = Camera.ElevationMaximum;
             slider1.Minimum = Camera.ElevationMinimum;
@@ -176,6 +181,53 @@ namespace WpfApplication1
 
         }
 
+        private void ArousalChkbx_Checked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (ArousalChkbx.IsChecked == true )
+                {
+                    arousalLev.IsEnabled = true;
+                }
+                else if (ArousalChkbx.IsChecked == false)
+                {
+                    arousalLev.IsEnabled = false;
+                }
+            }
+            catch { }
+
+        }
+
+        private void valenceChkbx_Checked(object sender, RoutedEventArgs e)
+        {
+                valenceLev.IsEnabled = true;
+        }
+
+        private void ArousalChkbx_Unchecked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (ArousalChkbx.IsChecked == true)
+                {
+                    arousalLev.IsEnabled = true;
+                }
+                else if (ArousalChkbx.IsChecked == false)
+                {
+                    arousalLev.IsEnabled = false;
+                }
+            }
+            catch { }
+        }
+
+        private void valenceChkbx_Unchecked(object sender, RoutedEventArgs e)
+        {
+               
+                valenceLev.IsEnabled = false;
+
+        }
+
+
+
 
 
 
@@ -320,8 +372,8 @@ namespace WpfApplication1
             Canvas.SetTop(polyline, sd.Joints[JointID.Spine].Position.Z.scale(1,35));
             topCanvas.Children.Add(polyline);
 
-            spinePos.Content = "righthandPosition (M): \nX: " + sd.Joints[JointID.HandRight].Position.X + "\nY: " + sd.Joints[JointID.HandRight].Position.Y +
-                "\nZ: " + sd.Joints[JointID.HandRight].Position.Z;
+            spinePos.Content = "righthandPos: X: " + sd.Joints[JointID.HandRight].Position.X + ", Y: " + sd.Joints[JointID.HandRight].Position.Y +
+                ", Z: " + sd.Joints[JointID.HandRight].Position.Z;
             
             if (globalVars.logSkele == true)
             {

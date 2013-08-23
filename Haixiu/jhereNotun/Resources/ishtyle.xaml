@@ -1,0 +1,14 @@
+ <Style TargetType="chartingToolkit:LegendItems">
+        <Setter Property=”IsTabStop” Value=”False” />
+        <Setter Property=”Template”>
+            <Setter.Value>
+                <ControlTemplate TargetType=”charting:LegendItem”>
+                    <StackPanel Orientation=”Horizontal”>
+                        <Rectangle Width=”8″ Height=”8″ Fill=”{Binding Background}”
+                                   Stroke=”{Binding BorderBrush}” StrokeThickness=”1″ Margin=”0,0,3,0″ />
+                        <datavis:Title Content=”{TemplateBinding Content}” />
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>

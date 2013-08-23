@@ -22,6 +22,21 @@ namespace WpfApplication1
             }
         }
 
+        private int interval = 90;
+        public int updateInterval
+        {
+            get
+            {
+                return interval/30;
+            }
+            set
+            {
+                interval = 30 * value;
+            }
+                
+        }
+
+
         public dynamicDetection(String s) 
         {
             //init motherfucking neural net
@@ -55,7 +70,7 @@ namespace WpfApplication1
             iter++; frame++;
             calculateFeature(s);
            
-            if (iter%30 == 0) {
+            if (iter%interval == 0) {
                 sendToANN(feature);
             }
             return iter;
@@ -103,6 +118,14 @@ namespace WpfApplication1
                 double[] output;
                 output = this.recog.recognizeEmotion(this.featureSet);
                 globalVars.AnnOutput.Content = output[0];
+                if (globalVars.chart != null)
+                {
+                    double val = output[0];
+                    if (output[0] == double.NaN || output[0] == double.NegativeInfinity || output[0] == double.PositiveInfinity)
+                        val = 0.0;
+
+                    globalVars.chart.update(val);
+                }
 
                 //preparing for he next iter of detection
                 refreshVars();

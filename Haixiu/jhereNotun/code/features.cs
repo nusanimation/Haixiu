@@ -15,28 +15,14 @@ using System.Windows.Shapes;
 using Microsoft.Research.Kinect.Nui;
 using Coding4Fun.Kinect.Wpf;
 using Microsoft.Xna.Framework;
-using Microsoft.Research.Kinect;
+//using Microsoft.Research.Research.Kinect.Nui;
+//using System.Windows.Controls.DataVisualization.Charting;
+
 using System.Threading;
 
 
 namespace WpfApplication1{
-    public class globalVars
-    {
-        public static JointID[] jid = new JointID[20]{JointID.AnkleLeft, JointID.AnkleRight, JointID.ElbowLeft, JointID.ElbowRight, JointID.FootLeft, JointID.FootRight, JointID.HandLeft, JointID.HandRight, 
-                                JointID.Head, JointID.HipCenter, JointID.HipLeft, JointID.HipRight, JointID.KneeLeft, JointID.KneeRight, JointID.ShoulderCenter, JointID.ShoulderLeft, JointID.ShoulderRight,
-                                JointID.Spine, JointID.WristLeft, JointID.WristRight};
-        public static bool logFeatures;
-        public static startFeatures gFeature;
-        public static bool kinectOn, logSkele, detectorOn;
-        
-        public static Label a1,a2, error, annIter, jerkLabel, AnnOutput;
-        public static Button saveANNbutn;
-
-        public static Thread ANNthread;
-        public static bool needToStopLearning;
-
-        public static dynamicDetection detector;
-    }
+    
 
     public struct _qbit
     {
