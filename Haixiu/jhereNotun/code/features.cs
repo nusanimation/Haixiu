@@ -2248,7 +2248,7 @@ namespace WpfApplication1{
             this.feature.jerkIndex[2] = ( this.totJI[2] * 6) / (this.frame * this.feature.lElbowSpeedMps);
             this.feature.jerkIndex[3] = ( this.totJI[3] * 6) / (this.frame * this.feature.rElbowSpeedMps);
         }
-
+        //
         private void makeFeatureSet()
         {
             this.featureSet = new double[7];

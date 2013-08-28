@@ -6,7 +6,7 @@ xmlns:charting="clr-namespace:System.Windows.Controls.DataVisualization.Charting
 xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"
 >
     <Viewbox>
-    <Grid Height="940" Width="auto" Visibility="Visible" Background="White">
+    <Grid Height="932" Width="1464" Visibility="Visible" Background="White">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
