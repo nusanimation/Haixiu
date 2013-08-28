@@ -26,7 +26,7 @@ namespace WpfApplication1
        // private bool saveStatisticsToFiles = false;
         private double[][] input = null;
         private double[][] output = null;
-        private int numberOfOutputs = 1;
+        private int numberOfOutputs = 2;
         private int inputCount;
 
 
@@ -79,8 +79,8 @@ namespace WpfApplication1
         private void initANN()
         {
 
-            ActivationNetwork network1 = new ActivationNetwork((IActivationFunction)new SigmoidFunction(sigmoidAlphaValue), this.inputCount, 10, numberOfOutputs);
-            ActivationNetwork network = new ActivationNetwork((IActivationFunction)new BipolarSigmoidFunction(sigmoidAlphaValue), this.inputCount, 6, numberOfOutputs);
+            ActivationNetwork network = new ActivationNetwork((IActivationFunction)new SigmoidFunction(sigmoidAlphaValue), this.inputCount, 6, numberOfOutputs);
+            ActivationNetwork network1 = new ActivationNetwork((IActivationFunction)new BipolarSigmoidFunction(sigmoidAlphaValue), this.inputCount, 3, numberOfOutputs);
 
             BackPropagationLearning teacher = new BackPropagationLearning(network);
             // set learning rate and momentum
@@ -266,15 +266,23 @@ namespace WpfApplication1
         }
          
         //this now has no fucking use.
-        private void recognizeFeature()//_feature f)
+        public void recognizeFeature()//_feature f)
         {
 
             //test temporary input. should output -1
-            double[] in1 = new double[20] { 0.037189215, 0.180040649, -0.053652214, 0.01666492, 0.325432837, 0.349161804, 0.565248496, -0.565248496, 0.032319109, 0.814480138, 0.183926317, 0.031133446, -0.028280744, 0.017024585, 0.158424658, 0.348701319, 0.621881948, -0.621881948, 0.032276486, 0.843584363 };
-            double[] out1 = new double[1];
+            double[] in1 = new double[7] { 0.01654443448864, 0.153069122113333, 0.396344272074907, 0.0510230407044443, 0.132114757358302, 0.0731867144359253, 0.0901687710073129 };
+            double[] in2 = new double[7] { 0.0427072643154623, 0.474408642007194, 0.262446724650131, 0.158136214002398, 0.0874822415500435, 0.134365737956179, 0.0730293119692345 };
+            double[] in3 = new double[7] { 0.129752439984861, 0.831314392788949, 1.20171679770767, 0.277104797596316, 0.400572265902557, 0.227447261072011, 0.24046215340335 };
+
+            double[] out1 = new double[2];
             out1 = net.Compute(in1);
-            System.Windows.MessageBox.Show("output: (" + Math.Round(out1[0]) +")",
-                "Output for test .1,.5", MessageBoxButton.OK,
+            System.Windows.MessageBox.Show("output: (" + Math.Round(out1[0]) + ","+Math.Round(out1[1])+")","Output for test .1,.5", MessageBoxButton.OK,
+                MessageBoxImage.Information);
+            out1 = net.Compute(in2);
+            System.Windows.MessageBox.Show("output: (" + Math.Round(out1[0]) + "," + Math.Round(out1[1]) + ")", "Output for test .1,.5", MessageBoxButton.OK,
+                MessageBoxImage.Information);
+            out1 = net.Compute(in3);
+            System.Windows.MessageBox.Show("output: (" + Math.Round(out1[0]) + "," + Math.Round(out1[1]) + ")", "Output for test .1,.5", MessageBoxButton.OK,
                 MessageBoxImage.Information);
         }
 

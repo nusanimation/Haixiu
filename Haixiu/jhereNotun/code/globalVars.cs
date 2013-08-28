@@ -28,10 +28,11 @@ namespace WpfApplication1
                                 JointID.Spine, JointID.WristLeft, JointID.WristRight};
         public static bool logFeatures;
         public static startFeatures gFeature;
-        public static bool kinectOn, logSkele, detectorOn;
+        public static bool kinectOn, logSkele, detectorOn, reducedRecord=true;
 
         public static Chart resultChart;
         public static resultViz chart;
+
 
         public static Label a1, a2, error, annIter, jerkLabel, AnnOutput;
         public static Button saveANNbutn;

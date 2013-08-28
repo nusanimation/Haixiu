@@ -48,8 +48,8 @@ namespace WpfApplication1
             {
                 this.Power.RemoveAt(0);
             }
-            if (data>=-1 && data <= 1)
-                this.Power.Add(new KeyValuePair<string, double>(DateTime.Now.Hour+ ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second, (data+1)*50));
+            if (data>=-1 && data <= 100)
+                this.Power.Add(new KeyValuePair<string, double>(DateTime.Now.Hour+ ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second, (data)));
             else
                 this.Power.Add(new KeyValuePair<string, double>(DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second, -1));
             

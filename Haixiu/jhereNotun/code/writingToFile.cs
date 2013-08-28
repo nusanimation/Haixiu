@@ -28,7 +28,7 @@ namespace WpfApplication1
         private void openStream()
         {        
             if (this.path == null)
-                this.path = "C:\\Users\\workshop\\Desktop\\";
+                this.path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\";
             this.fname = sanityChk(this.path, this.fname.Split('.')[0], "." + this.fname.Split('.')[1] );
             
             // Configure the message box to be displayed 
@@ -55,6 +55,22 @@ namespace WpfApplication1
 
             } 
             return (a + temp + c);
+        }
+
+        public void WritefeatureSet(double[] f)
+        {
+            if (this.openedStream == false)
+            {
+                openStream();
+                this.openedStream = true;
+            }
+            int i;
+            for (i=0; i<f.Length; i++)
+            {
+               file.Write(f[i] + ",");
+                
+            }
+            file.WriteLine(" ");
         }
 
         public bool writeLog(SkeletonData sdata)
@@ -129,8 +145,10 @@ namespace WpfApplication1
             return true;
         }
 
+
+
         public void closeFile()
-        {
+        {   if (this.file != null)
             this.file.Close();
         }
     }

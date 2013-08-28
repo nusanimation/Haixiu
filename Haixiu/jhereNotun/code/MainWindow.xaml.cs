@@ -84,6 +84,11 @@ namespace WpfApplication1
                 recordFeature.IsEnabled = false;
                 stopRecord.IsEnabled = true;
             }
+            else
+            {
+                System.Windows.MessageBox.Show("Kinect is not running. Please Plug in the Kinect and try again when the green light is on.", "Kinect Not running", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
         }
 
         private void button2_Click(object sender, RoutedEventArgs e)
@@ -120,18 +125,35 @@ namespace WpfApplication1
         private void button4_Click(object sender, RoutedEventArgs e)
         {
             ///Start Emotion Detection
-
-            try
+            if (globalVars.detectorOn == false)
             {
-                //elow, this was for just a test purpose
-                //recognizer R = new recognizer(loadANN.Text.ToString());
+                if (globalVars.kinectOn == false)
+                    System.Windows.MessageBox.Show("Kinect is not running. Please Plug in the Kinect and try again when the green light is on.", "Kinect Not running", MessageBoxButton.OK, MessageBoxImage.Error);
+                else
+                {
+                    try
+                    {
 
-                globalVars.detector = new dynamicDetection(loadANN.Text.ToString());
-                globalVars.detectorOn = true;
+                        //elow, this was for just a test purpose
+                        //recognizer R = new recognizer(loadANN.Text.ToString());
+
+                        globalVars.detector = new dynamicDetection(loadANN.Text.ToString());
+                        globalVars.detector.updateInterval =Convert.ToInt32(updateIntervalText.Text.ToString());
+
+                        globalVars.detectorOn = true;
+                        startDetect.Content = "Stop Emotion Detection";
+                    }
+                    catch
+                    {
+                        System.Windows.MessageBox.Show("Enter a filename", "meh.", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
             }
-            catch
+            else
             {
-                System.Windows.MessageBox.Show("Enter a filename", "meh.", MessageBoxButton.OK, MessageBoxImage.Error);
+                globalVars.detector.stopDetection();
+                globalVars.detectorOn = false;
+                startDetect.Content = "Start Emotion Detection";
             }
 
         }
@@ -225,6 +247,33 @@ namespace WpfApplication1
                 valenceLev.IsEnabled = false;
 
         }
+
+        private void updateIntervalText_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (globalVars.detector != null && updateIntervalText.Text.ToString()!=null)
+               globalVars.detector.updateInterval = Convert.ToInt32(updateIntervalText.Text.ToString());
+        }
+
+        private void reducedFeature_Checked(object sender, RoutedEventArgs e)
+        {
+            globalVars.reducedRecord = true;
+        }
+
+        private void reducedFeature_Unchecked(object sender, RoutedEventArgs e)
+        {
+            globalVars.reducedRecord = false;
+        }
+
+        private void button1_Click_2(object sender, RoutedEventArgs e)
+        {
+            globalVars.detector = new dynamicDetection(loadANN.Text.ToString());
+            globalVars.detector.updateInterval = Convert.ToInt32(updateIntervalText.Text.ToString());
+
+            globalVars.detectorOn = true;
+            globalVars.detector.test();
+        }
+
+
 
 
 

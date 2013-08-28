@@ -708,11 +708,13 @@ namespace WpfApplication1{
         }
 }
 
-    public class startFeatures : globalVars
+    public class startFeatures //: globalVars
     {
         protected int frame;
 
         protected _feature feature;
+        protected double[] featureSet;
+        
         protected SkeletonData sdata;
         protected double[] wDist, wDistLeg;
         protected double spineDist;
@@ -1128,7 +1130,7 @@ namespace WpfApplication1{
             //underBeltSkele();
 
             ++frame;
-            a1.Content = frame;
+            globalVars.a1.Content = frame;
 
         }
       
@@ -1149,9 +1151,16 @@ namespace WpfApplication1{
         }
         
         private void writeFeatures(){
-            fileWriter f = new fileWriter(null,"feature.csv");
-            f.writeFeatures(feature);
-            f.closeFile();
+                fileWriter f = new fileWriter(null, "feature.csv");
+                f.writeFeatures(feature);
+                f.closeFile();
+                if (globalVars.reducedRecord == true)
+                {
+                    makeFeatureSet();
+                    fileWriter f1 = new fileWriter(null, "Shortfeature.csv");
+                    f1.WritefeatureSet(this.featureSet);
+                    f1.closeFile();
+                }
             
         }
         
@@ -1839,6 +1848,7 @@ namespace WpfApplication1{
             double f0=0;
             if (this.wprev[0].x == -100)
             {
+               // System.Windows.MessageBox.Show("ping.", "featureset error",  MessageBoxButton.OK, MessageBoxImage.Error); 
                 wDist[0] = 0;
                 this.wprev[0].x = this.sdata.Joints[JointID.WristLeft].Position.X - 0 * 1;
                 this.wprev[0].y = this.sdata.Joints[JointID.WristLeft].Position.Y - 0 * 2;
@@ -1907,7 +1917,7 @@ namespace WpfApplication1{
 
                 //this.feature.dis += S + ",";
                 
-                a2.Content = wDist[0];//updating label
+                globalVars.a2.Content = wDist[0] + ","+wDist[1] + ","+wDist[2]+ ","+wDist[3];//updating label
 
                 if (this.prevSpeed[0] == 0 && this.frame == 6)
                 {
@@ -1931,7 +1941,7 @@ namespace WpfApplication1{
                     jIndex[0] = (this.prevAccel[0] - f0) / 0.2; //jerk Index = (f1-f0)/dt
                     totJI[0] += Math.Abs(jIndex[0]);
                    // System.Windows.MessageBox.Show(", " +this.prevAccel[0],                "test", MessageBoxButton.OK,                MessageBoxImage.Information);
-                    jerkLabel.Content = this.prevAccel[0] + ", " + f0 + ", " + totJI[0];
+                    globalVars.jerkLabel.Content = this.prevAccel[0] + ", " + f0 + ", " + totJI[0];
                     
               //      if (feature.peakAccel[0] < this.prevAccel[0])
                     {
@@ -2019,10 +2029,10 @@ namespace WpfApplication1{
         protected void dangSpeed(){
 
             // this is 30/frame because total distance / total time in second
-            feature.lHandSpeedMps = this.wDist[0] * 30 / this.frame; 
-            feature.rHandSpeedMps = this.wDist[1] * 30 / this.frame; 
-            feature.lElbowSpeedMps = this.wDist[2] * 30 / this.frame; 
-            feature.rElbowSpeedMps = this.wDist[3] * 30 / this.frame; 
+            feature.lHandSpeedMps = this.wDist[0] / (this.frame/30);
+            feature.rHandSpeedMps = this.wDist[1] / (this.frame / 30);
+            feature.lElbowSpeedMps = this.wDist[2] / (this.frame / 30);
+            feature.rElbowSpeedMps = this.wDist[3] / (this.frame / 30); 
 
             feature.avgAccel[0] = this.wDist[0] / Math.Pow(this.frame / 30, 2);
             feature.avgAccel[1] = this.wDist[1] / Math.Pow(this.frame / 30, 2);
@@ -2239,5 +2249,25 @@ namespace WpfApplication1{
             this.feature.jerkIndex[3] = ( this.totJI[3] * 6) / (this.frame * this.feature.rElbowSpeedMps);
         }
 
+        private void makeFeatureSet()
+        {
+            this.featureSet = new double[7];
+
+            this.featureSet[0] = this.feature.speedMps;
+            this.featureSet[1] = this.feature.lHandSpeedMps;
+            this.featureSet[2] = this.feature.rHandSpeedMps;
+            this.featureSet[3] = this.feature.avgAccel[0];
+            //            this.featureSet[4] = this.feature.jerkIndex[0] / 120;
+            this.featureSet[4] = this.feature.avgAccel[1];
+            //            this.featureSet[9] = this.feature.jerkIndex[1] / 120;
+            this.featureSet[5] = this.feature.avgAccel[2];
+//            this.featureSet[14] = jerkIndex[2] / 120;
+            this.featureSet[6] = this.feature.avgAccel[3];
+            //            this.featureSet[19] = this.feature.f.jerkIndex[3] / 120;
+
+
+        }
     }
+
+
 }
