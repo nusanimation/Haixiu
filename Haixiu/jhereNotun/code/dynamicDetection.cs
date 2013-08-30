@@ -13,12 +13,26 @@ namespace WpfApplication1
         //private _feature feat;
         //private SkeletonData skeleGrow;
         private fileWriter file = new fileWriter(null, "checking.csv");
-      //  protected double[] featureSet;
+        private List<double[]> featureList;     //  protected double[] featureSet;
         private recognizer recog;
         private int iter;
-        public int Iteration {
-            get {
+        public int Iteration
+        {
+            get
+            {
                 return iter;
+            }
+        }
+        private bool slidingWindow = true;
+        public bool SlidingWindowOn
+        {
+            get
+            {
+                return slidingWindow;
+            }
+            set
+            {
+                slidingWindow = value;
             }
         }
 
@@ -48,7 +62,7 @@ namespace WpfApplication1
             this.frame = 0;
             this.feature = new _feature(0.0);
 
-            this.featureSet = new double[20];
+            //this.featureSet = new double[20];
 
             this.wDist = new double[4];
             this.wDistLeg = new double[4];
@@ -63,22 +77,62 @@ namespace WpfApplication1
 
             this.wprev = new _qbit[4];
 
+            this.featureList = new List<double[]>();
+
 
             refreshVars();
         }
 
         public int detect(SkeletonData s) {
-            iter++; frame++;
-            calculateFeature(s);
-           
-            if (iter%interval == 0) {
-                sendToANN(feature);
-            }
+           iter++; //frame++;
+           addFeatures(s);
+           if (slidingWindow == true)
+           {
+               if (iter % 60 == 0)
+               {
+                   makeFeatureSet(feature);
+                   this.featureList.Add(featureSet);
+                   double[] finalFeature = new double [7];
+                   for (int i = 0; i < featureSet.Length; i++)
+                   {
+                       foreach (double[] d in this.featureList)
+                       {
+                           finalFeature[i] += d[i];
+                           //Console.Write(d[i]+", ");
+                       }
+                       finalFeature[i] /= featureList.Count;
+                       Console.WriteLine(finalFeature[i]);
+                   }
+                   //Console.WriteLine(featureList.Count);
+                   if (featureList.Count==interval/30)
+                   {
+                       //double[] d1 = featureList[0];
+                       //double[] d2 = featureList[1];
+                       //Console.WriteLine(d1[0]+", "+d2[0]);
+                       featureList.RemoveAt(0);                
+                   }
+                   sendToANN(finalFeature);
+                }
+             }
+
+           else
+           {
+
+               if (iter % interval == 0)
+               {
+                   makeFeatureSet(feature);
+                   sendToANN(featureSet);
+               }
+           }
+
             return iter;
         }
-        
-        private void sendToANN(_feature f) 
-        {
+
+        private void makeFeatureSet(_feature f){
+                      
+            speed();
+            dangSpeed();
+            dangQuality();
             try
             {
                 //this.featureSet[0] = f.speedMps;
@@ -105,18 +159,20 @@ namespace WpfApplication1
 
                 this.featureSet = new double[7];
 
-                this.featureSet[0] = f.speedMps/2;
-                this.featureSet[1] = f.lHandSpeedMps/2;
-                this.featureSet[2] = f.rHandSpeedMps/2;
-                this.featureSet[3] = f.avgAccel[0]/2;
-                //            this.featureSet[4] = f.jerkIndex[0] / 120;
-                this.featureSet[4] = f.avgAccel[1]/2;
-                //            this.featureSet[9] = f.jerkIndex[1] / 120;
-                this.featureSet[5] = f.avgAccel[2]/2;
-                //            this.featureSet[14] = jerkIndex[2] / 120;
-                this.featureSet[6] = f.avgAccel[3]/2;
-                //            this.featureSet[19] = f.jerkIndex[3] / 120;
-
+                this.featureSet[0] = this.feature.speedMps/2;
+                this.featureSet[1] = this.feature.lHandSpeedMps/2;
+                this.featureSet[2] = this.feature.rHandSpeedMps/2;
+                this.featureSet[3] = this.feature.avgAccel[0]/2;
+                //            this.featureSet[4] = this.feature.jerkIndex[0] / 120/2;
+                this.featureSet[4] = this.feature.avgAccel[1]/2;
+                //            this.featureSet[9] = this.feature.jerkIndex[1] / 120/2;
+                this.featureSet[5] = this.feature.avgAccel[2]/2;
+                //            this.featureSet[14] = jerkIndex[2] / 120/2;
+                this.featureSet[6] = this.feature.avgAccel[3]/2;
+                //            this.featureSet[19] = this.feature.f.jerkIndex[3] / 120/2;
+                for(int i=0;interval<7;interval++)
+                    Console.Write(this.featureSet[i]+"--");
+                Console.WriteLine("");
                 //double[] dummyset = new double[12];
                 //for (int i = 0; i < 7; i++)
                 //    dummyset[i] = featureSet[i];
@@ -134,15 +190,19 @@ namespace WpfApplication1
                 System.Windows.MessageBox.Show("Not Enough Memory or whatever.", "featureset error", 
                     MessageBoxButton.OK, MessageBoxImage.Error); 
             }
+        }
+
+        private void sendToANN(double[] feat)
+        {
 
             try
             {
                 
                 double[] output;
-                output = this.recog.recognizeEmotion(this.featureSet);
+                output = this.recog.recognizeEmotion(feat);
                 double[] dummyset = new double[9];
                 for (int i = 0; i < 7; i++)
-                    dummyset[i] = this.featureSet[i];
+                    dummyset[i] = feat[i];
                 dummyset[7] = output[0];
                 dummyset[8] = output[1];
 
@@ -181,32 +241,30 @@ namespace WpfApplication1
          }
 
 
-        public void calculateFeature(SkeletonData s)
-        {
-            sdata = s;
-            if (baseZ == 0)
-            {
-                this.baseX = this.spineX = s.Joints[JointID.Spine].Position.X;
-                this.baseY = this.spineY = s.Joints[JointID.Spine].Position.Y;
-                this.baseZ = this.spineZ = s.Joints[JointID.Spine].Position.Z;
-            }
+  //      public void calculateFeature(SkeletonData s)
+  //      {
+    //        sdata = s;
+    //        if (baseZ == 0)
+    //        {
+    //            this.baseX = this.spineX = s.Joints[JointID.Spine].Position.X;
+    //            this.baseY = this.spineY = s.Joints[JointID.Spine].Position.Y;
+    //            this.baseZ = this.spineZ = s.Joints[JointID.Spine].Position.Z;
+    //        }
 
-    //here the positions are being normalised wrt spine position
-            else
-            {
-                this.baseX = sdata.Joints[JointID.Head].Position.X + spineX;
-                this.baseY = sdata.Joints[JointID.Head].Position.Y + spineY;
-                this.baseZ = sdata.Joints[JointID.Head].Position.Y + spineZ;
-            }
+    ////here the positions are being normalised wrt spine position
+    //        else
+    //        {
+    //            this.baseX = sdata.Joints[JointID.Head].Position.X + spineX;
+    //            this.baseY = sdata.Joints[JointID.Head].Position.Y + spineY;
+    //            this.baseZ = sdata.Joints[JointID.Head].Position.Y + spineZ;
+    //        }
 
-            stableSkele();
-            danglingSkele();
-            speed();
-            dangSpeed();
-            dangQuality();
-            //underBeltSkele();
+    //        stableSkele();
+    //        danglingSkele();
 
-        }
+    //        //underBeltSkele();
+
+    //    }
 
         public void stopDetection()
         {

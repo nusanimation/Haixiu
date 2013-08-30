@@ -5,7 +5,7 @@
 xmlns:charting="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
 xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"
 >
-    <Viewbox>
+
     <Grid Height="932" Width="1464" Visibility="Visible" Background="White">
 
         <Grid.RowDefinitions>
@@ -74,10 +74,11 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
         <CheckBox Content="Dominance" Height="16" HorizontalAlignment="Right" Margin="0,198,271,0" Name="checkBox2" VerticalAlignment="Top" />
         <TextBox FlowDirection="RightToLeft" Height="25" HorizontalAlignment="Right" IsEnabled="False" Margin="0,224,286,0" Name="textBox2" Text="0" VerticalAlignment="Top" Width="62" />
         <TextBox Height="27" HorizontalAlignment="Left" Margin="1045,616,0,0" Name="updateIntervalText" VerticalAlignment="Top" Width="50" Text="10" TextChanged="updateIntervalText_TextChanged" />
-        <Label Content="update interval in Seconds" Height="29" HorizontalAlignment="Left" Margin="877,616,0,0" Name="label13" VerticalAlignment="Top" Width="153" />
+        <Label Content="calculation interval in Sec" Height="29" HorizontalAlignment="Left" Margin="876,615,0,0" Name="label13" VerticalAlignment="Top" Width="153" />
         <CheckBox Content="Reduced Feature" Height="18" Name="reducedFeature" Width="110" Margin="1225,164,121,748" IsChecked="True" Checked="reducedFeature_Checked" Unchecked="reducedFeature_Unchecked" />
         <Button Content="Test" Height="24" HorizontalAlignment="Left" Margin="1398,621,0,0" Name="button1" VerticalAlignment="Top" Width="45" Click="button1_Click_2" />
         <Label Content="Arousal:" Height="50" HorizontalAlignment="Left" Margin="1087,638,0,0" Name="label14" VerticalAlignment="Top" Width="154" FontSize="32" FontWeight="Bold" />
-    </Grid>
-    </Viewbox>
+            <CheckBox Content="Rapid Update" Height="36" HorizontalAlignment="Left" Margin="880,652,0,0" Name="checkBox3" VerticalAlignment="Top" Width="128" IsChecked="True" Checked="checkBox3_Checked" Unchecked="checkBox3_Unchecked" />
+        </Grid>
+
 </Window>

@@ -44,7 +44,9 @@ namespace WpfApplication1{
         public double speedMps, lHandSpeedMps, lElbowSpeedMps, rHandSpeedMps, rElbowSpeedMps;
         public double lKneeSpeedMps, rKneeSpeedMps, rAnkleSpeedMps, lAnkleSpeedMps;
 
-        public double[] peakAccel, avgAccel, peakDec, jerkIndex, roundedness;// indexes are [0,1,2,3] =lHand,lWrist,rHand,rWrist
+        public double[] realAvgAccel;
+        public double[] peakAccel, avgAccel, peakDec, jerkIndex, roundedness;
+        // indexes are [0,1,2,3] =lHand,lWrist,rHand,rWrist
         public double[] peakAccelLeg, avgAccelLeg, peakDecLeg, roundednessLeg;
         //refer to initFeatures
 
@@ -58,6 +60,8 @@ namespace WpfApplication1{
             lKneeSpeedMps=0; rKneeSpeedMps=0; rAnkleSpeedMps=0; lAnkleSpeedMps=0;
             acc = null; dis = null; sp = null;
 
+            this.realAvgAccel = new double[4] { 0, 0, 0, 0 };
+            
             this.jerkIndex   = new double[4] {0,0,0,0};
             this.roundedness   = new double[4] {0,0,0,0};
             this.avgAccel   = new double[4] {0,0,0,0};

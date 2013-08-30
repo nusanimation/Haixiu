@@ -273,6 +273,21 @@ namespace WpfApplication1
             globalVars.detector.test();
         }
 
+        private void checkBox3_Checked(object sender, RoutedEventArgs e)
+        {
+            if (globalVars.detector != null)
+                globalVars.detector.SlidingWindowOn = true;
+
+
+        }
+
+        private void checkBox3_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (globalVars.detector != null)
+                globalVars.detector.SlidingWindowOn = false;
+
+        }
+
 
 
 
