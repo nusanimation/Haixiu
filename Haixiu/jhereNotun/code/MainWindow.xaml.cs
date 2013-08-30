@@ -308,7 +308,7 @@ namespace WpfApplication1
     }
 
 
-    public class kinectApp 
+    public class kinectApp //: MainWindow
     {
         fileWriter file;
         startFeatures features;
@@ -343,7 +343,7 @@ namespace WpfApplication1
                 MessageBox.Show(messageBoxText, caption, button, icon);
             }
 
-            kinect.Initialize(RuntimeOptions.UseDepthAndPlayerIndex | RuntimeOptions.UseSkeletalTracking);
+            kinect.Initialize(RuntimeOptions.UseDepthAndPlayerIndex | RuntimeOptions.UseSkeletalTracking | RuntimeOptions.UseColor);
             if (kinect != null)
             {
                 //l.Content = "Kinect on";
@@ -367,7 +367,7 @@ namespace WpfApplication1
                 kinect.SkeletonEngine.SmoothParameters = parameters;
                 //sketopframeready
                 kinect.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(kinect_SkeletonFrameReady);
-
+                kinect.VideoFrameReady += new EventHandler<ImageFrameReadyEventArgs>(kinect_VideoFrameReady);
 
                 this.canvas = c;
                 this.topCanvas = top;
@@ -376,6 +376,11 @@ namespace WpfApplication1
 
  
 
+        }
+
+        void kinect_VideoFrameReady(object sender, ImageFrameReadyEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void kinect_SkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
@@ -464,7 +469,8 @@ namespace WpfApplication1
             this.kinect.Uninitialize();
             if(globalVars.logSkele == true)
                 this.file.closeFile();
-            globalVars.ANNthread.Join();
+            if (globalVars.ANNthread != null)
+                globalVars.ANNthread.Join();
             globalVars.ANNthread = null;
         }
 
