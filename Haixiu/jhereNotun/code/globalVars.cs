@@ -34,7 +34,7 @@ namespace WpfApplication1
         public static resultViz chart;
 
 
-        public static Label a1, a2, error, annIter, jerkLabel, AnnOutput;
+        public static Label a1/*, a2*/, error, annIter, /*jerkLabel,*/ AnnOutput;
         public static Button saveANNbutn;
 
         public static Thread ANNthread;

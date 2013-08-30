@@ -46,11 +46,11 @@ namespace WpfApplication1
             //label1.Content = "ahhaaaha";
             //labelFrame.Content = "frame";
             globalVars.a1 = labelFrame;
-            globalVars.a2 = wDistLabel;
+            //globalVars.a2 = wDistLabel;
             globalVars.error = AnnError;
             globalVars.annIter = iterCount;
             globalVars.saveANNbutn = saveANNbutn;
-            globalVars.jerkLabel = jerkLabel;
+            //globalVars.jerkLabel = jerkLabel;
             globalVars.AnnOutput = outputLabel;
 
 
@@ -288,6 +288,16 @@ namespace WpfApplication1
 
         }
 
+        private void DetectMenu_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void DetectMenu_MouseLeave(object sender, MouseEventArgs e)
+        {
+
+        }
+
 
 
 
@@ -380,7 +390,7 @@ namespace WpfApplication1
                         if (skeleData.TrackingState == SkeletonTrackingState.Tracked)
                         {
                             drawJoint(skeleData, i);
-                            topView(skeleData, JointID.ShoulderLeft, JointID.ShoulderRight);
+                           // topView(skeleData, JointID.ShoulderLeft, JointID.ShoulderRight);
 
                         }
                     }
@@ -402,17 +412,18 @@ namespace WpfApplication1
             Joint j;
             dot a;
             j = sd.Joints[i];
-            j = j.ScaleTo(800, 680, 1.6f,1.6f);
+            j = j.ScaleTo(310, 244, 1.6f,1.6f);
             Point p = new Point(j.Position.X, j.Position.Y);
+            Point off = new Point(0, 5);
+
             if (i == JointID.Head)
             {
-                Point off = new Point(0,5);
-                a = new dot(15,15,4,Brushes.Blue, off);
+                a = new dot(7,7,2,Brushes.Blue, off);
             }
 
             else
             {
-                a = new dot();
+                a = new dot(7, 7, 2, Brushes.Red, off);
             }
             a.moveDot(canvas, p);
         }

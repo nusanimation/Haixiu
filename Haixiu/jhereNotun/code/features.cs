@@ -1921,7 +1921,7 @@ namespace WpfApplication1{
 
                 //this.feature.dis += S + ",";
                 
-                globalVars.a2.Content = wDist[0] + ","+wDist[1] + ","+wDist[2]+ ","+wDist[3];//updating label
+                //globalVars.a2.Content = wDist[0] + ","+wDist[1] + ","+wDist[2]+ ","+wDist[3];//updating label
 
                 if (this.prevSpeed[0] == 0 && this.frame == 6)
                 {
@@ -1945,7 +1945,7 @@ namespace WpfApplication1{
                     jIndex[0] = (this.prevAccel[0] - f0) / 0.2; //jerk Index = (f1-f0)/dt
                     totJI[0] += Math.Abs(jIndex[0]);
                    // System.Windows.MessageBox.Show(", " +this.prevAccel[0],                "test", MessageBoxButton.OK,                MessageBoxImage.Information);
-                    globalVars.jerkLabel.Content = this.prevAccel[0] + ", " + f0 + ", " + totJI[0];
+                   // globalVars.jerkLabel.Content = this.prevAccel[0] + ", " + f0 + ", " + totJI[0];
                     
               //      if (feature.peakAccel[0] < this.prevAccel[0])
                     {
