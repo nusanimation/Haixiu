@@ -79,6 +79,7 @@
     </ApplicationDefinition>
     <Compile Include="code\dynamicDetection.cs" />
     <Compile Include="code\globalVars.cs" />
+    <Compile Include="code\movementFeature.cs" />
     <Compile Include="code\NeuralNet.cs" />
     <Compile Include="code\resultViz.cs" />
     <Compile Include="Properties\Settings.cs" />

@@ -1944,7 +1944,7 @@ namespace WpfApplication1{
                     this.prevAccel[0] = (2 * S[0] - 2 * this.prevSpeed[0] * 0.2) / 0.04; //s=ut+.5ft^2
                     jIndex[0] = (this.prevAccel[0] - f0) / 0.2; //jerk Index = (f1-f0)/dt
                     totJI[0] += Math.Abs(jIndex[0]);
-                   // System.Windows.MessageBox.Show(", " +this.prevAccel[0],                "test", MessageBoxButton.OK,                MessageBoxImage.Information);
+                   // System.Windows.MessageBox.Show(", " + this.prevAccel[0],                "test", MessageBoxButton.OK,                MessageBoxImage.Information);
                    // globalVars.jerkLabel.Content = this.prevAccel[0] + ", " + f0 + ", " + totJI[0];
                     
               //      if (feature.peakAccel[0] < this.prevAccel[0])

@@ -29,6 +29,8 @@ namespace WpfApplication1
         kinectApp app;
         int valueChanged = 0;
 
+        private bool learnOn, recordOn, detectOn;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -43,6 +45,9 @@ namespace WpfApplication1
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            learnOn = false;
+            detectOn = true;
+            recordOn = false;
             //label1.Content = "ahhaaaha";
             //labelFrame.Content = "frame";
             globalVars.a1 = labelFrame;
@@ -53,6 +58,8 @@ namespace WpfApplication1
             //globalVars.jerkLabel = jerkLabel;
             globalVars.AnnOutput = outputLabel;
 
+            recordCanvas.Visibility = System.Windows.Visibility.Hidden;
+            learnCanvas.Visibility = System.Windows.Visibility.Hidden;
 
             app = new kinectApp(canvas1, canvas2, label1, image1);
         }
@@ -295,6 +302,45 @@ namespace WpfApplication1
 
         private void DetectMenu_MouseLeave(object sender, MouseEventArgs e)
         {
+
+        }
+
+        private void DetectMenu_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            detectOn = !detectOn;
+            LearnMenu.Foreground = Brushes.Gainsboro;
+            RecordMenu.Foreground = Brushes.Gainsboro;
+            DetectMenu.Foreground = Brushes.DeepSkyBlue;
+            
+            detectCanvas.Visibility = System.Windows.Visibility.Visible;
+            recordCanvas.Visibility = System.Windows.Visibility.Hidden;
+            learnCanvas.Visibility = System.Windows.Visibility.Hidden;
+
+        }
+
+        private void RecordMenu_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            recordOn = !recordOn;
+            LearnMenu.Foreground = Brushes.Gainsboro;
+            RecordMenu.Foreground = Brushes.DeepSkyBlue;
+            DetectMenu.Foreground = Brushes.Gainsboro;
+            
+            detectCanvas.Visibility = System.Windows.Visibility.Hidden;    
+            recordCanvas.Visibility = System.Windows.Visibility.Visible;
+            learnCanvas.Visibility = System.Windows.Visibility.Hidden;
+
+        }
+
+        private void LearnMenu_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            learnOn = !learnOn;
+            LearnMenu.Foreground = Brushes.DeepSkyBlue;
+            RecordMenu.Foreground = Brushes.Gainsboro;
+            DetectMenu.Foreground = Brushes.Gainsboro;
+
+            detectCanvas.Visibility = System.Windows.Visibility.Hidden;
+            recordCanvas.Visibility = System.Windows.Visibility.Hidden;
+            learnCanvas.Visibility = System.Windows.Visibility.Visible;
 
         }
 
