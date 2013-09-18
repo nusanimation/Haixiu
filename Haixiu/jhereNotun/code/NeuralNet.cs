@@ -81,8 +81,16 @@ namespace WpfApplication1
 
             ActivationNetwork network = new ActivationNetwork((IActivationFunction)new SigmoidFunction(sigmoidAlphaValue), this.inputCount, 6, numberOfOutputs);
             ActivationNetwork network1 = new ActivationNetwork((IActivationFunction)new BipolarSigmoidFunction(sigmoidAlphaValue), this.inputCount, 3, numberOfOutputs);
-
-            BackPropagationLearning teacher = new BackPropagationLearning(network);
+            BackPropagationLearning teacher ;
+/*            if (globalVars.typeOfLearning == 1)
+                teacher = new BackPropagationLearning(network);
+            else if (globalVars.typeOfLearning == 2)
+                teacher = new BackPropagationLearning(network1);
+            else 
+                teacher = new BackPropagationLearning(network);
+  */
+            teacher = new BackPropagationLearning(network1);
+    
             // set learning rate and momentum
             teacher.LearningRate = this.learningRate;
             teacher.Momentum = this.momentum;
@@ -265,6 +273,7 @@ namespace WpfApplication1
             
         }
          
+
         //this now has no fucking use.
         public void recognizeFeature()//_feature f)
         {

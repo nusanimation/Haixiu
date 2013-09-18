@@ -36,6 +36,7 @@ namespace WpfApplication1
             InitializeComponent();
 
             globalVars.resultChart = lineChart;
+            globalVars.lseries = arousalpoints;
             globalVars.chart = new resultViz();
 
             slider1.Value = (double)-3;
@@ -57,6 +58,7 @@ namespace WpfApplication1
             globalVars.saveANNbutn = saveANNbutn;
             //globalVars.jerkLabel = jerkLabel;
             globalVars.AnnOutput = outputLabel;
+            globalVars.typeOfLearning = Convert.ToInt32(typeofann.Text.ToString());
 
             recordCanvas.Visibility = System.Windows.Visibility.Hidden;
             learnCanvas.Visibility = System.Windows.Visibility.Hidden;
@@ -344,13 +346,12 @@ namespace WpfApplication1
 
         }
 
+        private void CloseCommandHandler(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.Close();
+            //app.stopApp();
 
-
-
-
-
-
-
+        }
     }
 
 

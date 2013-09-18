@@ -6,6 +6,10 @@ using System.Windows;
 using System.IO;
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
+using System.Windows.Controls.DataVisualization;
+using System.Windows.Controls.DataVisualization.Charting;
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
 
 namespace WpfApplication1
 {
@@ -17,7 +21,6 @@ namespace WpfApplication1
         public resultViz() {
 
             Power = new ObservableCollection<KeyValuePair<string, double>>();
-            Power.Add(new KeyValuePair<string, double>("0", 0.0));
             Power.Add(new KeyValuePair<string, double>("0", 0.0));
 
             showColumnChart();
@@ -38,8 +41,60 @@ namespace WpfApplication1
 
         private void showColumnChart()
         {
+            
+
+                  //  LineSeries series = new LineSeries();
+                    Style dataPointStyle = GetNewDataPointStyle();
+                  //  series.DataPointStyle = dataPointStyle;
+            
+            globalVars.lseries.DataPointStyle = dataPointStyle;
             globalVars.resultChart.DataContext = Power;
+            //        series.DataContext = Power;
+
+                    //globalVars.resultChart.Series.Add(series);
+                
+    
         }
+
+        /// <summary>
+        /// Gets the new data point style.
+        /// </summary>
+        /// <returns></returns>
+        
+        private static Style GetNewDataPointStyle()
+        {
+            LinearGradientBrush myLinearGradientBrush =
+    new LinearGradientBrush();
+            myLinearGradientBrush.StartPoint = new Point(0.5, 1);
+            myLinearGradientBrush.EndPoint = new Point(0.5, 0);
+            myLinearGradientBrush.GradientStops.Add(
+                new GradientStop(Colors.Blue, 0.0));
+            myLinearGradientBrush.GradientStops.Add(
+                new GradientStop(Colors.Red, 1.0));  
+
+
+            Color background = Color.FromRgb((byte)255,
+                                         (byte)0,
+                                         (byte)0);
+
+            Style style = new Style(typeof(DataPoint));
+
+            Setter st1 = new Setter(DataPoint.BackgroundProperty,
+                                        myLinearGradientBrush);
+            Setter st2 = new Setter(DataPoint.BorderBrushProperty,
+                                        new SolidColorBrush(Colors.White));
+            Setter st3 = new Setter(DataPoint.BorderThicknessProperty, new Thickness(0.1));
+
+            Setter st4 = new Setter(DataPoint.TemplateProperty, null);
+            style.Setters.Add(st1);
+            style.Setters.Add(st2);
+            style.Setters.Add(st3);
+            style.Setters.Add(st4);
+
+            return style;
+
+        }
+
 
         public void update(double data)
         {

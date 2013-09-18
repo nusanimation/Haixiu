@@ -31,6 +31,7 @@ namespace WpfApplication1
         public static bool kinectOn, logSkele, detectorOn, reducedRecord=true;
 
         public static Chart resultChart;
+        public static LineSeries lseries;
         public static resultViz chart;
 
 
@@ -39,6 +40,7 @@ namespace WpfApplication1
 
         public static Thread ANNthread;
         public static bool needToStopLearning;
+        public static int typeOfLearning;
 
         public static dynamicDetection detector;
     }

@@ -197,19 +197,23 @@ namespace WpfApplication1
 
             try
             {
-                
-                double[] output;
+
+                double[] output;// = new double[1];
+                double val = 0;
+
                 output = this.recog.recognizeEmotion(feat);
+              
+  
+                /*
                 double[] dummyset = new double[9];
                 for (int i = 0; i < 7; i++)
                     dummyset[i] = feat[i];
                 dummyset[7] = output[0];
-                dummyset[8] = output[1];
+//                dummyset[8] = output[1];
 
                 this.file.WritefeatureSet(dummyset);
-
-                double val = 0;
-
+                */
+/*
                 if (Math.Round(output[0]) == 1 && Math.Round(output[1]) == 1)
                     val = 100;
                 else if (Math.Round(output[0]) == 1 && Math.Round(output[1]) == 0)
@@ -218,9 +222,13 @@ namespace WpfApplication1
                     val = 50;
                 else if (Math.Round(output[0]) == 0 && Math.Round(output[1]) == 0)
                     val = 25;
-
-                else if (output[0] == double.NaN || output[0] == double.NegativeInfinity || output[0] == double.PositiveInfinity)
-                    val = 0.0;
+                
+                else */
+                if (output[0] == double.NaN || output[0] == double.NegativeInfinity || output[0] == double.PositiveInfinity)
+                    val = -1.0;
+                else
+                    val = (output[0] + 1) * 50;
+                                
 
                 globalVars.AnnOutput.Content = val + "%";
                 if (globalVars.chart != null)
