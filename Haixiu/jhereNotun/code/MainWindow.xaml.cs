@@ -254,7 +254,7 @@ namespace WpfApplication1
                         //elow, this was for just a test purpose
                         //recognizer R = new recognizer(loadANN.Text.ToString());
 
-                        globalVars.detector = new dynamicDetection(loadANN.Text.ToString());
+                        globalVars.detector = new newDynamicDetection(loadANN.Text.ToString());
                         try { globalVars.detector.updateInterval = Convert.ToInt32(updateIntervalText.Text.ToString()); }
                         catch
                         {
@@ -417,7 +417,7 @@ namespace WpfApplication1
 
         private void button1_Click_2(object sender, RoutedEventArgs e)
         {
-            globalVars.detector = new dynamicDetection(loadANN.Text.ToString());
+            globalVars.detector = new newDynamicDetection(loadANN.Text.ToString());
 
             try { globalVars.detector.updateInterval = Convert.ToInt32(updateIntervalText.Text.ToString()); }
             catch
@@ -652,7 +652,7 @@ namespace WpfApplication1
                     //feature detection
 
                     if (globalVars.detectorOn == true)
-                        globalVars.detector.detect(skeleData);
+                        globalVars.detector.pollFeatures(skeleData);
                 }
                 
             }

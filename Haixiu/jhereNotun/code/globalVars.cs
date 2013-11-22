@@ -46,7 +46,7 @@ namespace WpfApplication1
         public static bool needToStopLearning;
         public static int typeOfLearning, outputCount, hiddenCount;
 
-        public static dynamicDetection detector;
+        public static newDynamicDetection detector;
 
         public static double screenH, screenW;
     }

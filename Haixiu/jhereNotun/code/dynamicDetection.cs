@@ -364,16 +364,24 @@ namespace WpfApplication1
         public newDynamicDetection(String s)
         {
             mRecog = new recognizer(s);
-            posRecog = new recognizer("positionANN.dat");
+            posRecog = new recognizer(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\"+"positionANN.dat");
             //this.feature = featureExtractor();
             this.iter = 0;
+            movementFeatureList = new List<double[]>();
+            positionFeatureList = new List<double[]>();
         }
 
         public int pollFeatures(SkeletonData s)
         {
             iter++; //frame++;
             double[][] ans = globalVars.fExtract.getRawDataStream(s);
-
+            
+            /* if something goes wrong with the feature extractor*/
+            if (ans[0] == null || ans[1] == null)
+            {
+                //System.Windows.MessageBox.Show("Ans 0 " + ans[0] + " ans 1 "+ans[1], "feature extractor error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return -3;
+            }
             if (slidingWindow == true)
             {
                 if (ans[0] != null)
@@ -393,11 +401,12 @@ namespace WpfApplication1
                     positionTick++;
                 }
 
-                if (iter % 30 == 0)
+                if (iter % 30 == 0 && iter != 0)
                 {
+                    
                     double[] temp1, temp2;
-                    temp1 = new double[movement.Length];
-                    temp2 = new double[position.Length];
+                    temp1 = new double[ans[0].Length];
+                    temp2 = new double[ans[1].Length];
 
                     /*movement and position average*/
                     /*releasing movement and position variables*/
@@ -468,7 +477,8 @@ namespace WpfApplication1
         public void detect(double [] movement, double[] position)
         {
             double mVal, pVal;
-            mVal = sendToANN(movement, mRecog);
+            //mVal = sendToANN(movement, mRecog);
+            mVal = -1;
             pVal = sendToANN(position, posRecog);
 
             globalVars.AnnOutput.Content = "A: "+mVal + "% V: "+pVal;
@@ -519,7 +529,7 @@ namespace WpfApplication1
             }
             catch
             {
-                System.Windows.MessageBox.Show("Detection Module failed for some reason",
+                System.Windows.MessageBox.Show("Detection Module: --" + r.name + "-- has failed for some reason",
                     "detection error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return -2;
             }

@@ -5,7 +5,8 @@ using System.Text;
 using Microsoft.Research.Kinect.Nui;
 using System.Windows.Controls;
 using System.Threading;
-
+using System.Windows;
+using System.IO;
 
 namespace WpfApplication1
 {
@@ -641,7 +642,11 @@ namespace WpfApplication1
                 //posQ.Enqueue(posData);
 
             }
-            double [][] r = new double[][] { data, posData };
+            double [][] r = new double[2][];// { data, posData };
+            r[0] = data;
+            r[1] = posData;
+            //if (data != null && posData != null) 
+            //System.Windows.MessageBox.Show("Ans 0 " + r[0][0] + " ans 1 " + r[1][0], "chk", MessageBoxButton.OK, MessageBoxImage.Error);
             return (r);
         }
 

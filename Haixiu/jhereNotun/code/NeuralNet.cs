@@ -283,9 +283,11 @@ namespace WpfApplication1
     public class recognizer
     {
         public Network net;
+        public string name;
         public recognizer(String n) { 
            //Set ANN
             //_feature f;
+            this.name = n;
             net = Network.Load(n);
             //recognizeFeature();
             
