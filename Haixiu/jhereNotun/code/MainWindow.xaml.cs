@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+
+using System.Collections.ObjectModel;
+
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -15,6 +18,9 @@ using Microsoft.Research.Kinect.Nui;
 using Coding4Fun.Kinect.Wpf;
 using Microsoft.Xna.Framework;
 
+
+using System.Threading;
+
 //using System.Windows.Forms;
 
 namespace WpfApplication1
@@ -22,26 +28,44 @@ namespace WpfApplication1
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    
+
 
     public partial class MainWindow : Window
     {
         kinectApp app;
         int valueChanged = 0;
-
-        private bool learnOn, recordOn, detectOn;
+        private featureExtractor fExtract;
+      
+        private bool learnOn, recordOn, detectOn, settingsOn;
 
         public MainWindow()
         {
+            
             InitializeComponent();
+           // populateListbox();
 
             globalVars.resultChart = lineChart;
             globalVars.lseries = arousalpoints;
-            globalVars.chart = new resultViz();
+            int gpt;
+            try { gpt = (int)Convert.ToInt32(graphPt.Text.ToString()); }
+            catch
+            {
+                System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); gpt = 30;
+            }
+
+            globalVars.chart = new resultViz(lineChart, gpt, 2);
+            globalVars.chart2 = new resultViz(featureChart, gpt, 5);
 
             slider1.Value = (double)-3;
             slider1.Maximum = Camera.ElevationMaximum;
             slider1.Minimum = Camera.ElevationMinimum;
+        }
+        private void populateListbox(){
+            ObservableCollection <string> list1 = new ObservableCollection<string>();
+            list1.Add("BipolarSigmoid");
+            list1.Add("BinarySigmoid");
+            comboBox1.ItemsSource = list1;
+            comboBox1.SelectedItem = 1;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -49,8 +73,13 @@ namespace WpfApplication1
             learnOn = false;
             detectOn = true;
             recordOn = false;
+            settingsOn = false;
             //label1.Content = "ahhaaaha";
             //labelFrame.Content = "frame";
+            globalVars.screenH = ((System.Windows.Controls.Panel)Application.Current.MainWindow.Content).ActualHeight;
+            globalVars.screenW = ((System.Windows.Controls.Panel)Application.Current.MainWindow.Content).ActualWidth;
+
+            
             globalVars.a1 = labelFrame;
             //globalVars.a2 = wDistLabel;
             globalVars.error = AnnError;
@@ -58,16 +87,90 @@ namespace WpfApplication1
             globalVars.saveANNbutn = saveANNbutn;
             //globalVars.jerkLabel = jerkLabel;
             globalVars.AnnOutput = outputLabel;
-            globalVars.typeOfLearning = Convert.ToInt32(typeofann.Text.ToString());
+            globalVars.typeOfLearning = 1;//= Convert.ToInt32(typeofann.Text.ToString());
+            try { globalVars.outputCount = Convert.ToInt32(outputCount.Text.ToString()); }
+            catch
+            {
+                System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); globalVars.outputCount = 1;
+            }
+
+            try { globalVars.hiddenCount = Convert.ToInt32(hiddenCount.Text.ToString()); }
+            catch
+            {
+                System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); globalVars.hiddenCount = 4;
+            }
+
 
             recordCanvas.Visibility = System.Windows.Visibility.Hidden;
             learnCanvas.Visibility = System.Windows.Visibility.Hidden;
+            settingsCanvas.Visibility = System.Windows.Visibility.Hidden;
 
-            app = new kinectApp(canvas1, canvas2, label1, image1);
+            double a,b,c,d,ef;
+
+            try { a = Math.Abs(Convert.ToDouble(lThres.Text.ToString())); }
+            catch
+            {
+                System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); a = 0.005;
+            }
+
+            try { b = Math.Abs(Convert.ToDouble(uThres.Text.ToString())); }
+            catch
+            {
+                System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); b=1;
+            }
+
+            if (a >= b) 
+            {
+                System.Windows.MessageBox.Show("Lower Threshold can not be greater or eqal to Upper Threshold. Reverting back to default Values of 0.005 and 1", "you moron.", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                lThres.Text = "0.005";
+                uThres.Text = "1";
+                a = 0.005;
+                b = 1;
+            }
+
+            try { c = Math.Abs(Convert.ToDouble(surgeThres.Text.ToString())); }
+            catch
+            {
+                System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); c=10;
+            }
+
+            try { d = Math.Abs(Convert.ToDouble(ufDelay.Text.ToString())); }
+            catch
+            {
+                System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); d = 0.2;
+            }
+
+            try { ef = Math.Abs(Convert.ToDouble(gfDelay.Text.ToString())); }
+            catch
+            {
+                System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); ef = 1;
+            }
+
+            if (d >= ef)
+            {
+                System.Windows.MessageBox.Show("UpdateFeature delay can not be greater or eqal to EmotionRecognition delay. Reverting back to default Values of 0.2 and 1", "you moron.", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                lThres.Text = "0.2";
+                uThres.Text = "1";
+                d = 0.2;
+                ef = 1;
+            }
+
+            //initializig feature extractor and passing the update graph.
+
+
+            fExtract = new featureExtractor(d, ef, a, b, c, globalVars.chart2);
+            globalVars.fExtract = this.fExtract;
+
+            //Thread kinAppThrd = new Thread(() => { app = new kinectApp(canvas1, canvas2, label1, image1, fExtract); });
+            //kinAppThrd.Start();
+
+            app = new kinectApp(canvas1, canvas2, label1, image1, fExtract);
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
+            //fExtract.thrd.Join();
+            globalVars.chartRighthand = false;
             app.stopApp();
         }
 
@@ -104,7 +207,11 @@ namespace WpfApplication1
         {
             //stop recording
             globalVars.logFeatures = false;
-            globalVars.gFeature.saveFeatures();
+            /*"this is not needed now"*/
+            //globalVars.gFeature.saveFeatures();
+            
+            fExtract.saveFeatures();
+
             recordFeature.IsEnabled = true;
             stopRecord.IsEnabled = false;
         }
@@ -143,23 +250,36 @@ namespace WpfApplication1
                     try
                     {
 
+
                         //elow, this was for just a test purpose
                         //recognizer R = new recognizer(loadANN.Text.ToString());
 
                         globalVars.detector = new dynamicDetection(loadANN.Text.ToString());
-                        globalVars.detector.updateInterval =Convert.ToInt32(updateIntervalText.Text.ToString());
+                        try { globalVars.detector.updateInterval = Convert.ToInt32(updateIntervalText.Text.ToString()); }
+                        catch
+                        {
+                            System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); globalVars.detector.updateInterval = 10;
+                        }
+
 
                         globalVars.detectorOn = true;
                         startDetect.Content = "Stop Emotion Detection";
+
+                        ufDelay.IsEnabled = false;
+                        gfDelay.IsEnabled = false;
+
                     }
                     catch
                     {
-                        System.Windows.MessageBox.Show("Enter a filename", "meh.", MessageBoxButton.OK, MessageBoxImage.Error);
+                        System.Windows.MessageBox.Show("osme problem with detector moduel.", "meh.", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }
             else
             {
+                ufDelay.IsEnabled = true;
+                gfDelay.IsEnabled = true;
+
                 globalVars.detector.stopDetection();
                 globalVars.detectorOn = false;
                 startDetect.Content = "Start Emotion Detection";
@@ -174,7 +294,23 @@ namespace WpfApplication1
             //System.Windows.MessageBox.Show(textBox1.Text.ToString(), "meh.", MessageBoxButton.OK, MessageBoxImage.Error);
             try
             {
-                
+                //System.Windows.MessageBox.Show("number " + " " + textBox1.Text.ToString(), "meh.", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                try { globalVars.outputCount = Convert.ToInt32(outputCount.Text.ToString()); }
+                catch
+                {
+                    System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); globalVars.outputCount = 1;
+                }
+
+                try { globalVars.hiddenCount = Convert.ToInt32(hiddenCount.Text.ToString()); }
+                catch
+                {
+                    System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); globalVars.hiddenCount = 4;
+                }
+
+
+
+                globalVars.typeOfLearning = Convert.ToInt32(((ComboBoxItem)comboBox1.SelectedItem).Tag.ToString());
                 Learner L = new Learner(textBox1.Text.ToString());
                 
             }
@@ -259,8 +395,14 @@ namespace WpfApplication1
 
         private void updateIntervalText_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (globalVars.detector != null && updateIntervalText.Text.ToString()!=null)
-               globalVars.detector.updateInterval = Convert.ToInt32(updateIntervalText.Text.ToString());
+            if (globalVars.detector != null && updateIntervalText.Text.ToString() != null)
+            {
+                try { globalVars.detector.updateInterval = Convert.ToInt32(updateIntervalText.Text.ToString()); }
+                catch
+                {
+                    System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); globalVars.detector.updateInterval=10;
+                }
+            }
         }
 
         private void reducedFeature_Checked(object sender, RoutedEventArgs e)
@@ -276,8 +418,12 @@ namespace WpfApplication1
         private void button1_Click_2(object sender, RoutedEventArgs e)
         {
             globalVars.detector = new dynamicDetection(loadANN.Text.ToString());
-            globalVars.detector.updateInterval = Convert.ToInt32(updateIntervalText.Text.ToString());
 
+            try { globalVars.detector.updateInterval = Convert.ToInt32(updateIntervalText.Text.ToString()); }
+            catch
+            {
+                System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); globalVars.detector.updateInterval=10;
+            }
             globalVars.detectorOn = true;
             globalVars.detector.test();
         }
@@ -313,11 +459,12 @@ namespace WpfApplication1
             LearnMenu.Foreground = Brushes.Gainsboro;
             RecordMenu.Foreground = Brushes.Gainsboro;
             DetectMenu.Foreground = Brushes.DeepSkyBlue;
-            
+            advancedMenu.Foreground = Brushes.Gainsboro;
+
             detectCanvas.Visibility = System.Windows.Visibility.Visible;
             recordCanvas.Visibility = System.Windows.Visibility.Hidden;
             learnCanvas.Visibility = System.Windows.Visibility.Hidden;
-
+            settingsCanvas.Visibility = System.Windows.Visibility.Hidden;
         }
 
         private void RecordMenu_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -326,11 +473,12 @@ namespace WpfApplication1
             LearnMenu.Foreground = Brushes.Gainsboro;
             RecordMenu.Foreground = Brushes.DeepSkyBlue;
             DetectMenu.Foreground = Brushes.Gainsboro;
-            
+            advancedMenu.Foreground = Brushes.Gainsboro;
+
             detectCanvas.Visibility = System.Windows.Visibility.Hidden;    
             recordCanvas.Visibility = System.Windows.Visibility.Visible;
             learnCanvas.Visibility = System.Windows.Visibility.Hidden;
-
+            settingsCanvas.Visibility = System.Windows.Visibility.Hidden;
         }
 
         private void LearnMenu_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -339,11 +487,26 @@ namespace WpfApplication1
             LearnMenu.Foreground = Brushes.DeepSkyBlue;
             RecordMenu.Foreground = Brushes.Gainsboro;
             DetectMenu.Foreground = Brushes.Gainsboro;
+            advancedMenu.Foreground = Brushes.Gainsboro;
 
             detectCanvas.Visibility = System.Windows.Visibility.Hidden;
             recordCanvas.Visibility = System.Windows.Visibility.Hidden;
             learnCanvas.Visibility = System.Windows.Visibility.Visible;
+            settingsCanvas.Visibility = System.Windows.Visibility.Hidden;
+        }
 
+        private void advancedMenu_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            settingsOn = !settingsOn;
+            LearnMenu.Foreground = Brushes.Gainsboro;
+            RecordMenu.Foreground = Brushes.Gainsboro;
+            DetectMenu.Foreground = Brushes.Gainsboro;
+            advancedMenu.Foreground = Brushes.DeepSkyBlue;
+
+            detectCanvas.Visibility = System.Windows.Visibility.Hidden;
+            recordCanvas.Visibility = System.Windows.Visibility.Hidden;
+            learnCanvas.Visibility = System.Windows.Visibility.Hidden;
+            settingsCanvas.Visibility = System.Windows.Visibility.Visible;
         }
 
         private void CloseCommandHandler(object sender, ExecutedRoutedEventArgs e)
@@ -352,7 +515,30 @@ namespace WpfApplication1
             //app.stopApp();
 
         }
+
+        private void comboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //comboBox1.Tag.ToString();
+        }
+
+        private void rHandChartingOn_Checked(object sender, RoutedEventArgs e)
+        {
+            globalVars.chartRighthand = true;
+        }
+
+        private void rHandChartingOn_Unchecked(object sender, RoutedEventArgs e)
+        {
+            globalVars.chartRighthand = false;
+        }
+
     }
+
+
+
+
+    /*Achtung: This is the main kinect app which extracts the kinect output*/
+
+
 
 
     public class kinectApp //: MainWindow
@@ -364,16 +550,18 @@ namespace WpfApplication1
         private Runtime kinect;
         private Canvas canvas, topCanvas;
         Label spinePos;
-
+        featureExtractor fExtractor;
         
-        public kinectApp(Canvas c, Canvas top, Label l, Image i)
+        public kinectApp(Canvas c, Canvas top, Label l, Image i, featureExtractor featExtractor)
         {
             //update the feature
-
-            
+ 
+            this.fExtractor = featExtractor;            
             this.features  = new startFeatures();
             
             globalVars.gFeature = features;
+            //globalVars.mFeature = 
+
 
             this.file = new fileWriter(null);
 
@@ -446,10 +634,21 @@ namespace WpfApplication1
 
                         }
                     }
+                    if (globalVars.chartRighthand == true)
+                    {
+                        this.fExtractor.getFeatures(skeleData, spinePos);
+                        globalVars.a1.Content = this.fExtractor.frames;
+                    }
+
                     //feature logging
                     if (globalVars.logFeatures == true)
-                        features.addFeatures(skeleData);
-                 
+                    {
+                        // replaced with neww featuee extractor
+                        //features.addFeatures(skeleData);
+                        this.fExtractor.getFeatures(skeleData, spinePos);
+                        globalVars.a1.Content = this.fExtractor.frames;
+
+                    }
                     //feature detection
 
                     if (globalVars.detectorOn == true)
@@ -499,8 +698,7 @@ namespace WpfApplication1
             Canvas.SetTop(polyline, sd.Joints[JointID.Spine].Position.Z.scale(1,35));
             topCanvas.Children.Add(polyline);
 
-            spinePos.Content = "righthandPos: X: " + sd.Joints[JointID.HandRight].Position.X + ", Y: " + sd.Joints[JointID.HandRight].Position.Y +
-                ", Z: " + sd.Joints[JointID.HandRight].Position.Z;
+            //spinePos.Content = "righthandPos: X: " + sd.Joints[JointID.HandRight].Position.X + ", Y: " + sd.Joints[JointID.HandRight].Position.Y +", Z: " + sd.Joints[JointID.HandRight].Position.Z;
             
             if (globalVars.logSkele == true)
             {

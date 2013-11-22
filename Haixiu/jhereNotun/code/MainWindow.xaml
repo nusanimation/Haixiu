@@ -6,12 +6,12 @@ xmlns:charting="clr-namespace:System.Windows.Controls.DataVisualization.Charting
 xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit" Height="958" Width="1493"
         WindowStyle="SingleBorderWindow"
         >
-    
+
     <Window.CommandBindings>
         <CommandBinding Command="ApplicationCommands.Close"
                         Executed="CloseCommandHandler"/>
     </Window.CommandBindings>
-    
+
     <Window.Resources>
         <Style x:Key="menuLabel"  TargetType="{x:Type Label}">
             <Setter Property="Background" Value="Transparent" />
@@ -57,95 +57,135 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
             </Grid.ColumnDefinitions>
             <Canvas Name="mainCanvas" Grid.Row="1" Grid.Column="0">
 
-            <Label Content="Emotion Detection System" Height="45" HorizontalAlignment="Left" Name="label11" VerticalAlignment="Top" Width="274" FontSize="22" FontWeight="Normal" Background="White" Foreground="#FFAAAAAA" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Right" FontFamily="Segoe UI" FontStyle="Normal" Margin="25,60,0,0" Canvas.Left="417" Canvas.Top="-44" />
+                <Label Content="Emotion Detection System" Height="45" HorizontalAlignment="Left" Name="label11" VerticalAlignment="Top" Width="274" FontSize="22" FontWeight="Normal" Background="White" Foreground="#FFAAAAAA" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Right" FontFamily="Segoe UI" FontStyle="Normal" Margin="25,60,0,0" Canvas.Left="417" Canvas.Top="-44" />
 
-            <Label Content="Detect" Style="{StaticResource menuLabel}" Height="39" HorizontalAlignment="Left" Margin="37,146,0,0" Name="DetectMenu" VerticalAlignment="Top" Width="180" FontSize="20" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"  MouseEnter="DetectMenu_MouseEnter" MouseLeave="DetectMenu_MouseLeave" MouseLeftButtonUp="DetectMenu_MouseLeftButtonUp" Foreground="DeepSkyBlue">
+                <Label Content="Detect" Style="{StaticResource menuLabel}" Height="39" HorizontalAlignment="Left" Margin="37,116,0,0" Name="DetectMenu" VerticalAlignment="Top" Width="180" FontSize="20" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"  MouseEnter="DetectMenu_MouseEnter" MouseLeave="DetectMenu_MouseLeave" MouseLeftButtonUp="DetectMenu_MouseLeftButtonUp" Foreground="DeepSkyBlue">
 
-            </Label>
-            <Label Content="Record" Style="{StaticResource menuLabel}" FontSize="20" Height="39" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="37,194,0,0" Name="RecordMenu" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="181" MouseLeftButtonUp="RecordMenu_MouseLeftButtonUp" Foreground="Gainsboro">
+                </Label>
+                <Label Content="Record" Style="{StaticResource menuLabel}" FontSize="20" Height="39" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="37,164,0,0" Name="RecordMenu" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="181" MouseLeftButtonUp="RecordMenu_MouseLeftButtonUp" Foreground="Gainsboro">
 
-            </Label>
-            <Label Content="Learn" Style="{StaticResource menuLabel}" FontSize="20" Height="39" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="37,243,0,0" Name="LearnMenu" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="181" MouseLeftButtonUp="LearnMenu_MouseLeftButtonUp" Foreground="Gainsboro">
+                </Label>
+                <Label Content="Learn" Style="{StaticResource menuLabel}" FontSize="20" Height="39" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="37,213,0,0" Name="LearnMenu" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="181" MouseLeftButtonUp="LearnMenu_MouseLeftButtonUp" Foreground="Gainsboro">
 
-            </Label>
+                </Label>
+                <Label Content="Other Settings" Style="{StaticResource menuLabel}" FontSize="20" Height="39" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="37,262,0,0" Name="advancedMenu" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="181" Foreground="Gainsboro" MouseLeftButtonUp="advancedMenu_MouseLeftButtonUp">
 
+                </Label>
 
-            <Canvas Name="learnCanvas">
-                <Label Content="L e a r n i n g   M o d u l e " Name="label6" IsEnabled="False" Canvas.Left="567" Canvas.Top="88" Height="34" />
+                <Canvas Name="settingsCanvas">
+                    <Label Content="M i s c l e n i o u s  S e t t i n g s" IsEnabled="False" Name="labe218" FlowDirection="RightToLeft" Grid.Row="1" Canvas.Left="558" Canvas.Top="88" />
+                    <Label Content="Lower Threshold: " Height="29" Name="setlab1" Width="163" Grid.Row="1" Canvas.Left="299" Canvas.Top="171" />
+                    <TextBox Height="22" Name="lThres" Width="49" Text="0.0005"  Grid.Row="1" Canvas.Left="401" Canvas.Top="172" />
+                    <Label Content="Meters" Height="29" Name="setlab2" Width="59" Grid.Row="1" Canvas.Left="454" Canvas.Top="170" />
 
-                <Label Content="Select Feature File" Height="23" Name="label7" Width="161" IsEnabled="False" Canvas.Left="273" Canvas.Top="136" />
-                <TextBox Height="27" Name="textBox1" Width="255" TextChanged="textBox1_TextChanged" Canvas.Left="273" Canvas.Top="158" />
-                <Button Content="lookUp" Height="30" Name="browsebtn" Width="49" Click="browsebtn_Click" Canvas.Left="534" Canvas.Top="158" />
-                <Button Content="Start Learning" Height="46" Name="startLearning" Width="118" Click="button3_Click" Canvas.Left="592" Canvas.Top="146" />
-                <Rectangle Height="64" Name="rectangle1" Stroke="Black" Width="247" StrokeThickness="0.5" Canvas.Left="276" Canvas.Top="205" />
-                <Label Content="N/A" Height="33" Name="AnnError" Width="147" Canvas.Left="366" Canvas.Top="236" />
-                <Label Content="Iterations" Height="28" Name="label3" Width="79" Canvas.Left="287" Canvas.Top="205" />
-                <Label Content="0" Height="32" Name="iterCount" Width="71" Canvas.Left="366" Canvas.Top="205" />
-                <Label Content="Error" Height="28" Name="label4" Width="56" Canvas.Left="287" Canvas.Top="241" />
-                <Button Content="Save NewuralNet" Height="62" Name="saveANNbutn" Width="177" IsEnabled="False" Click="button1_Click_1" Canvas.Left="533" Canvas.Top="205" />
-
-                    <TextBox Height="27" Name="typeofann" Width="30" Margin="484,123,957,189" Grid.Row="2" Text="1" />
+                    <Label Content="Upper Threshold: " Height="29" Name="setlab3" Width="163" Grid.Row="1" Canvas.Left="299" Canvas.Top="199" />
+                    <TextBox Height="22" Name="uThres" Width="25" Text="1"  Grid.Row="1" Canvas.Left="401" Canvas.Top="202" />
+                    <Label Content="Meter" Height="29" Name="setlab4" Width="42" Grid.Row="1" Canvas.Left="431" Canvas.Top="198" />
+                    <Label Content="Surge Threshold: " Height="29" Name="setlab5" Width="163" Grid.Row="1" Canvas.Left="299" Canvas.Top="230" />
+                    <TextBox Height="22" Name="surgeThres" Width="25" Text="10"  Grid.Row="1" Canvas.Left="400" Canvas.Top="232" />
+                    <Label Content="%" Height="29" Name="setlab6" Width="42" Grid.Row="1" Canvas.Left="429" Canvas.Top="231" />
 
                 </Canvas>
 
 
 
-            <Canvas Name="recordCanvas">
-                <Label Content="F e a t u r e   R e c o r d i n g   M o d u l e " Name="featurerecordingmoduleLabel" IsEnabled="False" Canvas.Left="486" Canvas.Top="88" />
-                <TextBox FlowDirection="RightToLeft" Height="25" IsEnabled="False" Name="textBox2" Text="0" Width="77" Canvas.Left="416" Canvas.Top="157" />
-                <CheckBox Content="Pleasure" Height="16" Name="valenceChkbx" Unchecked="valenceChkbx_Unchecked" Checked="valenceChkbx_Checked" Canvas.Left="416" Canvas.Top="135" />
-                <TextBox Height="25" Name="arousalLev" Width="77" Text="0" FlowDirection="RightToLeft" Canvas.Left="522" Canvas.Top="157" />
-                <CheckBox Content="Arousal" Height="16" Name="ArousalChkbx" IsChecked="True" Checked="ArousalChkbx_Checked" Unchecked="ArousalChkbx_Unchecked" Canvas.Left="522" Canvas.Top="135" />
-                <TextBox Height="25" Name="valenceLev" Width="77" IsEnabled="False" FlowDirection="RightToLeft" Text="0" Canvas.Left="625" Canvas.Top="157" />
-                <CheckBox Content="Dominance" Height="16" Name="checkBox2" Canvas.Left="625" Canvas.Top="135" />
-                <CheckBox Content="Reduced Feature" Height="18" Name="reducedFeature" Width="110" IsChecked="True" Checked="reducedFeature_Checked" Unchecked="reducedFeature_Unchecked" Canvas.Left="416" Canvas.Top="275" />
-                <Button Content="Record Feature" Height="50" Name="recordFeature" Width="142" Click="button1_Click" Canvas.Left="416" Canvas.Top="209" />
-                <Button Content="Stop Record" Height="50" Name="stopRecord" Width="138" IsEnabled="False" Click="button2_Click" Canvas.Left="564" Canvas.Top="209" />
+
+                <Canvas Name="learnCanvas">
+                    <Label Content="L e a r n i n g   M o d u l e " Name="label6" IsEnabled="False" Canvas.Left="567" Canvas.Top="88" Height="34" />
+
+                    <Label Content="Select Feature File" Height="23" Name="label7" Width="161" IsEnabled="False" Canvas.Left="273" Canvas.Top="113" />
+                    <TextBox Height="27" Name="textBox1" Width="255" TextChanged="textBox1_TextChanged" Canvas.Left="273" Canvas.Top="137" />
+                    <Button Content="lookUp" Height="30" Name="browsebtn" Width="49" Click="browsebtn_Click" Canvas.Left="535" Canvas.Top="135" />
+                    <Button Content="Start Learning" Height="46" Name="startLearning" Width="118" Click="button3_Click" Canvas.Left="592" Canvas.Top="186" />
+                    <Rectangle Height="64" Name="rectangle1" Stroke="Black" Width="247" StrokeThickness="0.5" Canvas.Left="272" Canvas.Top="248" />
+                    <Label Content="N/A" Height="33" Name="AnnError" Width="147" Canvas.Left="366" Canvas.Top="281" />
+                    <Label Content="Iterations" Height="28" Name="label3" Width="79" Canvas.Left="287" Canvas.Top="254" />
+                    <Label Content="0" Height="32" Name="iterCount" Width="71" Canvas.Left="366" Canvas.Top="254" />
+                    <Label Content="Error" Height="28" Name="label4" Width="56" Canvas.Left="287" Canvas.Top="280" />
+                    <Button Content="Save NewuralNet" Height="62" Name="saveANNbutn" Width="177" IsEnabled="False" Click="button1_Click_1" Canvas.Left="533" Canvas.Top="250" />
+                    <ComboBox Height="25" HorizontalAlignment="Left"  Canvas.Left="273" Canvas.Top="200" Name="comboBox1" VerticalAlignment="Top" Width="120" SelectionChanged="comboBox1_SelectionChanged" >
+                        <ComboBoxItem Content="Bipolar Sigmoid" Tag="1"  />
+                        <ComboBoxItem Content="Binary Sigmoid" Tag="2"  />
+                    </ComboBox>
+
+                    <Label Canvas.Left="272" Canvas.Top="175" Content="Type of ANN" Height="23" IsEnabled="False" Name="lab188" Width="161" />
+                    <Label Canvas.Left="488" Canvas.Top="173" Content="Outputs" Height="23" IsEnabled="False" Name="lab189" Width="161" />
+                    <TextBox Height="27" Name="outputCount" Width="44" Canvas.Left="491" Canvas.Top="199" Text="1" />
+                    <Label Canvas.Left="421" Canvas.Top="174" Content="Hidden" Height="23" IsEnabled="False" Name="lab19" Width="161" />
+                    <TextBox Height="27" Name="hiddenCount" Width="44" Canvas.Left="425" Canvas.Top="199" Text="6" />
+
+                </Canvas>
+
+
+
+                <Canvas Name="recordCanvas">
+                    <Label Content="F e a t u r e   R e c o r d i n g   M o d u l e " Name="featurerecordingmoduleLabel" IsEnabled="False" Canvas.Left="486" Canvas.Top="88" />
+                    <CheckBox Content="Valence" Height="16" Name="valenceChkbx" Unchecked="valenceChkbx_Unchecked" Checked="valenceChkbx_Checked" Canvas.Left="416" Canvas.Top="135" />
+                    <CheckBox Content="Arousal" Height="16" Name="ArousalChkbx" IsChecked="True" Checked="ArousalChkbx_Checked" Unchecked="ArousalChkbx_Unchecked" Canvas.Left="522" Canvas.Top="135" />
+                    <CheckBox Content="Dominance" Height="16" Name="checkBox2" Canvas.Left="625" Canvas.Top="135" />
+                    <CheckBox Content="Reduced Feature" Height="18" Name="reducedFeature" Width="110" IsChecked="True" Checked="reducedFeature_Checked" Unchecked="reducedFeature_Unchecked" Canvas.Left="416" Canvas.Top="275" />
+                    <Button Content="Record Feature" Height="50" Name="recordFeature" Width="142" Click="button1_Click" Canvas.Left="416" Canvas.Top="209" />
+                    <Button Content="Stop Record" Height="50" Name="stopRecord" Width="138" IsEnabled="False" Click="button2_Click" Canvas.Left="564" Canvas.Top="209" />
+
+                    <TextBox FlowDirection="RightToLeft" Height="25" IsEnabled="False" Name="textBox2" Text="0" Width="77" Margin="625,164,769,150" Grid.Row="2" />
+                    <TextBox Height="25" Name="valenceLev" Width="77" IsEnabled="False" FlowDirection="RightToLeft" Text="0" Margin="416,164,978,150" Grid.Row="2" />
+                    <TextBox Height="25" Name="arousalLev" Width="77" Text="0" FlowDirection="RightToLeft" Margin="522,164,872,150" Grid.Row="2" />
+                    
+                </Canvas>
+
+                <Canvas Name="detectCanvas">
+                    <Label Content="D e t e c t i n g   M o d u l e" IsEnabled="False" Name="label8" FlowDirection="RightToLeft" Grid.Row="1" Canvas.Left="558" Canvas.Top="88" />
+                    <Label Content="The NeuralNet is at" Height="23" IsEnabled="False" Name="label9" Width="160" Grid.Row="1" Canvas.Left="301" Canvas.Top="220" />
+                    <TextBox Height="23" Name="loadANN" Width="239" Text="C:\Users\workshop\Desktop\data\savedNeuralNet.dat" Grid.Row="1" Canvas.Left="415" Canvas.Top="222" />
+                    <Button Content="lookUp" Height="30" Name="button2" Width="49" Click="button2_Click_1" Grid.Row="1" Canvas.Left="660" Canvas.Top="219" />
+                    <Button Content="Start Emotion Detection" Height="46" Name="startDetect" Width="187" Click="button4_Click" Grid.Row="1" Canvas.Left="522" Canvas.Top="252" />
+                    <CheckBox Content="Rapid Update" Height="24" Name="checkBox3" IsChecked="True" Checked="checkBox3_Checked" Unchecked="checkBox3_Unchecked" Grid.Row="1" Grid.Column="2" Canvas.Left="561" Canvas.Top="176" />
+                    <Button Content="Test" Height="24" Name="button1" Width="45" Click="button1_Click_2" Grid.Row="1" Canvas.Left="471" Canvas.Top="272" />
+                    <Label Content="Normalization window: " Height="29" Name="label13" Width="139" Grid.Row="1" Canvas.Left="299" Canvas.Top="118" />
+                    <TextBox Height="22" Name="updateIntervalText" Width="25" Text="10" Grid.Row="1" Canvas.Left="432" Canvas.Top="120" />
+                    <Label Content="Sec" Height="29" Name="label114" Width="42" Grid.Row="1" Canvas.Left="456" Canvas.Top="118" />
+                    <Label Content="Update features every" Height="29" Name="labe1l13" Width="128" Grid.Row="1" Canvas.Left="299" Canvas.Top="144" />
+                    <TextBox Height="22" Name="ufDelay" Width="25" Text="0.2"  Grid.Row="1" Canvas.Left="426" Canvas.Top="147" />
+                    <Label Content="Sec" Height="29" Name="label1114" Width="42" Grid.Row="1" Canvas.Left="450" Canvas.Top="145" />
+                    <Label Content="Calculate Emotion in every" Height="29" Name="labe2l13" Width="163" Grid.Row="1" Canvas.Left="299" Canvas.Top="171" />
+                    <TextBox Height="22" Name="gfDelay" Width="25" Text="2"  Grid.Row="1" Canvas.Left="451" Canvas.Top="172" />
+                    <Label Content="Sec" Height="29" Name="labe21114" Width="42" Grid.Row="1" Canvas.Left="480" Canvas.Top="170" />
+
+                    <Label Content="Graph shows" Height="29" Name="labe2l14" Width="163" Grid.Row="1" Canvas.Left="555" Canvas.Top="150" />
+                    <TextBox Height="22" Name="graphPt" Width="25" Text="50"  Grid.Row="1" Canvas.Left="634" Canvas.Top="150"/>
+                    <Label Content="Points" Height="29" Name="labe21115" Width="42" Grid.Row="1" Canvas.Left="658" Canvas.Top="150" />
+                </Canvas>
+
+
             </Canvas>
 
-            <Canvas Name="detectCanvas">
-                <Label Content="D e t e c t i n g   M o d u l e" IsEnabled="False" Name="label8" FlowDirection="RightToLeft" Grid.Row="1" Canvas.Left="558" Canvas.Top="88" />
-                <Label Content="Select NeuralNet Data" Height="23" IsEnabled="False" Name="label9" Width="160" Grid.Row="1" Canvas.Left="315" Canvas.Top="143" />
-                <TextBox Height="27" Name="loadANN" Width="206" Text="C:\Users\workshop\Desktop\data\savedNeuralNet.dat" Grid.Row="1" Canvas.Left="315" Canvas.Top="172" />
-                <Button Content="lookUp" Height="30" Name="button2" Width="49" Click="button2_Click_1" Grid.Row="1" Canvas.Left="527" Canvas.Top="169" />
-                <Button Content="Start Emotion Detection" Height="46" Name="startDetect" Width="187" Click="button4_Click" Grid.Row="1" Canvas.Left="527" Canvas.Top="202" />
-                <CheckBox Content="Rapid Update" Height="24" Name="checkBox3" IsChecked="True" Checked="checkBox3_Checked" Unchecked="checkBox3_Unchecked" Grid.Row="1" Grid.Column="2" Canvas.Left="623" Canvas.Top="175" />
-                <Button Content="Test" Height="24" Name="button1" Width="45" Click="button1_Click_2" Grid.Row="1" Canvas.Left="669" Canvas.Top="258" />
-                <Label Content="calculation interval in Sec" Height="29" Name="label13" Width="153" Grid.Row="1" Canvas.Left="315" Canvas.Top="219" />
-                <TextBox Height="27" Name="updateIntervalText" Width="50" Text="10" TextChanged="updateIntervalText_TextChanged" Grid.Row="1" Canvas.Left="471" Canvas.Top="221" />
-            </Canvas>
-             
-                
-                
-        </Canvas>
-                
-                
-                
-                
+
+
+
             <Canvas Name="VisualizationCanvas" Height="Auto" Width="Auto" Grid.Column="2"  Grid.Row="1">
-            <Label Content="SensorAngle" Height="24" HorizontalAlignment="Left"  Name="label12" VerticalAlignment="Top" Width="53" FontSize="8" Canvas.Left="333" Canvas.Top="6" />
-            <Slider Height="210" HorizontalAlignment="Left"  Name="slider1" VerticalAlignment="Top" Width="42" Orientation="Vertical" SmallChange="1" TickPlacement="Both" ValueChanged="slider1_ValueChanged" MouseLeave="slider1_MouseLeave" AutoToolTipPlacement="BottomRight" Canvas.Left="344" Canvas.Top="40" />
-            <Canvas Height="244" HorizontalAlignment="Left"  Name="canvas1" VerticalAlignment="Top" Width="310" Canvas.Left="387" Canvas.Top="18">
-                <Canvas.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="Black" Offset="0" />
-                        <GradientStop Color="#FE9BE863" Offset="0" />
-                        <GradientStop Color="White" Offset="0.592" />
-                        <GradientStop Color="#DF007396" Offset="0" />
-                    </LinearGradientBrush>
-                </Canvas.Background>
-                
-            </Canvas>
-            <Canvas Name="canvas2" Background="#40484848" Canvas.Left="6" Canvas.Top="16" Height="235" Width="330"></Canvas>
-            <Label Content="Kinect State" Height="27" Name="label2" Width="84" VerticalAlignment="Top" Canvas.Left="591" Canvas.Top="272" />
-            <Image Name="image1" Stretch="Fill" Source="/Haixiu;component/images/red.png" ImageFailed="image1_ImageFailed"  Canvas.Left="662" Canvas.Top="277" Height="20" Width="24" />
-            <CheckBox Content="Log Kinect Skele" Height="19" HorizontalAlignment="Left"  Name="checkBox1" VerticalAlignment="Top" Click="checkBox1_Click" Checked="checkBox1_Checked" Canvas.Left="230" Canvas.Top="277" />
-            <Label Content="0" Height="28" HorizontalAlignment="Left"  Name="labelFrame" VerticalAlignment="Top" Width="91" Canvas.Left="68" Canvas.Top="272" />
-            <Label Content="Frames" Height="28" HorizontalAlignment="Left"  Name="label5" VerticalAlignment="Top" Canvas.Left="6" Canvas.Top="272" />
-            <Canvas Height="244" Name="vgaCanvas" Width="328" Background="Black" Canvas.Left="6" Canvas.Top="18" />
-            <Label Content="spine pos: " Name="label1" FontSize="14" Canvas.Left="9" Canvas.Top="305" Width="680" Background="#FFE8E8E8" />
+                <Label Content="SensorAngle" Height="24" HorizontalAlignment="Left"  Name="label12" VerticalAlignment="Top" Width="53" FontSize="8" Canvas.Left="333" Canvas.Top="6" />
+                <Slider Height="210" HorizontalAlignment="Left"  Name="slider1" VerticalAlignment="Top" Width="42" Orientation="Vertical" SmallChange="1" TickPlacement="Both" ValueChanged="slider1_ValueChanged" MouseLeave="slider1_MouseLeave" AutoToolTipPlacement="BottomRight" Canvas.Left="344" Canvas.Top="40" />
+                <Canvas Height="244" HorizontalAlignment="Left"  Name="canvas1" VerticalAlignment="Top" Width="310" Canvas.Left="387" Canvas.Top="18">
+                    <Canvas.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0" />
+                            <GradientStop Color="#FE9BE863" Offset="0" />
+                            <GradientStop Color="White" Offset="0.592" />
+                            <GradientStop Color="#DF007396" Offset="0" />
+                        </LinearGradientBrush>
+                    </Canvas.Background>
 
-        </Canvas>
+                </Canvas>
+                <Canvas Name="canvas2" Background="#40484848" Canvas.Left="6" Canvas.Top="16" Height="235" Width="330"></Canvas>
+                <Label Content="Kinect State" Height="27" Name="label2" Width="84" VerticalAlignment="Top" Canvas.Left="591" Canvas.Top="272" />
+                <Image Name="image1" Stretch="Fill" Source="/Haixiu;component/images/red.png" ImageFailed="image1_ImageFailed"  Canvas.Left="662" Canvas.Top="277" Height="20" Width="24" />
+                <CheckBox Content="Log Kinect Skele" Height="19" HorizontalAlignment="Left"  Name="checkBox1" VerticalAlignment="Top" Click="checkBox1_Click" Checked="checkBox1_Checked" Canvas.Left="230" Canvas.Top="277" />
+                <Label Content="0" Height="28" HorizontalAlignment="Left"  Name="labelFrame" VerticalAlignment="Top" Width="91" Canvas.Left="68" Canvas.Top="272" />
+                <Label Content="Frames" Height="28" HorizontalAlignment="Left"  Name="label5" VerticalAlignment="Top" Canvas.Left="6" Canvas.Top="272" />
+                <Canvas Height="244" Name="vgaCanvas" Width="328" Background="Black" Canvas.Left="6" Canvas.Top="18" />
+                <Label Content="spine pos: " Name="label1" FontSize="14" Canvas.Left="9" Canvas.Top="305" Width="680" Background="#FFE8E8E8" />
+
+            </Canvas>
         </Grid>
 
         <Grid Name="chartGrid" Grid.Row="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Width="Auto">
@@ -171,26 +211,31 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                             <Setter Property="FrameworkElement.Width" Value="0" />
                         </Style>
                     </charting:Chart.LegendStyle>
-                    <charting:LineSeries Background="Blue" DependentValuePath="Value" IndependentValuePath="Key" IsSelectionEnabled="True" ItemsSource="{Binding}" />
+                    <charting:LineSeries Background="Green" DependentValuePath="Value" IndependentValuePath="Key" IsSelectionEnabled="True" ItemsSource="{Binding [0]}" />
+                    <charting:LineSeries Background="Red" Name="a2" DependentValuePath="Value" IndependentValuePath="Key" ItemsSource="{Binding [1]}" IsSelectionEnabled="True" />
+                    <charting:LineSeries Background="Blue" Name="a3" DependentValuePath="Value" IndependentValuePath="Key" ItemsSource="{Binding [2]}" IsSelectionEnabled="True" />
+                    <charting:LineSeries Background="BlueViolet" Name="a4" DependentValuePath="Value" IndependentValuePath="Key" ItemsSource="{Binding [3]}" IsSelectionEnabled="True" />
+                    <charting:LineSeries Background="Yellow" Name="a5" DependentValuePath="Value" IndependentValuePath="Key" ItemsSource="{Binding [4]}" IsSelectionEnabled="True" />
                 </charting:Chart>
+                <CheckBox Content="rHand Charting toggle" Height="16" Name="rHandChartingOn" Canvas.Left="26" Canvas.Top="268" IsChecked="False" Checked="rHandChartingOn_Checked" Unchecked="rHandChartingOn_Unchecked" />
                 <Label Content="Arousal:" Height="50" Name="label14" Width="154" FontSize="32" FontWeight="Bold" Grid.Row="1" Canvas.Left="1101" Canvas.Top="236" />
                 <Label Content="..." Height="64" Name="outputLabel" Width="137" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="24" Canvas.Left="1288" Canvas.Top="234" />
             </Canvas>
-            
-            
-            
-            <chartingToolkit:Chart Name="lineChart" Background="Transparent" BorderThickness="0"   MinWidth="1459" HorizontalAlignment="Left" VerticalAlignment="Top" Height="267" Canvas.Left="2" Canvas.Top="2" HorizontalContentAlignment="Center" Width="Auto" Grid.Column="1" >
-                    <charting:Chart.LegendStyle>
-                        <Style TargetType="datavis:Legend">
-                            <Setter Property="Width" Value="0" />
-                        </Style>
-                    </charting:Chart.LegendStyle>
 
-                
+
+
+            <chartingToolkit:Chart Name="lineChart" Background="Transparent" BorderThickness="0"   MinWidth="1459" HorizontalAlignment="Left" VerticalAlignment="Top" Height="267" Canvas.Left="2" Canvas.Top="2" HorizontalContentAlignment="Center" Width="Auto" Grid.Column="1" >
+                <charting:Chart.LegendStyle>
+                    <Style TargetType="datavis:Legend">
+                        <Setter Property="Width" Value="0" />
+                    </Style>
+                </charting:Chart.LegendStyle>
+
+
                 <chartingToolkit:LineSeries Name="arousalpoints" Background="Blue"  DependentValuePath="Value" IndependentValuePath="Key" ItemsSource="{Binding}" IsSelectionEnabled="True" HorizontalAlignment="Stretch" />
 
                 <chartingToolkit:Chart.Axes>
-                    
+
                     <chartingToolkit:LinearAxis Interval="10" Orientation="Y" Minimum="-1" Maximum="102" Title="Level of Arousal" ShowGridLines="True">
 
                         <charting:LinearAxis.Background>
@@ -203,6 +248,7 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                 </chartingToolkit:Chart.Axes>
             </chartingToolkit:Chart>
         </Grid>
+
     </Grid>
 
 </Window>

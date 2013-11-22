@@ -170,7 +170,7 @@ namespace WpfApplication1
                 //            this.featureSet[14] = jerkIndex[2] / 120/2;
                 this.featureSet[6] = this.feature.avgAccel[3]/2;
                 //            this.featureSet[19] = this.feature.f.jerkIndex[3] / 120/2;
-                for(int i=0;interval<7;interval++)
+                for(int i=0;i<7;i++)
                     Console.Write(this.featureSet[i]+"--");
                 Console.WriteLine("");
                 //double[] dummyset = new double[12];
@@ -213,23 +213,27 @@ namespace WpfApplication1
 
                 this.file.WritefeatureSet(dummyset);
                 */
-/*
-                if (Math.Round(output[0]) == 1 && Math.Round(output[1]) == 1)
-                    val = 100;
-                else if (Math.Round(output[0]) == 1 && Math.Round(output[1]) == 0)
-                    val = 75;
-                else if (Math.Round(output[0]) == 0 && Math.Round(output[1]) == 1)
-                    val = 50;
-                else if (Math.Round(output[0]) == 0 && Math.Round(output[1]) == 0)
-                    val = 25;
-                
-                else */
-                if (output[0] == double.NaN || output[0] == double.NegativeInfinity || output[0] == double.PositiveInfinity)
-                    val = -1.0;
+                if (this.recog.net.Output.Length == 2)
+                {
+                    if (Math.Round(output[0]) == 1 && Math.Round(output[1]) == 1)
+                        val = 100;
+                    else if (Math.Round(output[0]) == 1 && Math.Round(output[1]) == 0)
+                        val = 75;
+                    else if (Math.Round(output[0]) == 0 && Math.Round(output[1]) == 1)
+                        val = 50;
+                    else if (Math.Round(output[0]) == 0 && Math.Round(output[1]) == 0)
+                        val = 25;
+                    Console.WriteLine("output: " + output[0]+ ", "+output[1]);
+                }
                 else
-                    val = (output[0] + 1) * 50;
-                                
+                {
+                    if (output[0] == double.NaN || output[0] == double.NegativeInfinity || output[0] == double.PositiveInfinity)
+                        val = -1.0;
+                    else
+                        val = (output[0]) * 100;
 
+                    Console.WriteLine("output: " + output[0]);
+                }                
                 globalVars.AnnOutput.Content = val + "%";
                 if (globalVars.chart != null)
                 {
@@ -303,5 +307,254 @@ namespace WpfApplication1
     //        file.Close();
 
     //    }
+    }
+
+
+    public class newDynamicDetection 
+    {
+        //private _feature feat;
+        //private SkeletonData skeleGrow;
+        private fileWriter file = new fileWriter(null, "checking.csv");
+        private List<double[]> movementFeatureList, positionFeatureList;     //  protected double[] featureSet;
+        private recognizer mRecog, posRecog;
+        
+        private featureExtractor feature;
+        double[] movement = null, position = null;
+        private int movementTick=0, positionTick=0;
+
+
+        private int iter;
+               
+        public int Iteration
+
+        {
+            get
+            {
+                return iter;
+            }
+        }
+        private bool slidingWindow = true;
+        public bool SlidingWindowOn
+        {
+            get
+            {
+                return slidingWindow;
+            }
+            set
+            {
+                slidingWindow = value;
+            }
+        }
+
+        private int interval = 30;
+        public int updateInterval
+        {
+            get
+            {
+                return interval / 30;
+            }
+            set
+            {
+                interval = 30 * value;
+            }
+
+        }
+
+
+        public newDynamicDetection(String s)
+        {
+            mRecog = new recognizer(s);
+            posRecog = new recognizer("positionANN.dat");
+            //this.feature = featureExtractor();
+            this.iter = 0;
+        }
+
+        public int pollFeatures(SkeletonData s)
+        {
+            iter++; //frame++;
+            double[][] ans = globalVars.fExtract.getRawDataStream(s);
+
+            if (slidingWindow == true)
+            {
+                if (ans[0] != null)
+                {
+                    if (movement == null)
+                        movement = new double[ans[0].Length];
+                    for (int i = 0; i<ans[0].Length; i++)
+                        movement[i] += ans[0][i];
+                    movementTick++;
+                }
+                if (ans[1] != null)
+                {
+                    if (position== null)
+                        position = new double[ans[1].Length];
+                    for (int i = 0; i < ans[1].Length; i++)
+                        position[i] += ans[1][i];
+                    positionTick++;
+                }
+
+                if (iter % 30 == 0)
+                {
+                    double[] temp1, temp2;
+                    temp1 = new double[movement.Length];
+                    temp2 = new double[position.Length];
+
+                    /*movement and position average*/
+                    /*releasing movement and position variables*/
+
+                    for (int i = 0; i < movement.Length; i++)
+                    {
+                        temp1[i] = movement[i] / movementTick;
+                        movement[i] = 0;
+                    }
+                    for (int i = 0; i < position.Length; i++)
+                    {
+                        temp2[i] = position[i] / positionTick;
+                        position[i] = 0;
+                    }
+
+                    /*adding them in a list for sliding window*/
+                    movementFeatureList.Add(temp1);
+                    positionFeatureList.Add(temp2);
+
+
+                    double[] finalFeature = new double[movement.Length];
+                    for (int i = 0; i < movement.Length; i++)
+                    {
+                        foreach (double[] d in this.movementFeatureList)
+                        {
+                            finalFeature[i] += d[i];
+                            //Console.Write(d[i]+", ");
+                        }
+                        finalFeature[i] /= movementFeatureList.Count;
+                        Console.WriteLine(finalFeature[i]);
+                    }
+
+                    double[] finalFeature1 = new double[position.Length];
+                    for (int i = 0; i < movement.Length; i++)
+                    {
+                        foreach (double[] d in this.movementFeatureList)
+                        {
+                            finalFeature1[i] += d[i];
+                            //Console.Write(d[i]+", ");
+                        }
+                        finalFeature[i] /= movementFeatureList.Count;
+                        Console.WriteLine(finalFeature[i]);
+                    }
+
+                    //Console.WriteLine(featureList.Count);
+                    if (movementFeatureList.Count == interval / 30)
+                    {
+                        movementFeatureList.RemoveAt(0);
+                        positionFeatureList.RemoveAt(0);
+                    }
+                    detect(finalFeature, finalFeature1);
+                }
+            }
+
+            else
+            {
+
+                if (iter % interval == 0)
+                {
+                    detect(movement, position);
+                }
+            }
+
+            return iter;
+
+        }
+
+        public void detect(double [] movement, double[] position)
+        {
+            double mVal, pVal;
+            mVal = sendToANN(movement, mRecog);
+            pVal = sendToANN(position, posRecog);
+
+            globalVars.AnnOutput.Content = "A: "+mVal + "% V: "+pVal;
+            if (mVal != -2 && pVal != -2 && globalVars.chart != null)
+            {
+                double[] asd = new double[2];
+                asd[0] = mVal; asd[1] = pVal;
+                globalVars.chart.update(asd);
+            }
+
+        }
+
+
+
+
+        private double sendToANN(double[] feat, recognizer r)
+        {
+            try
+            {
+                double[] output;// = new double[1];
+                double val = 0;
+
+                output = r.recognizeEmotion(feat);
+
+                if (r.net.Output.Length == 2)
+                {
+                    if (Math.Round(output[0]) == 1 && Math.Round(output[1]) == 1)
+                        val = 100;
+                    else if (Math.Round(output[0]) == 1 && Math.Round(output[1]) == 0)
+                        val = 75;
+                    else if (Math.Round(output[0]) == 0 && Math.Round(output[1]) == 1)
+                        val = 50;
+                    else if (Math.Round(output[0]) == 0 && Math.Round(output[1]) == 0)
+                        val = 25;
+                    Console.WriteLine("output: " + output[0] + ", " + output[1]);
+                }
+                else
+                {
+                    if (output[0] == double.NaN || output[0] == double.NegativeInfinity || output[0] == double.PositiveInfinity)
+                        val = -1.0;
+                    else
+                        val = (output[0]) * 100;
+
+                    Console.WriteLine("output: " + output[0]);
+                }
+
+                return val;              
+            }
+            catch
+            {
+                System.Windows.MessageBox.Show("Detection Module failed for some reason",
+                    "detection error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return -2;
+            }
+        }
+
+
+
+        public void stopDetection()
+        {
+
+            if (this.file != null)
+                file.closeFile();
+        }
+
+        public void test()
+        {
+            mRecog.recognizeFeature();
+        }
+        /* We have too many features like peak accel, spee etc that is a deciding factor .. so fo rnow, update is personcond. 30 frames.
+        private void stableSkele() 
+        {
+            //because this is giving distance covered 5 times in every second. to Meter persond is *5
+            this.feature.speedMps = updateSpine()*5;
+            headAndShoulders();
+        }
+
+        private void danglingSkele()
+        {
+            dangPos();
+            double[][] op = pollDangDistance();
+        }
+         * */
+        //    ~dynamicDetection() {
+        //        file.Close();
+
+        //    }
     }
 }

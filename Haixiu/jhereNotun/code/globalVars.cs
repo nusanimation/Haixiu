@@ -26,13 +26,17 @@ namespace WpfApplication1
         public static JointID[] jid = new JointID[20]{JointID.AnkleLeft, JointID.AnkleRight, JointID.ElbowLeft, JointID.ElbowRight, JointID.FootLeft, JointID.FootRight, JointID.HandLeft, JointID.HandRight, 
                                 JointID.Head, JointID.HipCenter, JointID.HipLeft, JointID.HipRight, JointID.KneeLeft, JointID.KneeRight, JointID.ShoulderCenter, JointID.ShoulderLeft, JointID.ShoulderRight,
                                 JointID.Spine, JointID.WristLeft, JointID.WristRight};
-        public static bool logFeatures;
+        
+        public static bool logFeatures, chartRighthand;
         public static startFeatures gFeature;
+        //public static movementFeature mFeature;
         public static bool kinectOn, logSkele, detectorOn, reducedRecord=true;
 
         public static Chart resultChart;
         public static LineSeries lseries;
-        public static resultViz chart;
+        public static resultViz chart, chart2;
+
+        public static featureExtractor fExtract;
 
 
         public static Label a1/*, a2*/, error, annIter, /*jerkLabel,*/ AnnOutput;
@@ -40,8 +44,10 @@ namespace WpfApplication1
 
         public static Thread ANNthread;
         public static bool needToStopLearning;
-        public static int typeOfLearning;
+        public static int typeOfLearning, outputCount, hiddenCount;
 
         public static dynamicDetection detector;
+
+        public static double screenH, screenW;
     }
 }
