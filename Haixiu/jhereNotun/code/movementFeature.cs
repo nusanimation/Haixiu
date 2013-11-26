@@ -385,14 +385,16 @@ namespace WpfApplication1
             //pf.lh.z = s.Joints[JointID.HandLeft].Position.Z - z;
             JointID[] jid = new JointID[7]{JointID.ElbowLeft, JointID.ElbowRight, JointID.WristLeft, JointID.WristRight, 
                                 JointID.Head, JointID.ShoulderLeft, JointID.ShoulderRight};
-            foreach(JointID id in jid)
+            //Console.WriteLine(" \n");
+            foreach (JointID id in jid)
             {
                 /*for calcultion efficiency, we're adding 10 to the posiiton coord and dividing by 20*/
-               pf[i] =  (s.Joints[id].Position.X - x +10)/20;               
-               pf[i+1] =  (s.Joints[id].Position.Y - y+10)/20;               
-               pf[i+2] =  (s.Joints[id].Position.Z - z+10)/20;
-               i += 3;
-            }
+                pf[i] = (s.Joints[id].Position.X - x + 10) / 20;
+                pf[i + 1] = (s.Joints[id].Position.Y - y + 10) / 20;
+                pf[i + 2] = (s.Joints[id].Position.Z - z + 10) / 20;
+                //Console.WriteLine(pf[i] + " " + pf[i + 1] + " " + pf[i + 2] + " ");
+                i += 3;
+            }   
 
             return pf;
         }
@@ -467,6 +469,15 @@ namespace WpfApplication1
 */
     }
 
+
+    /*
+     * *
+     * *
+     * *FeatureExtractor**
+     * 
+     */
+
+    
     public class featureExtractor : mFeatureType
     {
         public int frames;
@@ -629,9 +640,7 @@ namespace WpfApplication1
             if (this.frames % (this.framedelay) == 0)
             {
                 mfeat.calculateAllFeatures(s, this.frames);
-            }
-            if (this.frames % this.getfeaturedelay == 0)
-            {
+
                 this.dispFeat = mfeat.getFeatures(7, 2);
                 data = featureToArray(this.dispFeat);
                 this.frames = 0;

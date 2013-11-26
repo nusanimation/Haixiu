@@ -382,94 +382,92 @@ namespace WpfApplication1
                 //System.Windows.MessageBox.Show("Ans 0 " + ans[0] + " ans 1 "+ans[1], "feature extractor error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return -3;
             }
-            if (slidingWindow == true)
-            {
-                if (ans[0] != null)
-                {
-                    if (movement == null)
-                        movement = new double[ans[0].Length];
-                    for (int i = 0; i<ans[0].Length; i++)
-                        movement[i] += ans[0][i];
-                    movementTick++;
-                }
-                if (ans[1] != null)
-                {
-                    if (position== null)
-                        position = new double[ans[1].Length];
-                    for (int i = 0; i < ans[1].Length; i++)
-                        position[i] += ans[1][i];
-                    positionTick++;
-                }
+            if (movement == null)
+                movement = new double[ans[0].Length];
+            for (int i = 0; i < ans[0].Length; i++)
+                movement[i] += ans[0][i];
+            movementTick++;
 
-                if (iter % 30 == 0 && iter != 0)
-                {
-                    
-                    double[] temp1, temp2;
-                    temp1 = new double[ans[0].Length];
-                    temp2 = new double[ans[1].Length];
+            if (position == null)
+                position = new double[ans[1].Length];
+            for (int i = 0; i < ans[1].Length; i++)
+                position[i] += ans[1][i];
+            positionTick++;
 
-                    /*movement and position average*/
-                    /*releasing movement and position variables*/
-
-                    for (int i = 0; i < movement.Length; i++)
-                    {
-                        temp1[i] = movement[i] / movementTick;
-                        movement[i] = 0;
-                    }
-                    for (int i = 0; i < position.Length; i++)
-                    {
-                        temp2[i] = position[i] / positionTick;
-                        position[i] = 0;
-                    }
-
-                    /*adding them in a list for sliding window*/
-                    movementFeatureList.Add(temp1);
-                    positionFeatureList.Add(temp2);
-
-
-                    double[] finalFeature = new double[movement.Length];
-                    for (int i = 0; i < movement.Length; i++)
-                    {
-                        foreach (double[] d in this.movementFeatureList)
-                        {
-                            finalFeature[i] += d[i];
-                            //Console.Write(d[i]+", ");
-                        }
-                        finalFeature[i] /= movementFeatureList.Count;
-                        Console.WriteLine(finalFeature[i]);
-                    }
-
-                    double[] finalFeature1 = new double[position.Length];
-                    for (int i = 0; i < movement.Length; i++)
-                    {
-                        foreach (double[] d in this.movementFeatureList)
-                        {
-                            finalFeature1[i] += d[i];
-                            //Console.Write(d[i]+", ");
-                        }
-                        finalFeature[i] /= movementFeatureList.Count;
-                        Console.WriteLine(finalFeature[i]);
-                    }
-
-                    //Console.WriteLine(featureList.Count);
-                    if (movementFeatureList.Count == interval / 30)
-                    {
-                        movementFeatureList.RemoveAt(0);
-                        positionFeatureList.RemoveAt(0);
-                    }
-                    detect(finalFeature, finalFeature1);
-                }
-            }
-
-            else
+            if (iter % 30 == 0 && iter != 0)
             {
 
-                if (iter % interval == 0)
-                {
-                    detect(movement, position);
-                }
-            }
+                double[] temp1, temp2;
+                temp1 = new double[ans[0].Length];
+                temp2 = new double[ans[1].Length];
 
+                /*movement and position average*/
+                /*releasing movement and position variables*/
+
+                for (int i = 0; i < movement.Length; i++)
+                {
+                    temp1[i] = movement[i] / movementTick;
+                    movement[i] = 0;
+                }
+                movementTick = 0;
+                Console.WriteLine();
+                for (int i = 0; i < position.Length; i++)
+                {
+                    temp2[i] = position[i] / positionTick;
+                    Console.Write(temp2[i] + " ");
+                    position[i] = 0;
+                }
+                positionTick = 0;
+                Console.WriteLine();
+
+                if (slidingWindow == true)
+                {
+                        /*adding them in a list for sliding window*/
+                        movementFeatureList.Add(temp1);
+                        positionFeatureList.Add(temp2);
+
+
+                        double[] finalFeature = new double[movement.Length];
+                        for (int i = 0; i < movement.Length; i++)
+                        {
+                            foreach (double[] d in this.movementFeatureList)
+                            {
+                                finalFeature[i] += d[i];
+                                //Console.Write(d[i]+", ");
+                            }
+                            finalFeature[i] /= movementFeatureList.Count;
+                            Console.WriteLine("ffm: "+finalFeature[i]);
+                        }
+
+
+                        double[] finalFeature1 = new double[position.Length];
+
+                        for (int i = 0; i < position.Length; i++)
+                        {
+                            foreach (double[] d in this.positionFeatureList)
+                            {
+                                finalFeature1[i] += d[i];
+                                //Console.Write(d[i]+", ");
+                            }
+                            finalFeature1[i] /= positionFeatureList.Count;
+                            Console.WriteLine("ffp: " + finalFeature1[i]);
+                        }
+
+                        //Console.WriteLine(featureList.Count);
+                        if (movementFeatureList.Count == interval / 30)
+                        {
+                            movementFeatureList.RemoveAt(0);
+                            positionFeatureList.RemoveAt(0);
+                        }
+                        detect(finalFeature, finalFeature1);
+                    }
+                
+
+                    else
+                    {
+                        detect(temp1, temp2);
+                    }
+            }
             return iter;
 
         }
