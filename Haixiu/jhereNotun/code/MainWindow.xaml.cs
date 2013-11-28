@@ -239,6 +239,10 @@ namespace WpfApplication1
         }
         private void button2valence_Click(object sender, RoutedEventArgs e)
         {
+            System.Windows.Forms.OpenFileDialog browse1 = new System.Windows.Forms.OpenFileDialog();
+
+            if (browse1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                loadANNValence.Text = browse1.FileName;
 
         }
 

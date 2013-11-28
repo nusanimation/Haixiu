@@ -239,7 +239,8 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                 </charting:Chart.LegendStyle>
 
 
-                <chartingToolkit:LineSeries Name="arousalpoints" Background="Blue"  DependentValuePath="Value" IndependentValuePath="Key" ItemsSource="{Binding}" IsSelectionEnabled="True" HorizontalAlignment="Stretch" />
+                <chartingToolkit:LineSeries Name="arousalpoints" Background="Blue"  DependentValuePath="Value" IndependentValuePath="Key" ItemsSource="{Binding [0]}" IsSelectionEnabled="True" HorizontalAlignment="Stretch" />
+                <chartingToolkit:LineSeries Name="valencepoints" Background="Green"  DependentValuePath="Value" IndependentValuePath="Key" ItemsSource="{Binding [1]}" IsSelectionEnabled="True" HorizontalAlignment="Stretch" />
 
                 <chartingToolkit:Chart.Axes>
 
