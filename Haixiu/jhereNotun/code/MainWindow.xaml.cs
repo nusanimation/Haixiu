@@ -364,8 +364,8 @@ namespace WpfApplication1
             {
                 // Save document
                 string filename = dlg.FileName;
-                //Learner.saveANNtoFile(filename);
-                System.Windows.MessageBox.Show(filename, dlg.FileName, MessageBoxButton.OK, MessageBoxImage.Error);
+                Learner.saveANNtoFile(filename);
+                //System.Windows.MessageBox.Show(filename, dlg.FileName, MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }
