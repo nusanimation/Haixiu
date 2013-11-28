@@ -237,6 +237,11 @@ namespace WpfApplication1
         //        globalVars.logSkele = false;
             
         }
+        private void button2valence_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
 
         private void button4_Click(object sender, RoutedEventArgs e)
         {
@@ -254,7 +259,7 @@ namespace WpfApplication1
                         //elow, this was for just a test purpose
                         //recognizer R = new recognizer(loadANN.Text.ToString());
 
-                        globalVars.detector = new newDynamicDetection(loadANN.Text.ToString());
+                        globalVars.detector = new newDynamicDetection(loadANN.Text.ToString(), loadANNValence.Text.ToString());
                         try { globalVars.detector.updateInterval = Convert.ToInt32(updateIntervalText.Text.ToString()); }
                         catch
                         {
@@ -434,7 +439,7 @@ namespace WpfApplication1
 
         private void button1_Click_2(object sender, RoutedEventArgs e)
         {
-            globalVars.detector = new newDynamicDetection(loadANN.Text.ToString());
+            globalVars.detector = new newDynamicDetection(loadANN.Text.ToString(), loadANNValence.Text.ToString());
 
             try { globalVars.detector.updateInterval = Convert.ToInt32(updateIntervalText.Text.ToString()); }
             catch

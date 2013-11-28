@@ -84,7 +84,7 @@ namespace WpfApplication1
         {
 
 
-            System.Windows.MessageBox.Show("op " + numberOfOutputs + " inp " + inputCount, "detection error", MessageBoxButton.OK, MessageBoxImage.Error);
+            System.Windows.MessageBox.Show("inp: " + inputCount+" op: " + numberOfOutputs, "detection error", MessageBoxButton.OK, MessageBoxImage.Error);
 
             ActivationNetwork network = new ActivationNetwork((IActivationFunction)new SigmoidFunction(sigmoidAlphaValue), this.inputCount, globalVars.hiddenCount, numberOfOutputs);
 
@@ -229,8 +229,8 @@ namespace WpfApplication1
         public static void saveANNtoFile(String filename = "savedNeuralNet.dat") 
         {
             if (savedNet != null)
-                savedNet.Save(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) +@"\"+ filename);
-        
+                //savedNet.Save(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) +@"\"+ filename);
+                savedNet.Save(filename);
         }
 
         public Learner(String str)

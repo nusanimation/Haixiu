@@ -361,11 +361,20 @@ namespace WpfApplication1
         }
 
 
-        public newDynamicDetection(String s)
+        public newDynamicDetection(String s, String s1)
         {
-            mRecog = new recognizer(s);
-            posRecog = new recognizer(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\"+"positionANN.dat");
-            //this.feature = featureExtractor();
+
+            try
+            {
+                mRecog = new recognizer(s);
+                //posRecog = new recognizer(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\" + "positionANN.dat");
+                posRecog = new recognizer(s1);
+            }
+            catch
+            {
+                System.Windows.MessageBox.Show("Some problem with the Saved Networks. CHeck your files.", "ANN init error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+                //this.feature = featureExtractor();
             this.iter = 0;
             movementFeatureList = new List<double[]>();
             positionFeatureList = new List<double[]>();
@@ -436,7 +445,7 @@ namespace WpfApplication1
                                 //Console.Write(d[i]+", ");
                             }
                             finalFeature[i] /= movementFeatureList.Count;
-                            Console.WriteLine("ffm: "+finalFeature[i]);
+                            //Console.WriteLine("ffm: "+finalFeature[i]);
                         }
 
 
@@ -450,7 +459,7 @@ namespace WpfApplication1
                                 //Console.Write(d[i]+", ");
                             }
                             finalFeature1[i] /= positionFeatureList.Count;
-                            Console.WriteLine("ffp: " + finalFeature1[i]);
+                            //Console.WriteLine("ffp: " + finalFeature1[i]);
                         }
 
                         //Console.WriteLine(featureList.Count);
