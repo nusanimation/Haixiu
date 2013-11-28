@@ -102,7 +102,7 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                     <Label Content="Iterations" Height="28" Name="label3" Width="79" Canvas.Left="287" Canvas.Top="254" />
                     <Label Content="0" Height="32" Name="iterCount" Width="71" Canvas.Left="366" Canvas.Top="254" />
                     <Label Content="Error" Height="28" Name="label4" Width="56" Canvas.Left="287" Canvas.Top="280" />
-                    <Button Content="Save NewuralNet" Height="62" Name="saveANNbutn" Width="177" IsEnabled="False" Click="button1_Click_1" Canvas.Left="533" Canvas.Top="250" />
+                    <Button Content="Save NewuralNet" Height="62" Name="saveANNbutn" Width="177" IsEnabled="True" Click="button1_Click_1" Canvas.Left="533" Canvas.Top="250" />
                     <ComboBox Height="25" HorizontalAlignment="Left"  Canvas.Left="273" Canvas.Top="200" Name="comboBox1" VerticalAlignment="Top" Width="120" SelectionChanged="comboBox1_SelectionChanged" >
                         <ComboBoxItem Content="Bipolar Sigmoid" Tag="1"  />
                         <ComboBoxItem Content="Binary Sigmoid" Tag="2"  />

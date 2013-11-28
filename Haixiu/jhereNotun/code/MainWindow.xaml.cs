@@ -311,6 +311,9 @@ namespace WpfApplication1
 
 
                 globalVars.typeOfLearning = Convert.ToInt32(((ComboBoxItem)comboBox1.SelectedItem).Tag.ToString());
+
+                startLearning.Content = "Busy Learning";
+                startLearning.IsEnabled = false;
                 Learner L = new Learner(textBox1.Text.ToString());
                 
             }
@@ -343,8 +346,22 @@ namespace WpfApplication1
 
         private void button1_Click_1(object sender, RoutedEventArgs e)
         {
-            //Save ANN Button
-            Learner.saveANNtoFile();
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.FileName = "savedNeuralNetwork"; // Default file name
+            dlg.DefaultExt = ".dat"; // Default file extension
+            dlg.Filter = "Data Files (.dat)|*.dat"; // Filter files by extension
+
+            // Show save file dialog box
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Process save file dialog box results
+            if (result == true)
+            {
+                // Save document
+                string filename = dlg.FileName;
+                //Learner.saveANNtoFile(filename);
+                System.Windows.MessageBox.Show(filename, dlg.FileName, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
         }
 
