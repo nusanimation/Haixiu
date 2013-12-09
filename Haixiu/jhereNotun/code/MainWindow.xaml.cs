@@ -45,7 +45,8 @@ namespace WpfApplication1
            // populateListbox();
 
             globalVars.resultChart = lineChart;
-            globalVars.lseries = arousalpoints;
+            globalVars.aseries = arousalpoints;
+            globalVars.vseries = valencepoints;
             int gpt;
             try { gpt = (int)Convert.ToInt32(graphPt.Text.ToString()); }
             catch
@@ -86,7 +87,9 @@ namespace WpfApplication1
             globalVars.annIter = iterCount;
             globalVars.saveANNbutn = saveANNbutn;
             //globalVars.jerkLabel = jerkLabel;
-            globalVars.AnnOutput = outputLabel;
+            globalVars.ValenceOutput = outputLabel;
+            globalVars.ArousalOutput = label14;
+
             globalVars.typeOfLearning = 1;//= Convert.ToInt32(typeofann.Text.ToString());
             try { globalVars.outputCount = Convert.ToInt32(outputCount.Text.ToString()); }
             catch
@@ -262,13 +265,24 @@ namespace WpfApplication1
 
                         //elow, this was for just a test purpose
                         //recognizer R = new recognizer(loadANN.Text.ToString());
-
+                        
                         globalVars.detector = new newDynamicDetection(loadANN.Text.ToString(), loadANNValence.Text.ToString());
                         try { globalVars.detector.updateInterval = Convert.ToInt32(updateIntervalText.Text.ToString()); }
                         catch
                         {
                             System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); globalVars.detector.updateInterval = 10;
                         }
+
+
+                        /////very experimental. previous detector for arousal
+
+                        globalVars.detector1 = new dynamicDetection(loadANN.Text.ToString());
+                        try { globalVars.detector1.updateInterval = Convert.ToInt32(updateIntervalText.Text.ToString()); }
+                        catch
+                        {
+                            System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); globalVars.detector.updateInterval = 10;
+                        }
+
 
 
                         globalVars.detectorOn = true;
@@ -290,6 +304,7 @@ namespace WpfApplication1
                 gfDelay.IsEnabled = true;
 
                 globalVars.detector.stopDetection();
+                globalVars.detector1.stopDetection();
                 globalVars.detectorOn = false;
                 startDetect.Content = "Start Emotion Detection";
             }
@@ -443,15 +458,59 @@ namespace WpfApplication1
 
         private void button1_Click_2(object sender, RoutedEventArgs e)
         {
-            globalVars.detector = new newDynamicDetection(loadANN.Text.ToString(), loadANNValence.Text.ToString());
+            /* This is the small button for check
+             it now will save the valence and arousal in file.
+             */
 
-            try { globalVars.detector.updateInterval = Convert.ToInt32(updateIntervalText.Text.ToString()); }
-            catch
+            //globalVars.detector = new newDynamicDetection(loadANN.Text.ToString(), loadANNValence.Text.ToString());
+
+            //try { globalVars.detector.updateInterval = Convert.ToInt32(updateIntervalText.Text.ToString()); }
+            //catch
+            //{
+            //    System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); globalVars.detector.updateInterval=10;
+            //}
+            //globalVars.detectorOn = true;
+            //globalVars.detector.test();
+
+
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.FileName = "ArousalValenceResult"; // Default file name
+            dlg.DefaultExt = ".txt"; // Default file extension
+            dlg.Filter = "Text Files (.txt)|*.txt"; // Filter files by extension
+
+            // Show save file dialog box
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Process save file dialog box results
+            if (result == true)
             {
-                System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); globalVars.detector.updateInterval=10;
+                // Save document
+                string filename = dlg.FileName;
+                System.IO.StreamWriter file;
+                try
+                {
+                    file = new System.IO.StreamWriter(filename);
+
+                    while (true)
+                    {
+                        string s = globalVars.avq.Dequeue();
+                        if (s == null)
+                            break;
+                        else
+                            file.WriteLine(s);
+                    }
+
+                    file.Close();
+                }
+                 
+                catch
+                {
+                    System.Windows.MessageBox.Show("Writing the AV results failed", "file creation error or the stack is full", MessageBoxButton.OK, MessageBoxImage.Exclamation); 
+                }
+
             }
-            globalVars.detectorOn = true;
-            globalVars.detector.test();
+
+
         }
 
         private void checkBox3_Checked(object sender, RoutedEventArgs e)
@@ -678,7 +737,12 @@ namespace WpfApplication1
                     //feature detection
 
                     if (globalVars.detectorOn == true)
+                    {
+                        ////// strictly experimental
+                        globalVars.detector1.detect(skeleData);
+
                         globalVars.detector.pollFeatures(skeleData);
+                    }
                 }
                 
             }

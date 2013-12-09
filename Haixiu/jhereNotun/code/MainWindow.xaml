@@ -138,16 +138,16 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                 <Canvas Name="detectCanvas">
                     <Label Content="D e t e c t i n g   M o d u l e" IsEnabled="False" Name="label8" FlowDirection="RightToLeft" Grid.Row="1" Canvas.Left="558" Canvas.Top="88" />
                     <Label Content="Arousal ANN" Height="23" IsEnabled="False" Name="label9" Width="108" Grid.Row="1" Canvas.Left="301" Canvas.Top="202" />
-                    <TextBox Height="23" Name="loadANN" Width="197" Text="C:\Users\workshop\Desktop\work\data\savedNeuralNet.dat" Grid.Row="1" Canvas.Left="301" Canvas.Top="222" FlowDirection="RightToLeft" />
+                    <TextBox Height="23" Name="loadANN" Width="197" Text="C:\Users\workshop\Desktop\work\data\Arousal.dat" Grid.Row="1" Canvas.Left="301" Canvas.Top="222" FlowDirection="RightToLeft" />
                     <Button Content="lookUp" Height="30" Name="button2" Width="49" Click="button2_Click_1" Grid.Row="1" Canvas.Left="502" Canvas.Top="219" />
                     
                     <Label Content="Valence ANN" Height="23" IsEnabled="False" Name="arousalannlabel" Width="108" Grid.Row="1" Canvas.Left="301" Canvas.Top="250" />
-                    <TextBox Height="23" Name="loadANNValence" Width="197" Text="C:\Users\workshop\Desktop\work\data\savedValenceNeuralNet.dat" Grid.Row="1" Canvas.Left="301" Canvas.Top="272" TextWrapping="NoWrap" TextAlignment="Left" HorizontalContentAlignment="Right" FlowDirection="RightToLeft" />
+                    <TextBox Height="23" Name="loadANNValence" Width="197" Text="C:\Users\workshop\Desktop\work\data\Valence.dat" Grid.Row="1" Canvas.Left="301" Canvas.Top="272" TextWrapping="NoWrap" TextAlignment="Left" HorizontalContentAlignment="Right" FlowDirection="RightToLeft" />
                     <Button Content="lookUp" Height="30" Name="button2valence" Width="49"  Grid.Row="1" Canvas.Left="502" Canvas.Top="266" Click="button2valence_Click" />
                     
                     <Button Content="Start Emotion Detection" Height="85" Name="startDetect" Width="157" Click="button4_Click" Grid.Row="1" Canvas.Left="561" Canvas.Top="213" />
                     <CheckBox Content="Rapid Update" Height="24" Name="checkBox3" IsChecked="True" Checked="checkBox3_Checked" Unchecked="checkBox3_Unchecked" Grid.Row="1" Grid.Column="2" Canvas.Left="561" Canvas.Top="176" />
-                    <Button Content="Test" Height="11" Name="button1" Width="15" Click="button1_Click_2" Grid.Row="1" Canvas.Left="697" Canvas.Top="194" />
+                    <Button Content="save" Height="25" Name="button1" Width="35" Click="button1_Click_2" Grid.Row="1" Canvas.Left="680" Canvas.Top="184" />
                     <Label Content="Normalization window: " Height="29" Name="label13" Width="139" Grid.Row="1" Canvas.Left="299" Canvas.Top="118" />
                     <TextBox Height="22" Name="updateIntervalText" Width="25" Text="10" Grid.Row="1" Canvas.Left="432" Canvas.Top="120" />
                     <Label Content="Sec" Height="29" Name="label114" Width="42" Grid.Row="1" Canvas.Left="456" Canvas.Top="118" />
@@ -225,8 +225,8 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                     <charting:LineSeries Background="Yellow" Name="a5" DependentValuePath="Value" IndependentValuePath="Key" ItemsSource="{Binding [4]}" IsSelectionEnabled="True" />
                 </charting:Chart>
                 <CheckBox Content="rHand Charting toggle" Height="16" Name="rHandChartingOn" Canvas.Left="26" Canvas.Top="268" IsChecked="False" Checked="rHandChartingOn_Checked" Unchecked="rHandChartingOn_Unchecked" />
-                <Label Content="Arousal and Valence:" Height="50" Name="label14" Width="325" FontSize="32" FontWeight="Bold" Grid.Row="1" Canvas.Left="763" Canvas.Top="236" />
-                <Label Content="..." Height="64" Name="outputLabel" Width="330" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="24" Canvas.Left="1095" Canvas.Top="234" />
+                <Label Content="Arousal :" Height="50" Name="label14" Width="325" FontSize="32" FontWeight="Bold" Grid.Row="1" Canvas.Left="840" Canvas.Top="236" Foreground="#FF3E5AF2" />
+                <Label Content="Valence : " Height="64" Name="outputLabel" Width="330" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="32" Canvas.Left="1117" Canvas.Top="234" Foreground="#FFE20E0E" />
             </Canvas>
 
 

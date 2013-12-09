@@ -33,13 +33,13 @@ namespace WpfApplication1
         public static bool kinectOn, logSkele, detectorOn, reducedRecord=true;
 
         public static Chart resultChart;
-        public static LineSeries lseries;
+        public static LineSeries aseries, vseries;
         public static resultViz chart, chart2;
 
         public static featureExtractor fExtract;
 
 
-        public static Label a1/*, a2*/, error, annIter, /*jerkLabel,*/ AnnOutput;
+        public static Label a1/*, a2*/, error, annIter, /*jerkLabel,*/ ValenceOutput, ArousalOutput;
         public static Button saveANNbutn;
 
         public static Thread ANNthread;
@@ -47,7 +47,48 @@ namespace WpfApplication1
         public static int typeOfLearning, outputCount, hiddenCount;
 
         public static newDynamicDetection detector;
+        public static dynamicDetection detector1;
+
+        /// <summary>
+        /// //special purpose
+        /// </summary>
+        public static double idk;
+
+        public static AVQueue avq; 
 
         public static double screenH, screenW;
+    }
+
+
+    public class AVQueue
+    {
+        /// <summary>Used as a lock target to ensure thread safety.</summary>
+        //private readonly Locker _Locker = new Locker();
+
+        private readonly System.Collections.Generic.Queue<string> _Queue = new System.Collections.Generic.Queue<string>();
+
+        /// <summary></summary>
+        public void Enqueue(string item)
+        {
+            lock (this)
+            {
+                _Queue.Enqueue(item);
+            }
+        }
+        public string Dequeue()
+        {
+            string data;
+
+            lock (this)
+            {
+                if (_Queue.Count > 0)
+                {
+                    data = _Queue.Dequeue();
+                    return data;
+                }
+                else
+                    return null;
+            }
+        }
     }
 }

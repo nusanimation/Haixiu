@@ -234,11 +234,12 @@ namespace WpfApplication1
 
                     Console.WriteLine("output: " + output[0]);
                 }                
-                globalVars.AnnOutput.Content = val + "%";
+                //globalVars.ArousalOutput.Content = val + "%";
                 if (globalVars.chart != null)
                 {
 
-                    globalVars.chart.update(val);
+                    //globalVars.chart.update(val);
+                    globalVars.idk = val;
                 }
 
                 //preparing for he next iter of detection
@@ -366,7 +367,7 @@ namespace WpfApplication1
 
             try
             {
-                mRecog = new recognizer(s);
+                //mRecog = new recognizer(s);
                 //posRecog = new recognizer(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\" + "positionANN.dat");
                 posRecog = new recognizer(s1);
             }
@@ -483,16 +484,25 @@ namespace WpfApplication1
 
         public void detect(double [] movement, double[] position)
         {
+            if (globalVars.avq == null)
+                globalVars.avq = new AVQueue();
+
+
             double mVal, pVal;
             //mVal = sendToANN(movement, mRecog);
             mVal = -1;
             pVal = sendToANN(position, posRecog);
 
-            globalVars.AnnOutput.Content = "A: "+mVal + "% V: "+pVal;
             if (mVal != -2 && pVal != -2 && globalVars.chart != null)
             {
                 double[] asd = new double[2];
-                asd[0] = mVal; asd[1] = pVal;
+//                asd[0] = mVal; asd[1] = pVal;
+                /////strictly experimental
+                asd[0] = globalVars.idk; asd[1] = pVal;
+
+                globalVars.ArousalOutput.Content = "Arousal : " + asd[0]+" %";
+                globalVars.ValenceOutput.Content = "Valence : " + Math.Round(asd[1],2) + " %";
+                globalVars.avq.Enqueue(DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second + "    A: " + asd[0] + "% V: " + asd[1]);
                 globalVars.chart.update(asd);
             }
 
