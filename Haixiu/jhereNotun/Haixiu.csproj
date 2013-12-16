@@ -85,6 +85,7 @@
     </ApplicationDefinition>
     <Compile Include="code\confidence.cs" />
     <Compile Include="code\dynamicDetection.cs" />
+    <Compile Include="code\featureExtractor.cs" />
     <Compile Include="code\globalVars.cs" />
     <Compile Include="code\movementFeature.cs" />
     <Compile Include="code\NeuralNet.cs" />

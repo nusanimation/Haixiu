@@ -48,7 +48,8 @@ namespace WpfApplication1
 
         private int frame;//, interval;
         private double lowerThreshold, upperThreshold, surgeThreshold, interval;
-
+        JointID[] joints = new JointID[11]{ JointID.ElbowLeft, JointID.ElbowRight, JointID.HandLeft, JointID.HandRight, JointID.Head, JointID.ShoulderCenter, JointID.ShoulderLeft, JointID.ShoulderRight,
+ JointID.Spine, JointID.WristLeft, JointID.WristRight};
         public movementFeature()
         {
             this.interval = 0.2;
@@ -74,16 +75,16 @@ namespace WpfApplication1
         private void initFeature()
         {
 
-            feature = new features[20];
-            currFeature = new features[20];
-            prevFeature = new features[20];
-            prevPos = new coOrd[20];
-            prevSpeed = new double[20];
-            prevAcc = new double[20];
+            feature = new features[11];
+            currFeature = new features[11];
+            prevFeature = new features[11];
+            prevPos = new coOrd[11];
+            prevSpeed = new double[11];
+            prevAcc = new double[11];
 
             frame = 0;
 
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 11; i++)
             {
                 feature[i].pos.maxX.x = -100;
                 feature[i].pos.maxY.y = -100;
@@ -138,6 +139,8 @@ namespace WpfApplication1
 
         public void calculateAllFeatures(SkeletonData s, int frame)
         {
+
+
             this.frame = frame;
             //here the positions are being normalised wrt spine position
             if (baseZ == 0)
@@ -146,8 +149,10 @@ namespace WpfApplication1
                 this.baseY = s.Joints[JointID.Spine].Position.Y;
                 this.baseZ = s.Joints[JointID.Spine].Position.Z;
             }
+
             int i = 0;
-            foreach (JointID id in globalVars.jid)
+
+            foreach (JointID id in this.joints)
             {
                 //if(i==7)
                 calculateNodeFeatures(s.Joints[id], i);
@@ -246,7 +251,7 @@ namespace WpfApplication1
             speed = dist / interval;
             double speedSurge = (Math.Abs(speed - prevSpeed[i]) / prevSpeed[i]) * 100;
             //Console.WriteLine("speed: " + speed + "prevspeed: " + prevSpeed[i] + " surge: " + speedSurge);
-            if (speedSurge >= surgeThreshold)
+            if (speedSurge >= this.surgeThreshold)
             {
                 //calculate acceleration and jerk
                 double tempAcc = (speed - prevSpeed[i]) / interval;
@@ -258,7 +263,7 @@ namespace WpfApplication1
                 }
                 else
                 {
-                    feature[i].Dec += tempAcc;
+                    feature[i].Dec += - tempAcc;
                     feature[i].spikePerSecDcc++;
               //      Console.WriteLine("dcc: " + feature[i].Dec);
                 }
@@ -310,9 +315,10 @@ namespace WpfApplication1
 
         }
 
+
         public features[] getFeatures(double timeSlice)
         {
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 11; i++)
             {
                 feature[i].speed /= timeSlice;
                 feature[i].Acc /= feature[i].spikePerSecAcc;
@@ -321,6 +327,28 @@ namespace WpfApplication1
                 feature[i].spikePerSecDcc /= timeSlice;
             }
 
+            //for (int index = 0; index < 11; index++)
+            //{
+            //    currFeature[index].speed = feature[index].speed - prevFeature[index].speed;
+            //    currFeature[index].Acc = feature[index].Acc - prevFeature[index].Acc;
+            //    currFeature[index].Dec = feature[index].Dec - prevFeature[index].Dec;
+            //    currFeature[index].spikePerSecAcc = feature[index].spikePerSecAcc - prevFeature[index].spikePerSecAcc;
+            //    currFeature[index].spikePerSecDcc = feature[index].spikePerSecDcc - prevFeature[index].spikePerSecDcc;
+            //    currFeature[index].jerk = feature[index].jerk - prevFeature[index].jerk;
+
+            //    prevFeature[index] = feature[index];
+
+            //    currFeature[index].speed /= timeSlice;
+            //    currFeature[index].Acc /= currFeature[index].spikePerSecAcc;
+            //    currFeature[index].Dec /= currFeature[index].spikePerSecDcc;
+            //    //Console.WriteLine("\nv=" + currFeature[index].speed + " f= " + currFeature[index].Acc + " index= " + currFeature[index].spikePerSecAcc +  " -f= " + currFeature[index].Dec+" dcc= " + currFeature[index].spikePerSecDcc);
+
+            //    currFeature[index].spikePerSecAcc /= timeSlice;
+            //    currFeature[index].spikePerSecDcc /= timeSlice;
+            //}
+
+
+//            features[] f = currFeature;
             features[] f = feature;
             initFeature();
 
@@ -477,213 +505,5 @@ namespace WpfApplication1
      * 
      */
 
-    
-    public class featureExtractor : mFeatureType
-    {
-        public int frames;
-        private int framedelay, getfeaturedelay;
-        private movementFeature mfeat;
-        private posFeature posfeat;
-
-        features dispFeat;
-
-        double lowerThreshold = 0.005;
-        double upperThreshold = 1;
-        double surgeThreshold = 10;
-
-        resultViz chart;
-
-        public FeatQueue posQ, mQ;
-        public Thread thrd;
-
-        public featureExtractor(double updateFeatureDelay, double getFeatureDelay, double lowerThreshold,
-                                double upperThreshold,
-                                double surgeThreshold, resultViz chart)
-        {
-
-            this.frames = 0;
-            this.chart = chart;
-
-            this.framedelay = (int)Math.Round(Math.Abs(updateFeatureDelay) * 30);
-            this.getfeaturedelay = (int)Math.Round(Math.Abs(getFeatureDelay) * 30);
-
-            this.lowerThreshold = lowerThreshold;
-            this.upperThreshold = upperThreshold;
-            this.surgeThreshold = surgeThreshold;
-
-            mfeat = new movementFeature(lowerThreshold, upperThreshold, surgeThreshold, updateFeatureDelay, this.getfeaturedelay);
-            posfeat = new posFeature();
-
-            posQ = new FeatQueue();
-            mQ = new FeatQueue();
-
-            //this next thread is seeking the posFeature queue and trying to print posfeatures as it arrives.
-
-            thrd = new Thread(() =>
-            {
-                double[] pData;
-                while (globalVars.chartRighthand == true)
-                {
-                    pData = posQ.Dequeue();
-                    if (pData != null)
-                    {
-                        //for (int i = 0; i < pData.Length; i++)
-                        //{
-                        //    Console.Write(pData[i] + ",");
-                        //}
-                        //Console.Write("\n");
-
-                    }
-                }
-            }
-            );
-            thrd.Name = "pos feature writer thread";
-            thrd.IsBackground = true;
-            
-            //thrd.Start();
-
-        }
-
-        public void saveFeatures()
-        {
-
-            savemFeat();
-            saveposFeat();
-
-        }
-
-        private void savemFeat()
-        {
-            double[] pData;
-            fileWriter f = new fileWriter(null, "newMovementFeature.csv");
-
-            do
-            {
-                pData = mQ.Dequeue();
-
-                if (pData != null)
-                {
-                    Console.Write(pData + ",");
-                    f.WritefeatureSet(pData);
-                }
-            } while ((pData != null));
-
-            //Console.Write("\n");
-            f.closeFile();
-        }
-
-        private void saveposFeat()
-        {
-            double[] pData;
-            fileWriter f = new fileWriter(null, "newPosfeature.csv");
-
-            do
-            {
-                pData = posQ.Dequeue();
-
-                if (pData != null)
-                {
-                    Console.Write(pData + ",");
-                    f.WritefeatureSet(pData);
-                }
-            } while ((pData != null));
-
-            //Console.Write("\n");
-            f.closeFile();
-        }
-
-        public void getFeatures(SkeletonData s, Label l)
-        {
-            this.frames++;
-
-            if (this.frames % (this.framedelay) == 0)
-            {
-                mfeat.calculateAllFeatures(s, this.frames);
-            }
-            if (this.frames % (this.getfeaturedelay) == 0)
-            {
-                this.dispFeat = mfeat.getFeatures(7, 2);
-                double[] data = featureToArray(this.dispFeat);
-                if(globalVars.chartRighthand==true)
-                    this.chart.update(data);
-                l.Content = this.dispFeat.speed;
-                this.frames = 0;
-
-                if (globalVars.logFeatures == true)
-                {
-                    mQ.Enqueue(data);
-                }
-
-            }
-
-            if (globalVars.logFeatures == true && this.frames % 30 == 0) // 4 times per second
-            {
-                //posFeature.pDist pfeat;
-                //pfeat = posfeat.getPosFeature(s);
-                double[] posData = posfeat.getPosFeature(s);
-                posQ.Enqueue(posData);
-
-            }
-
-        }
-
-        public double[][] getRawDataStream(SkeletonData s)
-        {
-            /*calling this function means we only need detection and nothing else.*/
-            globalVars.logFeatures = false;
-            globalVars.chartRighthand = false;
-
-
-            this.frames++;
-            double[] data=null, posData = null;
-
-            if (this.frames % (this.framedelay) == 0)
-            {
-                mfeat.calculateAllFeatures(s, this.frames);
-
-                this.dispFeat = mfeat.getFeatures(7, 2);
-                data = featureToArray(this.dispFeat);
-                this.frames = 0;
-                
-                //posFeature.pDist pfeat;
-                //pfeat = posfeat.getPosFeature(s);
-                posData = posfeat.getPosFeature(s);
-                //posQ.Enqueue(posData);
-
-            }
-            double [][] r = new double[2][];// { data, posData };
-            r[0] = data;
-            r[1] = posData;
-            //if (data != null && posData != null) 
-            //System.Windows.MessageBox.Show("Ans 0 " + r[0][0] + " ans 1 " + r[1][0], "chk", MessageBoxButton.OK, MessageBoxImage.Error);
-            return (r);
-        }
-
-        //public double[] featureToArray(posFeature.pDist feature)
-        //{
-        //    double[] d = new double[7];
-        //    d[0] = feature.lsh;
-        //    d[1] = feature.rsh;
-        //    d[2] = feature.lel;
-        //    d[3] = feature.rel;
-        //    d[4] = feature.lh;
-        //    d[5] = feature.rh;
-        //    d[6] = feature.head;
-
-        //    return d;
-
-        //}
-        public double[] featureToArray(features feature)
-        {
-            double[] d = new double[5];
-            d[0] = feature.speed;
-            d[1] = feature.Acc/10;
-            d[2] = feature.Dec/10;
-            d[3] = 0;
-            d[4] = 0;
-
-            return d;
-        }
-
-    }
+  
 }
