@@ -178,14 +178,28 @@ namespace WpfApplication1
             {
                 mfeat.calculateAllFeatures(s, this.frames);
 
-                this.dispFeat = mfeat.getFeatures(7, 2);
-                data = featureToArray(this.dispFeat);
-                this.frames = 0;
+                //this.dispFeat = mfeat.getFeatures(7, 2);
+                //data = featureToArray(this.dispFeat);
+                //this.frames = 0;
 
                 //posFeature.pDist pfeat;
                 //pfeat = posfeat.getPosFeature(s);
-                posData = posfeat.getPosFeature(s);
+
                 //posQ.Enqueue(posData);
+
+            }
+            if (this.frames % (this.getfeaturedelay) == 0)
+            {
+                //              this.dispFeat = mfeat.getFeatures(7, this.getfeaturedelay);
+                //              double[] data = featureToArray(this.dispFeat);
+
+                this.completeMovementFeatures = mfeat.getFeatures(this.getfeaturedelay / 30);
+                data = featureToArray(this.completeMovementFeatures);
+
+                //                if (globalVars.chartRighthand == true)
+                //                    this.chart.update(data);
+                posData = posfeat.getPosFeature(s);
+                this.frames = 0;
 
             }
             double[][] r = new double[2][];// { data, posData };
@@ -228,11 +242,11 @@ namespace WpfApplication1
             int counter=0;
             for (int i = 0; i < feature.Length; i++)
             {
-                d[counter++] = feature[i].speed;
-                d[counter++] = feature[i].Acc;
-                d[counter++] = feature[i].Dec;
+                d[counter++] = feature[i].speed/10;
+                d[counter++] = feature[i].Acc/10;
+                d[counter++] = feature[i].Dec/10;
                 //d[counter++] = feature[i].jerk;
-                d[counter++] = (feature[i].spikePerSecAcc + feature[i].spikePerSecDcc);
+                d[counter++] = (feature[i].spikePerSecAcc + feature[i].spikePerSecDcc)/10;
 
             }
 

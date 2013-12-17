@@ -276,12 +276,12 @@ namespace WpfApplication1
 
                         /////very experimental. previous detector for arousal
 
-                        globalVars.detector1 = new dynamicDetection(loadANN.Text.ToString());
-                        try { globalVars.detector1.updateInterval = Convert.ToInt32(updateIntervalText.Text.ToString()); }
-                        catch
-                        {
-                            System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); globalVars.detector.updateInterval = 10;
-                        }
+                        //globalVars.detector1 = new dynamicDetection(loadANN.Text.ToString());
+                        //try { globalVars.detector1.updateInterval = Convert.ToInt32(updateIntervalText.Text.ToString()); }
+                        //catch
+                        //{
+                        //    System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); globalVars.detector1.updateInterval = 10;
+                        //}
 
 
 
@@ -304,7 +304,7 @@ namespace WpfApplication1
                 gfDelay.IsEnabled = true;
 
                 globalVars.detector.stopDetection();
-                globalVars.detector1.stopDetection();
+                //globalVars.detector1.stopDetection();
                 globalVars.detectorOn = false;
                 startDetect.Content = "Start Emotion Detection";
             }
@@ -739,7 +739,7 @@ namespace WpfApplication1
                     if (globalVars.detectorOn == true)
                     {
                         ////// strictly experimental
-                        globalVars.detector1.detect(skeleData);
+                        //globalVars.detector1.detect(skeleData);
 
                         globalVars.detector.pollFeatures(skeleData);
                     }

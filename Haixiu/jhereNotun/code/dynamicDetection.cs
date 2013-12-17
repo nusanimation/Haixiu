@@ -367,7 +367,7 @@ namespace WpfApplication1
 
             try
             {
-                //mRecog = new recognizer(s);
+                mRecog = new recognizer(s);
                 //posRecog = new recognizer(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\" + "positionANN.dat");
                 posRecog = new recognizer(s1);
             }
@@ -392,6 +392,8 @@ namespace WpfApplication1
                 //System.Windows.MessageBox.Show("Ans 0 " + ans[0] + " ans 1 "+ans[1], "feature extractor error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return -3;
             }
+
+
             if (movement == null)
                 movement = new double[ans[0].Length];
             for (int i = 0; i < ans[0].Length; i++)
@@ -418,13 +420,14 @@ namespace WpfApplication1
                 {
                     temp1[i] = movement[i] / movementTick;
                     movement[i] = 0;
+                    Console.Write(temp1[i] + " ");
                 }
                 movementTick = 0;
                 Console.WriteLine();
                 for (int i = 0; i < position.Length; i++)
                 {
                     temp2[i] = position[i] / positionTick;
-                    Console.Write(temp2[i] + " ");
+                    //Console.Write(temp2[i] + " ");
                     position[i] = 0;
                 }
                 positionTick = 0;
@@ -489,8 +492,8 @@ namespace WpfApplication1
 
 
             double mVal, pVal;
-            //mVal = sendToANN(movement, mRecog);
-            mVal = -1;
+            mVal = sendToANN(movement, mRecog);
+            //mVal = -1;
             pVal = sendToANN(position, posRecog);
 
             if (mVal != -2 && pVal != -2 && globalVars.chart != null)
@@ -498,9 +501,12 @@ namespace WpfApplication1
                 double[] asd = new double[2];
 //                asd[0] = mVal; asd[1] = pVal;
                 /////strictly experimental
-                asd[0] = globalVars.idk; asd[1] = pVal;
+                //asd[0] = globalVars.idk; asd[1] = pVal;
+                if (mVal == double.NaN)
+                    mVal = -1;
+                asd[0] = mVal; asd[1] = pVal;
 
-                globalVars.ArousalOutput.Content = "Arousal : " + asd[0]+" %";
+                globalVars.ArousalOutput.Content = "Arousal : " + Math.Round(asd[0], 2) + " %";
                 globalVars.ValenceOutput.Content = "Valence : " + Math.Round(asd[1],2) + " %";
                 globalVars.avq.Enqueue(DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second + "    A: " + asd[0] + "% V: " + asd[1]);
                 globalVars.chart.update(asd);
