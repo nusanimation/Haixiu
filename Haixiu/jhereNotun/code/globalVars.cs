@@ -39,6 +39,8 @@ namespace WpfApplication1
         public static featureExtractor fExtract;
 
 
+        public static Canvas Circumplex;
+
         public static Label a1/*, a2*/, error, annIter, /*jerkLabel,*/ ValenceOutput, ArousalOutput;
         public static Button saveANNbutn;
 

@@ -17,7 +17,7 @@ using System.Windows.Shapes;
 using Microsoft.Research.Kinect.Nui;
 using Coding4Fun.Kinect.Wpf;
 using Microsoft.Xna.Framework;
-
+using System.IO;
 
 using System.Threading;
 
@@ -47,6 +47,8 @@ namespace WpfApplication1
             globalVars.resultChart = lineChart;
             globalVars.aseries = arousalpoints;
             globalVars.vseries = valencepoints;
+            globalVars.Circumplex = vgaCanvas;
+            
             int gpt;
             try { gpt = (int)Convert.ToInt32(graphPt.Text.ToString()); }
             catch
@@ -60,7 +62,52 @@ namespace WpfApplication1
             slider1.Value = (double)-3;
             slider1.Maximum = Camera.ElevationMaximum;
             slider1.Minimum = Camera.ElevationMinimum;
+
         }
+
+        public void SaveCanvasToFile(String filename = "snap.bmp")
+        {
+            Canvas surface = canvas1;
+        // Save current canvas transform
+            Transform transform = surface.LayoutTransform;
+            // reset current transform (in case it is scaled or rotated)
+            surface.LayoutTransform = null;
+
+            double w, h;
+            w = surface.Width; h = surface.Height;
+            // Get the size of canvas
+            Size size = new Size(surface.Width, surface.Height);
+            // Measure and arrange the surface
+            // VERY IMPORTANT
+            surface.Measure(size);
+            surface.Arrange(new Rect(size));
+
+            // Create a render bitmap and push the surface to it
+            RenderTargetBitmap renderBitmap = 
+            new RenderTargetBitmap(
+                (int)size.Width, 
+                (int)size.Height, 
+                96d, 
+                96d, 
+                PixelFormats.Pbgra32);
+            renderBitmap.Render(surface);
+
+            // Create a file stream for saving image
+            using (FileStream outStream = new FileStream(filename, FileMode.Create))
+            {
+                // Use png encoder for our data
+                PngBitmapEncoder encoder = new PngBitmapEncoder();
+                // push the rendered bitmap to it
+                encoder.Frames.Add(BitmapFrame.Create(renderBitmap));
+                // save the data to the stream
+                encoder.Save(outStream);
+            }
+
+            // Restore previously saved layout
+            surface.LayoutTransform = transform;
+            surface.Arrange(new Rect(387,18,w,h));
+        }
+
         private void populateListbox(){
             ObservableCollection <string> list1 = new ObservableCollection<string>();
             list1.Add("BipolarSigmoid");
@@ -189,6 +236,8 @@ namespace WpfApplication1
             valueChanged = 0;
         }
 
+        //record feature
+
         private void button1_Click(object sender, RoutedEventArgs e)
         {
             
@@ -205,7 +254,7 @@ namespace WpfApplication1
             }
 
         }
-
+        //stop recording
         private void button2_Click(object sender, RoutedEventArgs e)
         {
             //stop recording
@@ -249,7 +298,7 @@ namespace WpfApplication1
 
         }
 
-
+        ///Start Emotion Detection
         private void button4_Click(object sender, RoutedEventArgs e)
         {
             ///Start Emotion Detection
@@ -310,7 +359,7 @@ namespace WpfApplication1
             }
 
         }
-
+        ///Start Learning
         private void button3_Click(object sender, RoutedEventArgs e)
         {
             //String[] str =textBox1.Text.ToString().Split(':');
@@ -368,6 +417,7 @@ namespace WpfApplication1
                 loadANN.Text = browse1.FileName;
         }
 
+        ///save ANN
         private void button1_Click_1(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
@@ -456,6 +506,7 @@ namespace WpfApplication1
             globalVars.reducedRecord = false;
         }
 
+        //saves the detected values. all of them in abstract fileWriter.
         private void button1_Click_2(object sender, RoutedEventArgs e)
         {
             /* This is the small button for check
@@ -615,6 +666,41 @@ namespace WpfApplication1
         {
             globalVars.chartRighthand = false;
         }
+
+        private void snap_Click(object sender, RoutedEventArgs e)
+        {
+            string fname = "snap.bmp";
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\";
+            string filename = sanityChk(path, fname.Split('.')[0], "." + fname.Split('.')[1]);
+            
+            SaveCanvasToFile(filename);
+            //Canvas.SetLeft(canvas1, 387);
+            //Canvas.SetTop(canvas1, 18);
+            //this.Show();
+        }
+        private String sanityChk(String a, String b, String c)
+        {
+            String temp;
+            temp = b;
+
+            for (int i = 1; i <= 10000; ++i)
+            {
+                if (!File.Exists(a + temp + c))
+                    return (a + temp + c);
+                temp = b + i;
+                if (i >= 9950)
+                {
+                    string messageBoxText = "You might want to copy your feature files and start again";
+                    string caption = "geez. too many feature files";
+                    MessageBoxButton button = MessageBoxButton.OK;
+                    MessageBoxImage icon = MessageBoxImage.Exclamation;
+                    MessageBox.Show(messageBoxText, caption, button, icon);
+                }
+
+            }
+            return (a + temp + c);
+        }
+
 
     }
 
@@ -833,10 +919,19 @@ namespace WpfApplication1
     {
         Ellipse a;
         Point offset;
-        public dot() 
+        public dot(int type = 1) 
         {
-            this.a = new Ellipse { Height = 15, Width = 15, StrokeThickness = 4, Stroke = Brushes.Red };
-            this.offset = new Point(0,0);
+            if (type == 1)
+            {
+                this.a = new Ellipse { Height = 15, Width = 15, StrokeThickness = 4, Stroke = Brushes.Red };
+                this.offset = new Point(0, 0);
+            }
+            else if (type == 2)
+            {
+                this.a = new Ellipse { Height = 6, Width = 6, StrokeThickness = 3, Stroke = Brushes.Blue};
+                this.offset = new Point(0, 0);
+            }
+
         }
         public dot(int h, int w, int thick, Brush b, Point offset)
         {
@@ -849,19 +944,43 @@ namespace WpfApplication1
             Canvas.SetLeft(this.a, p.X + offset.X);
             Canvas.SetTop(this.a, p.Y + offset.Y);
             c.Children.Add(this.a);
-            
+
+        }
+        public void refreshDot(Canvas c, Point p)
+        {
+            Canvas.SetLeft(this.a, p.X + offset.X);
+            Canvas.SetTop(this.a, p.Y + offset.Y);
+            //c.Children.Add(this.a);
+
         }
     }
 
     public class bone
     {
-        Line l;
-        public bone()
+        Line line;
+        Point offset;
+        public bone(int x1, int y1, int x2, int y2)
         {
-            this.l = new Line();
+            this.line = new Line();
+            line.Stroke = Brushes.Black;
+            line.StrokeThickness = 3;
+            line.X1 = x1;
+            line.X2 = x2;
+            line.Y1 = y1;
+            line.Y2 = y2;
+        }
+        public void moveBone(Canvas c, Point p)
+        {
+            Canvas.SetLeft(this.line, p.X + offset.X);
+            Canvas.SetTop(this.line, p.Y + offset.Y);
+            c.Children.Add(this.line);
 
         }
+        public void drawBone(Canvas c)
+        {
 
+            c.Children.Add(this.line);
+        }
     }
 
 }

@@ -130,21 +130,21 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                     <TextBox FlowDirection="RightToLeft" Height="25" IsEnabled="False" Name="textBox2" Text="0" Width="77" Margin="625,164,769,150" Grid.Row="2" />
                     <TextBox Height="25" Name="valenceLev" Width="77" IsEnabled="False" FlowDirection="RightToLeft" Text="0" Margin="416,164,978,150" Grid.Row="2" />
                     <TextBox Height="25" Name="arousalLev" Width="77" Text="0" FlowDirection="RightToLeft" Margin="522,164,872,150" Grid.Row="2" />
-                    
+
                 </Canvas>
 
-                
+
 
                 <Canvas Name="detectCanvas">
                     <Label Content="D e t e c t i n g   M o d u l e" IsEnabled="False" Name="label8" FlowDirection="RightToLeft" Grid.Row="1" Canvas.Left="558" Canvas.Top="88" />
                     <Label Content="Arousal ANN" Height="23" IsEnabled="False" Name="label9" Width="108" Grid.Row="1" Canvas.Left="301" Canvas.Top="202" />
                     <TextBox Height="23" Name="loadANN" Width="197" Text="C:\Users\workshop\Desktop\work\data\Arousal.dat" Grid.Row="1" Canvas.Left="301" Canvas.Top="222" FlowDirection="RightToLeft" />
                     <Button Content="lookUp" Height="30" Name="button2" Width="49" Click="button2_Click_1" Grid.Row="1" Canvas.Left="502" Canvas.Top="219" />
-                    
+
                     <Label Content="Valence ANN" Height="23" IsEnabled="False" Name="arousalannlabel" Width="108" Grid.Row="1" Canvas.Left="301" Canvas.Top="250" />
                     <TextBox Height="23" Name="loadANNValence" Width="197" Text="C:\Users\workshop\Desktop\work\data\Valence.dat" Grid.Row="1" Canvas.Left="301" Canvas.Top="272" TextWrapping="NoWrap" TextAlignment="Left" HorizontalContentAlignment="Right" FlowDirection="RightToLeft" />
                     <Button Content="lookUp" Height="30" Name="button2valence" Width="49"  Grid.Row="1" Canvas.Left="502" Canvas.Top="266" Click="button2valence_Click" />
-                    
+
                     <Button Content="Start Emotion Detection" Height="85" Name="startDetect" Width="157" Click="button4_Click" Grid.Row="1" Canvas.Left="561" Canvas.Top="213" />
                     <CheckBox Content="Rapid Update" Height="24" Name="checkBox3" IsChecked="True" Checked="checkBox3_Checked" Unchecked="checkBox3_Unchecked" Grid.Row="1" Grid.Column="2" Canvas.Left="561" Canvas.Top="176" />
                     <Button Content="save" Height="25" Name="button1" Width="35" Click="button1_Click_2" Grid.Row="1" Canvas.Left="680" Canvas.Top="184" />
@@ -186,11 +186,11 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                 <Canvas Name="canvas2" Background="#40484848" Canvas.Left="6" Canvas.Top="16" Height="235" Width="330"></Canvas>
                 <Label Content="Kinect State" Height="27" Name="label2" Width="84" VerticalAlignment="Top" Canvas.Left="591" Canvas.Top="272" />
                 <Image Name="image1" Stretch="Fill" Source="/Haixiu;component/images/red.png" ImageFailed="image1_ImageFailed"  Canvas.Left="662" Canvas.Top="277" Height="20" Width="24" />
-                <CheckBox Content="Log Kinect Skele" Height="19" HorizontalAlignment="Left"  Name="checkBox1" VerticalAlignment="Top" Click="checkBox1_Click" Checked="checkBox1_Checked" Canvas.Left="230" Canvas.Top="277" />
-                <Label Content="0" Height="28" HorizontalAlignment="Left"  Name="labelFrame" VerticalAlignment="Top" Width="91" Canvas.Left="68" Canvas.Top="272" />
-                <Label Content="Frames" Height="28" HorizontalAlignment="Left"  Name="label5" VerticalAlignment="Top" Canvas.Left="6" Canvas.Top="272" />
-                <Canvas Height="244" Name="vgaCanvas" Width="328" Background="Black" Canvas.Left="6" Canvas.Top="18" />
+                <CheckBox Content="Log Kinect Skele" Height="19" HorizontalAlignment="Left"  Name="checkBox1" VerticalAlignment="Top" Click="checkBox1_Click" Checked="checkBox1_Checked" Canvas.Left="389" Canvas.Top="277" />
                 <Label Content="spine pos: " Name="label1" FontSize="14" Canvas.Left="9" Canvas.Top="305" Width="680" Background="#FFE8E8E8" />
+                <Label Content="0" Height="28" HorizontalAlignment="Left"  Name="labelFrame" VerticalAlignment="Top" Width="91" Canvas.Left="594" Canvas.Top="306" />
+                <Label Content="Frames" Height="28" HorizontalAlignment="Left"  Name="label5" VerticalAlignment="Top" Canvas.Left="530" Canvas.Top="306" />
+                <Canvas Height="244" Name="vgaCanvas" Width="330" Background="#FFECF7FC" Canvas.Left="6" Canvas.Top="16" />
 
             </Canvas>
         </Grid>
@@ -202,7 +202,7 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                 <ColumnDefinition Width="10" />
             </Grid.ColumnDefinitions>
             <Canvas Name="chartHolder" Grid.Column="1" Background="Transparent">
-                <charting:Chart Background="White" BorderThickness="0" Height="291" Name="featureChart" VerticalAlignment="Top" Canvas.Top="245" MinWidth="1464" Canvas.Left="8">
+                <charting:Chart Background="White" BorderThickness="0" Height="120" Name="featureChart" VerticalAlignment="Top" Canvas.Top="416" MinWidth="1464" Canvas.Left="8">
                     <charting:Chart.Axes>
                         <charting:LinearAxis Interval="0.1" Maximum="2" Minimum="-1" Orientation="Y" ShowGridLines="True" Title="Level of Arousal">
                             <charting:LinearAxis.Background>
@@ -224,14 +224,14 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                     <charting:LineSeries Background="BlueViolet" Name="a4" DependentValuePath="Value" IndependentValuePath="Key" ItemsSource="{Binding [3]}" IsSelectionEnabled="True" />
                     <charting:LineSeries Background="Yellow" Name="a5" DependentValuePath="Value" IndependentValuePath="Key" ItemsSource="{Binding [4]}" IsSelectionEnabled="True" />
                 </charting:Chart>
-                <CheckBox Content="rHand Charting toggle" Height="16" Name="rHandChartingOn" Canvas.Left="26" Canvas.Top="268" IsChecked="False" Checked="rHandChartingOn_Checked" Unchecked="rHandChartingOn_Unchecked" />
-                <Label Content="Arousal :" Height="50" Name="label14" Width="325" FontSize="32" FontWeight="Bold" Grid.Row="1" Canvas.Left="840" Canvas.Top="236" Foreground="#FF3E5AF2" />
-                <Label Content="Valence : " Height="64" Name="outputLabel" Width="330" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="32" Canvas.Left="1117" Canvas.Top="234" Foreground="#FFE20E0E" />
+                <CheckBox Content="rHand Charting toggle" Height="16" Name="rHandChartingOn" Canvas.Left="26" Canvas.Top="438" IsChecked="False" Checked="rHandChartingOn_Checked" Unchecked="rHandChartingOn_Unchecked" />
+                <Label Content="Arousal :" Height="50" Name="label14" Width="325" FontSize="32" FontWeight="Bold" Grid.Row="1" Canvas.Left="840" Canvas.Top="3" Foreground="#FF3E5AF2" />
+                <Label Content="Valence : " Height="64" Name="outputLabel" Width="330" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="32" Canvas.Left="1117" Canvas.Top="0" Foreground="#FFE20E0E" />
             </Canvas>
 
 
 
-            <chartingToolkit:Chart Name="lineChart" Background="Transparent" BorderThickness="0"   MinWidth="1459" HorizontalAlignment="Left" VerticalAlignment="Top" Height="267" Canvas.Left="2" Canvas.Top="2" HorizontalContentAlignment="Center" Width="Auto" Grid.Column="1" >
+            <chartingToolkit:Chart Name="lineChart" Background="Transparent" BorderThickness="0"   MinWidth="1459" HorizontalAlignment="Left" VerticalAlignment="Top" Height="436" Canvas.Left="2" Canvas.Top="2" HorizontalContentAlignment="Center" Width="Auto" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,18,0,0">
                 <charting:Chart.LegendStyle>
                     <Style TargetType="datavis:Legend">
                         <Setter Property="Width" Value="0" />
@@ -256,7 +256,23 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                 </chartingToolkit:Chart.Axes>
             </chartingToolkit:Chart>
         </Grid>
+        <Label Content="Postitive Valence" Height="28" HorizontalAlignment="Right" Name="val1" VerticalAlignment="Top" Margin="0,253,385,0" Grid.Row="2" />
+        <Label Content="Negative Valence" Height="28" HorizontalAlignment="Left" Name="val0" VerticalAlignment="Top" Margin="756,253,0,0" Grid.Row="2" />
+        <Label Name="aro0" Margin="748,150,623,89" Grid.Row="2" VerticalContentAlignment="Top">
 
+            <Label.Content>Low Arousal</Label.Content>
+            <Label.LayoutTransform>
+                <RotateTransform Angle="-90"/>
+            </Label.LayoutTransform>
+        </Label>
+        
+        <Label Name="aro1" Margin="748,45,623,244" VerticalContentAlignment="Top" Grid.RowSpan="3">
+
+            <Label.Content>High Arousal</Label.Content>
+            <Label.LayoutTransform>
+                <RotateTransform Angle="-90"/>
+            </Label.LayoutTransform>
+        </Label>
     </Grid>
 
 </Window>

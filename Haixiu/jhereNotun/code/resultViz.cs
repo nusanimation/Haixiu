@@ -15,6 +15,8 @@ namespace WpfApplication1
 {
     public class resultViz
     {
+        circumplexViz cViz;
+
         int length = 30, iter=0;
         private ObservableCollection<KeyValuePair<string, double>>[] Power;
         private ObservableCollection<KeyValuePair<string, double>> Power1;
@@ -22,6 +24,7 @@ namespace WpfApplication1
         Chart chart;
         public resultViz(Chart chart, int GraphLength, int numOfLines = 1) {
 
+            cViz = new circumplexViz();
 
             if (numOfLines > 2)
             {
@@ -72,6 +75,8 @@ namespace WpfApplication1
                     Style dataPointStyle1 = GetNewDataPointStyle(2);
                     //series.DataPointStyle = dataPointStyle;
                     globalVars.vseries.DataPointStyle = dataPointStyle1;
+
+
                 }
             }
             else if (numOfLines == 1)
@@ -160,6 +165,8 @@ namespace WpfApplication1
 
         public void update(double[] data)
         {
+            cViz.draw(data[0], data[1]);
+
             iter++;
             int i;
             for (i = 0; i < data.Length; i++)
@@ -178,4 +185,52 @@ namespace WpfApplication1
         }
 
     }
+
+    public class circumplexViz
+    {
+        bone xAxis, yAxis;
+        dot d;
+        Point prev;
+        bool reddot = true;
+        public circumplexViz()
+        {
+            Point p1 = new Point(0,200);
+            Point p2 = new Point(0,0);
+            
+            d = new dot(1);
+            xAxis = new bone(13,0,13,244);
+            yAxis = new bone(3,234,330,234);
+            //a = new dot(7, 7, 2, Brushes.Red, off);
+            xAxis.drawBone(globalVars.Circumplex);
+            yAxis.drawBone(globalVars.Circumplex);
+            // xAxis.moveBone(globalVars.Circumplex, p2);
+
+            
+        }
+
+        public void draw(double Arousal, double Valence)
+        {
+            //dot a;
+            Point p = new Point(Convert.ToInt16(Valence*3.3),Convert.ToInt16( (100 - Arousal)*2.25));
+            Point off = new Point(0, 5);
+            if (reddot == true)
+            {
+                d.moveDot(globalVars.Circumplex, p);
+                reddot = false;
+            }
+            else
+            {
+                d.refreshDot(globalVars.Circumplex, p);
+                dot pdot = new dot(2);
+                pdot.moveDot(globalVars.Circumplex, prev);
+            }
+
+
+            prev = p;
+        }
+
+    
+    }
+
+
 }
