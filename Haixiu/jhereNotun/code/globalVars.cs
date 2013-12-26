@@ -30,7 +30,7 @@ namespace WpfApplication1
         public static bool logFeatures, chartRighthand;
         public static startFeatures gFeature;
         //public static movementFeature mFeature;
-        public static bool kinectOn, logSkele, detectorOn, reducedRecord=true;
+        public static bool kinectOn=false, logSkele, detectorOn, reducedRecord=true;
 
         public static Chart resultChart;
         public static LineSeries aseries, vseries;

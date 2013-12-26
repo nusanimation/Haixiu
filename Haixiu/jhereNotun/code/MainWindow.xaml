@@ -84,7 +84,8 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                     <Label Content="Surge Threshold: " Height="29" Name="setlab5" Width="163" Grid.Row="1" Canvas.Left="299" Canvas.Top="230" />
                     <TextBox Height="22" Name="surgeThres" Width="25" Text="10"  Grid.Row="1" Canvas.Left="400" Canvas.Top="232" />
                     <Label Content="%" Height="29" Name="setlab6" Width="42" Grid.Row="1" Canvas.Left="429" Canvas.Top="231" />
-
+                    <Button Content="Refrech Kinecct to reinitialize" Grid.Row="2" Height="23" HorizontalAlignment="Left" Margin="589,202,0,0" Name="refreshKinect" VerticalAlignment="Top" Width="210" Canvas.Top="66" Canvas.Left="-286" Click="refreshKinect_Click" />
+                    <CheckBox Content="Log Kinect Skele" Height="19" HorizontalAlignment="Left"  Name="checkBox1" VerticalAlignment="Top" Click="checkBox1_Click" Checked="checkBox1_Checked" Canvas.Left="537" Canvas.Top="273" />
                 </Canvas>
 
 
@@ -169,7 +170,7 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
 
 
 
-            <Canvas Name="VisualizationCanvas" Height="Auto" Width="Auto" Grid.Column="2"  Grid.Row="1">
+            <Canvas Name="VisualizationCanvas" Height="Auto" Width="Auto" Grid.Column="2"  Grid.Row="1" Background="#FFDF2B2B">
                 <Label Content="SensorAngle" Height="24" HorizontalAlignment="Left"  Name="label12" VerticalAlignment="Top" Width="53" FontSize="8" Canvas.Left="333" Canvas.Top="6" />
                 <Slider Height="210" HorizontalAlignment="Left"  Name="slider1" VerticalAlignment="Top" Width="42" Orientation="Vertical" SmallChange="1" TickPlacement="Both" ValueChanged="slider1_ValueChanged" MouseLeave="slider1_MouseLeave" AutoToolTipPlacement="BottomRight" Canvas.Left="344" Canvas.Top="40" />
                 <Canvas Height="244" HorizontalAlignment="Left"  Name="canvas1" VerticalAlignment="Top" Width="310" Canvas.Left="387" Canvas.Top="18">
@@ -184,14 +185,49 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
 
                 </Canvas>
                 <Canvas Name="canvas2" Background="#40484848" Canvas.Left="6" Canvas.Top="16" Height="235" Width="330"></Canvas>
-                <Label Content="Kinect State" Height="27" Name="label2" Width="84" VerticalAlignment="Top" Canvas.Left="591" Canvas.Top="272" />
-                <Image Name="image1" Stretch="Fill" Source="/Haixiu;component/images/red.png" ImageFailed="image1_ImageFailed"  Canvas.Left="662" Canvas.Top="277" Height="20" Width="24" />
-                <CheckBox Content="Log Kinect Skele" Height="19" HorizontalAlignment="Left"  Name="checkBox1" VerticalAlignment="Top" Click="checkBox1_Click" Checked="checkBox1_Checked" Canvas.Left="389" Canvas.Top="277" />
+                <Label Content="Kinect State" Height="27" Name="label2" Width="84" VerticalAlignment="Top" Canvas.Left="599" Canvas.Top="266" />
+                <Label Content="Live Skeleton Tracking" Height="27" Name="skeleton" Width="137" VerticalAlignment="Top" Canvas.Left="487" Canvas.Top="14" Foreground="#FF67F219" />
+
+                
+                <Image Name="image1" Stretch="Fill" Source="/Haixiu;component/images/red.png" ImageFailed="image1_ImageFailed"  Canvas.Left="673" Canvas.Top="270" Height="20" Width="24" />
+
                 <Label Content="spine pos: " Name="label1" FontSize="14" Canvas.Left="9" Canvas.Top="305" Width="680" Background="#FFE8E8E8" />
-                <Label Content="0" Height="28" HorizontalAlignment="Left"  Name="labelFrame" VerticalAlignment="Top" Width="91" Canvas.Left="594" Canvas.Top="306" />
+                <Label Content="000000000000" Height="28" HorizontalAlignment="Left"  Name="labelFrame" VerticalAlignment="Top" Width="91" Canvas.Left="594" Canvas.Top="306" />
                 <Label Content="Frames" Height="28" HorizontalAlignment="Left"  Name="label5" VerticalAlignment="Top" Canvas.Left="530" Canvas.Top="306" />
                 <Canvas Height="244" Name="vgaCanvas" Width="330" Background="#FFECF7FC" Canvas.Left="6" Canvas.Top="16" />
 
+                <Label Content="Normal" Height="28" HorizontalAlignment="Right" Name="normal" VerticalAlignment="Top" Margin="0,119,531,0" Grid.Row="2" Canvas.Top="4" Canvas.Left="144" />
+
+                <Label Content="Anger" Height="28" HorizontalAlignment="Right" Name="anger" VerticalAlignment="Top" Margin="0,53,613,0" Grid.Row="2" Canvas.Left="53" Canvas.Top="19" />
+
+                <Label Content="OverJoyed" Height="28" HorizontalAlignment="Right" Name="overjoy" VerticalAlignment="Top" Margin="0,40,385,0" Grid.Row="2" Canvas.Left="254" />
+
+                <Label Content="Sad" Height="28" HorizontalAlignment="Right" Name="Sad" VerticalAlignment="Top" Margin="0,175,613,0" Grid.Row="2" Canvas.Left="74" Canvas.Top="21" />
+
+                <Label Content="Happy" Height="28" HorizontalAlignment="Right" Name="happy" VerticalAlignment="Top" Margin="0,108,439,0" Grid.Row="2" Canvas.Left="229" Canvas.Top="-17" />
+
+
+                <Label Content="Postitive Valence" Height="28" HorizontalAlignment="Right" Name="val1" VerticalAlignment="Top" Margin="0,253,385,0" Grid.Row="2" Canvas.Left="244" />
+                <Label Content="Negative Valence" Height="28" HorizontalAlignment="Left" Name="val0" VerticalAlignment="Top"  Grid.Row="2" Canvas.Left="1" Canvas.Top="250" />
+                <Label Name="aro0"  Grid.Row="2" VerticalContentAlignment="Top" Canvas.Top="171" Canvas.Left="-3">
+
+                    <Label.Content>Low Arousal</Label.Content>
+                    <Label.LayoutTransform>
+                        <RotateTransform Angle="-90"/>
+                    </Label.LayoutTransform>
+                </Label>
+
+                <Label Name="aro1"  VerticalContentAlignment="Top" Grid.RowSpan="3" Canvas.Left="-3" Canvas.Top="13">
+
+                    <Label.Content>High Arousal</Label.Content>
+                    <Label.LayoutTransform>
+                        <RotateTransform Angle="-90"/>
+                    </Label.LayoutTransform>
+                </Label>
+                <Label Content="Affectionate" Height="28" HorizontalAlignment="Right" Margin="0,184,419,0" Name="label10" VerticalAlignment="Top" Grid.Row="2" Canvas.Left="230" Canvas.Top="-6" />
+
+                <Label Content="Emotion Tracking Chart" Height="27" Name="emotionchart" Width="137" VerticalAlignment="Top" Canvas.Left="99" Canvas.Top="10" Foreground="#FFF21C55" />
+<Button Content="snapshot of skeleton" Grid.Row="2" Height="23" HorizontalAlignment="Left"  Name="snap" VerticalAlignment="Top" Width="136" Canvas.Top="268" Canvas.Left="387" Click="snap_Click" />
             </Canvas>
         </Grid>
 
@@ -256,23 +292,6 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                 </chartingToolkit:Chart.Axes>
             </chartingToolkit:Chart>
         </Grid>
-        <Label Content="Postitive Valence" Height="28" HorizontalAlignment="Right" Name="val1" VerticalAlignment="Top" Margin="0,253,385,0" Grid.Row="2" />
-        <Label Content="Negative Valence" Height="28" HorizontalAlignment="Left" Name="val0" VerticalAlignment="Top" Margin="756,253,0,0" Grid.Row="2" />
-        <Label Name="aro0" Margin="748,150,623,89" Grid.Row="2" VerticalContentAlignment="Top">
-
-            <Label.Content>Low Arousal</Label.Content>
-            <Label.LayoutTransform>
-                <RotateTransform Angle="-90"/>
-            </Label.LayoutTransform>
-        </Label>
-        
-        <Label Name="aro1" Margin="748,45,623,244" VerticalContentAlignment="Top" Grid.RowSpan="3">
-
-            <Label.Content>High Arousal</Label.Content>
-            <Label.LayoutTransform>
-                <RotateTransform Angle="-90"/>
-            </Label.LayoutTransform>
-        </Label>
     </Grid>
 
 </Window>

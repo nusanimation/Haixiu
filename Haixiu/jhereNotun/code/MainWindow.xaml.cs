@@ -35,20 +35,20 @@ namespace WpfApplication1
         kinectApp app;
         int valueChanged = 0;
         private featureExtractor fExtract;
-      
+
         private bool learnOn, recordOn, detectOn, settingsOn;
 
         public MainWindow()
         {
-            
+
             InitializeComponent();
-           // populateListbox();
+            // populateListbox();
 
             globalVars.resultChart = lineChart;
             globalVars.aseries = arousalpoints;
             globalVars.vseries = valencepoints;
             globalVars.Circumplex = vgaCanvas;
-            
+
             int gpt;
             try { gpt = (int)Convert.ToInt32(graphPt.Text.ToString()); }
             catch
@@ -68,7 +68,7 @@ namespace WpfApplication1
         public void SaveCanvasToFile(String filename = "snap.bmp")
         {
             Canvas surface = canvas1;
-        // Save current canvas transform
+            // Save current canvas transform
             Transform transform = surface.LayoutTransform;
             // reset current transform (in case it is scaled or rotated)
             surface.LayoutTransform = null;
@@ -83,12 +83,12 @@ namespace WpfApplication1
             surface.Arrange(new Rect(size));
 
             // Create a render bitmap and push the surface to it
-            RenderTargetBitmap renderBitmap = 
+            RenderTargetBitmap renderBitmap =
             new RenderTargetBitmap(
-                (int)size.Width, 
-                (int)size.Height, 
-                96d, 
-                96d, 
+                (int)size.Width,
+                (int)size.Height,
+                96d,
+                96d,
                 PixelFormats.Pbgra32);
             renderBitmap.Render(surface);
 
@@ -105,11 +105,12 @@ namespace WpfApplication1
 
             // Restore previously saved layout
             surface.LayoutTransform = transform;
-            surface.Arrange(new Rect(387,18,w,h));
+            surface.Arrange(new Rect(387, 18, w, h));
         }
 
-        private void populateListbox(){
-            ObservableCollection <string> list1 = new ObservableCollection<string>();
+        private void populateListbox()
+        {
+            ObservableCollection<string> list1 = new ObservableCollection<string>();
             list1.Add("BipolarSigmoid");
             list1.Add("BinarySigmoid");
             comboBox1.ItemsSource = list1;
@@ -127,7 +128,7 @@ namespace WpfApplication1
             globalVars.screenH = ((System.Windows.Controls.Panel)Application.Current.MainWindow.Content).ActualHeight;
             globalVars.screenW = ((System.Windows.Controls.Panel)Application.Current.MainWindow.Content).ActualWidth;
 
-            
+
             globalVars.a1 = labelFrame;
             //globalVars.a2 = wDistLabel;
             globalVars.error = AnnError;
@@ -155,7 +156,7 @@ namespace WpfApplication1
             learnCanvas.Visibility = System.Windows.Visibility.Hidden;
             settingsCanvas.Visibility = System.Windows.Visibility.Hidden;
 
-            double a,b,c,d,ef;
+            double a, b, c, d, ef;
 
             try { a = Math.Abs(Convert.ToDouble(lThres.Text.ToString())); }
             catch
@@ -166,10 +167,10 @@ namespace WpfApplication1
             try { b = Math.Abs(Convert.ToDouble(uThres.Text.ToString())); }
             catch
             {
-                System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); b=1;
+                System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); b = 1;
             }
 
-            if (a >= b) 
+            if (a >= b)
             {
                 System.Windows.MessageBox.Show("Lower Threshold can not be greater or eqal to Upper Threshold. Reverting back to default Values of 0.005 and 1", "you moron.", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 lThres.Text = "0.005";
@@ -181,7 +182,7 @@ namespace WpfApplication1
             try { c = Math.Abs(Convert.ToDouble(surgeThres.Text.ToString())); }
             catch
             {
-                System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); c=10;
+                System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); c = 10;
             }
 
             try { d = Math.Abs(Convert.ToDouble(ufDelay.Text.ToString())); }
@@ -240,7 +241,7 @@ namespace WpfApplication1
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            
+
             //record feature
             if (globalVars.kinectOn == true)
             {
@@ -261,7 +262,7 @@ namespace WpfApplication1
             globalVars.logFeatures = false;
             /*"this is not needed now"*/
             //globalVars.gFeature.saveFeatures();
-            
+
             fExtract.saveFeatures();
 
             recordFeature.IsEnabled = true;
@@ -275,19 +276,19 @@ namespace WpfApplication1
 
         private void checkBox1_Click(object sender, RoutedEventArgs e)
         {
-        //    if (checkBox1.IsChecked == true)
-        //        globalVars.logSkele = true;
-        //    else
-        //        globalVars.logSkele = false;
+            //    if (checkBox1.IsChecked == true)
+            //        globalVars.logSkele = true;
+            //    else
+            //        globalVars.logSkele = false;
         }
 
         private void checkBox1_Checked(object sender, RoutedEventArgs e)
         {
-        //    if (checkBox1.IsChecked == true)
-        //        globalVars.logSkele = true;
-        //    else
-        //        globalVars.logSkele = false;
-            
+            //    if (checkBox1.IsChecked == true)
+            //        globalVars.logSkele = true;
+            //    else
+            //        globalVars.logSkele = false;
+
         }
         private void button2valence_Click(object sender, RoutedEventArgs e)
         {
@@ -314,7 +315,7 @@ namespace WpfApplication1
 
                         //elow, this was for just a test purpose
                         //recognizer R = new recognizer(loadANN.Text.ToString());
-                        
+
                         globalVars.detector = new newDynamicDetection(loadANN.Text.ToString(), loadANNValence.Text.ToString());
                         try { globalVars.detector.updateInterval = Convert.ToInt32(updateIntervalText.Text.ToString()); }
                         catch
@@ -388,9 +389,10 @@ namespace WpfApplication1
                 startLearning.Content = "Busy Learning";
                 startLearning.IsEnabled = false;
                 Learner L = new Learner(textBox1.Text.ToString());
-                
+
             }
-            catch {
+            catch
+            {
                 System.Windows.MessageBox.Show("Enter a filename", "meh.", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -402,9 +404,9 @@ namespace WpfApplication1
 
         private void browsebtn_Click(object sender, RoutedEventArgs e)
         {
-            
+
             System.Windows.Forms.OpenFileDialog browse = new System.Windows.Forms.OpenFileDialog();
-            
+
             if (browse.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 textBox1.Text = browse.FileName;
         }
@@ -443,7 +445,7 @@ namespace WpfApplication1
         {
             try
             {
-                if (ArousalChkbx.IsChecked == true )
+                if (ArousalChkbx.IsChecked == true)
                 {
                     arousalLev.IsEnabled = true;
                 }
@@ -458,7 +460,7 @@ namespace WpfApplication1
 
         private void valenceChkbx_Checked(object sender, RoutedEventArgs e)
         {
-                valenceLev.IsEnabled = true;
+            valenceLev.IsEnabled = true;
         }
 
         private void ArousalChkbx_Unchecked(object sender, RoutedEventArgs e)
@@ -479,8 +481,8 @@ namespace WpfApplication1
 
         private void valenceChkbx_Unchecked(object sender, RoutedEventArgs e)
         {
-               
-                valenceLev.IsEnabled = false;
+
+            valenceLev.IsEnabled = false;
 
         }
 
@@ -491,7 +493,7 @@ namespace WpfApplication1
                 try { globalVars.detector.updateInterval = Convert.ToInt32(updateIntervalText.Text.ToString()); }
                 catch
                 {
-                    System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); globalVars.detector.updateInterval=10;
+                    System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); globalVars.detector.updateInterval = 10;
                 }
             }
         }
@@ -553,10 +555,10 @@ namespace WpfApplication1
 
                     file.Close();
                 }
-                 
+
                 catch
                 {
-                    System.Windows.MessageBox.Show("Writing the AV results failed", "file creation error or the stack is full", MessageBoxButton.OK, MessageBoxImage.Exclamation); 
+                    System.Windows.MessageBox.Show("Writing the AV results failed", "file creation error or the stack is full", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
 
             }
@@ -611,7 +613,7 @@ namespace WpfApplication1
             DetectMenu.Foreground = Brushes.Gainsboro;
             advancedMenu.Foreground = Brushes.Gainsboro;
 
-            detectCanvas.Visibility = System.Windows.Visibility.Hidden;    
+            detectCanvas.Visibility = System.Windows.Visibility.Hidden;
             recordCanvas.Visibility = System.Windows.Visibility.Visible;
             learnCanvas.Visibility = System.Windows.Visibility.Hidden;
             settingsCanvas.Visibility = System.Windows.Visibility.Hidden;
@@ -672,7 +674,7 @@ namespace WpfApplication1
             string fname = "snap.bmp";
             string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\";
             string filename = sanityChk(path, fname.Split('.')[0], "." + fname.Split('.')[1]);
-            
+
             SaveCanvasToFile(filename);
             //Canvas.SetLeft(canvas1, 387);
             //Canvas.SetTop(canvas1, 18);
@@ -701,286 +703,21 @@ namespace WpfApplication1
             return (a + temp + c);
         }
 
-
-    }
-
-
-
-
-    /*Achtung: This is the main kinect app which extracts the kinect output*/
-
-
-
-
-    public class kinectApp //: MainWindow
-    {
-        fileWriter file;
-        startFeatures features;
-        
-
-        private Runtime kinect;
-        private Canvas canvas, topCanvas;
-        Label spinePos;
-        featureExtractor fExtractor;
-        
-        public kinectApp(Canvas c, Canvas top, Label l, Image i, featureExtractor featExtractor)
+        private void refreshKinect_Click(object sender, RoutedEventArgs e)
         {
-            //update the feature
- 
-            this.fExtractor = featExtractor;            
-            this.features  = new startFeatures();
-            
-            globalVars.gFeature = features;
-            //globalVars.mFeature = 
-
-
-            this.file = new fileWriter(null);
-
-            
-            kinect = Runtime.Kinects[0];
-
-            if (kinect == null)
-            {
-                globalVars.kinectOn = false;
-                string messageBoxText = "Please Switch on the Kinect and connect the USB to the computer";
-                string caption = "Kinect Not Connected";
-                MessageBoxButton button = MessageBoxButton.YesNoCancel;
-                MessageBoxImage icon = MessageBoxImage.Error;
-                MessageBox.Show(messageBoxText, caption, button, icon);
-            }
-
-            kinect.Initialize(RuntimeOptions.UseDepthAndPlayerIndex | RuntimeOptions.UseSkeletalTracking | RuntimeOptions.UseColor);
-            if (kinect != null)
-            {
-                //l.Content = "Kinect on";
-                globalVars.kinectOn = true;
-                BitmapImage bi3 = new BitmapImage();
-                bi3.BeginInit();
-                bi3.UriSource = new Uri("/Haixiu;component/images/green.png", UriKind.Relative);
-                bi3.EndInit();
-                i.Source = bi3;
-
-                var parameters = new TransformSmoothParameters();
-                kinect.SkeletonEngine.TransformSmooth = true;
-
-                parameters.Smoothing = 0.5f;
-                parameters.Correction = 0.5f;
-                parameters.Prediction = 0.1f;
-                parameters.JitterRadius = 0.1f;
-                parameters.MaxDeviationRadius = 0.5f;
-
-                // Enable Smoothing
-                kinect.SkeletonEngine.SmoothParameters = parameters;
-                //sketopframeready
-                kinect.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(kinect_SkeletonFrameReady);
-                kinect.VideoFrameReady += new EventHandler<ImageFrameReadyEventArgs>(kinect_VideoFrameReady);
-
-                this.canvas = c;
-                this.topCanvas = top;
-                this.spinePos = l;
-            }
-
- 
-
-        }
-
-        void kinect_VideoFrameReady(object sender, ImageFrameReadyEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void kinect_SkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
-        {
-            foreach (SkeletonData skeleData in e.SkeletonFrame.Skeletons)
-            {
-                if (SkeletonTrackingState.Tracked == skeleData.TrackingState)
-                {
-                    this.canvas.Children.Clear();
-                    foreach (JointID i in globalVars.jid)
-                    {
-                        if (skeleData.TrackingState == SkeletonTrackingState.Tracked)
-                        {
-                            drawJoint(skeleData, i);
-                           // topView(skeleData, JointID.ShoulderLeft, JointID.ShoulderRight);
-
-                        }
-                    }
-                    if (globalVars.chartRighthand == true)
-                    {
-                        this.fExtractor.getFeatures(skeleData, spinePos);
-                        globalVars.a1.Content = this.fExtractor.frames;
-                    }
-
-                    //feature logging
-                    if (globalVars.logFeatures == true)
-                    {
-                        // replaced with neww featuee extractor
-                        //features.addFeatures(skeleData);
-                        this.fExtractor.getFeatures(skeleData, spinePos);
-                        globalVars.a1.Content = this.fExtractor.frames;
-
-                    }
-                    //feature detection
-
-                    if (globalVars.detectorOn == true)
-                    {
-                        ////// strictly experimental
-                        //globalVars.detector1.detect(skeleData);
-
-                        globalVars.detector.pollFeatures(skeleData);
-                    }
-                }
-                
-            }
-            //throw new NotImplementedException();
-        }
-        private void drawJoint(SkeletonData sd, JointID i)
-        {
-            Joint j;
-            dot a;
-            j = sd.Joints[i];
-            j = j.ScaleTo(310, 244, 1.6f,1.6f);
-            Point p = new Point(j.Position.X, j.Position.Y);
-            Point off = new Point(0, 5);
-
-            if (i == JointID.Head)
-            {
-                a = new dot(7,7,2,Brushes.Blue, off);
-            }
-
+            if (globalVars.kinectOn == false)
+                globalVars.kinectOn = app.initKinect(image1);
             else
-            {
-                a = new dot(7, 7, 2, Brushes.Red, off);
-            }
-            a.moveDot(canvas, p);
-        }
-        private void topView(SkeletonData sd, params JointID[] ids)
-        {
-
-            Joint j;
-            PointCollection points = new PointCollection(ids.Length);
-            topCanvas.Children.Clear();
-            foreach (JointID i in ids)
-            {
-                j= sd.Joints[i];
-                j = j.ScaleTo(340, 200, .7f, .7f);
-                Point p = new Point(j.Position.X, j.Position.Z.scale(1,200));
-                points.Add(p);
-            }
-            Polyline polyline = new Polyline();
-            polyline.Points = points;
-            polyline.Stroke = Brushes.Red;
-            polyline.StrokeThickness = 5;
-            Canvas.SetTop(polyline, sd.Joints[JointID.Spine].Position.Z.scale(1,35));
-            topCanvas.Children.Add(polyline);
-
-            //spinePos.Content = "righthandPos: X: " + sd.Joints[JointID.HandRight].Position.X + ", Y: " + sd.Joints[JointID.HandRight].Position.Y +", Z: " + sd.Joints[JointID.HandRight].Position.Z;
-            
-            if (globalVars.logSkele == true)
-            {
-                file.writeLog(sd);
-            }
-
+                System.Windows.MessageBox.Show("Kinect is already running buddy. No need to refresh", "Kinect is okay", MessageBoxButton.OK, MessageBoxImage.Information);
 
         }
 
-        public void stopApp()
-        {
-            globalVars.needToStopLearning = true;
-            this.kinect.Uninitialize();
-            if(globalVars.logSkele == true)
-                this.file.closeFile();
-            if (globalVars.ANNthread != null)
-                globalVars.ANNthread.Join();
-            globalVars.ANNthread = null;
-        }
 
-        public void moveCamera(int a)
-        {
-            this.kinect.NuiCamera.ElevationAngle = a;
-        }
-        
-    }
-
-
-
-    public static class depthConverter
-    {
-
-        public static float scale(this float a, int b, int off)
-            /*scales the depth co ord*/
-        {
-            return (a-b) * off;
-        }
-    }
-
-
-    public class dot
-    {
-        Ellipse a;
-        Point offset;
-        public dot(int type = 1) 
-        {
-            if (type == 1)
-            {
-                this.a = new Ellipse { Height = 15, Width = 15, StrokeThickness = 4, Stroke = Brushes.Red };
-                this.offset = new Point(0, 0);
-            }
-            else if (type == 2)
-            {
-                this.a = new Ellipse { Height = 6, Width = 6, StrokeThickness = 3, Stroke = Brushes.Blue};
-                this.offset = new Point(0, 0);
-            }
-
-        }
-        public dot(int h, int w, int thick, Brush b, Point offset)
-        {
-            this.a = new Ellipse { Height = h, Width = w, StrokeThickness = thick, Stroke = b };
-            this.offset = offset;
-        }
-
-        public void moveDot(Canvas c, Point p)
-        {
-            Canvas.SetLeft(this.a, p.X + offset.X);
-            Canvas.SetTop(this.a, p.Y + offset.Y);
-            c.Children.Add(this.a);
-
-        }
-        public void refreshDot(Canvas c, Point p)
-        {
-            Canvas.SetLeft(this.a, p.X + offset.X);
-            Canvas.SetTop(this.a, p.Y + offset.Y);
-            //c.Children.Add(this.a);
-
-        }
-    }
-
-    public class bone
-    {
-        Line line;
-        Point offset;
-        public bone(int x1, int y1, int x2, int y2)
-        {
-            this.line = new Line();
-            line.Stroke = Brushes.Black;
-            line.StrokeThickness = 3;
-            line.X1 = x1;
-            line.X2 = x2;
-            line.Y1 = y1;
-            line.Y2 = y2;
-        }
-        public void moveBone(Canvas c, Point p)
-        {
-            Canvas.SetLeft(this.line, p.X + offset.X);
-            Canvas.SetTop(this.line, p.Y + offset.Y);
-            c.Children.Add(this.line);
-
-        }
-        public void drawBone(Canvas c)
-        {
-
-            c.Children.Add(this.line);
-        }
     }
 
 }
+
+
+    /*Achtung: The main kinect app which extracts the kinect output has been shifted to kinectApp.cs*/
+
+

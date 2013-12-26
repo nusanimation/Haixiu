@@ -83,6 +83,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="code\kinectApp.cs" />
     <Compile Include="code\confidence.cs" />
     <Compile Include="code\dynamicDetection.cs" />
     <Compile Include="code\featureExtractor.cs" />
