@@ -250,40 +250,42 @@ namespace WpfApplication1
 
     public class dot
     {
-        Ellipse a;
+        public Ellipse ellipse;
         Point offset;
-        public dot(int type = 1) 
+        public dot(int type = 1, int name = 0) 
         {
             if (type == 1)
             {
-                this.a = new Ellipse { Height = 15, Width = 15, StrokeThickness = 4, Stroke = Brushes.Red };
+                this.ellipse = new Ellipse { Height = 15, Width = 15, StrokeThickness = 4, Stroke = Brushes.Red };
                 this.offset = new Point(0, 0);
             }
             else if (type == 2)
             {
-                this.a = new Ellipse { Height = 6, Width = 6, StrokeThickness = 3, Stroke = Brushes.Blue};
+                this.ellipse = new Ellipse { Height = 6, Width = 6, StrokeThickness = 3, Stroke = Brushes.Blue};
                 this.offset = new Point(0, 0);
             }
-
+            if (name != 0)
+                ellipse.Name = "dot" + name;
+    
         }
         public dot(int h, int w, int thick, Brush b, Point offset)
         {
-            this.a = new Ellipse { Height = h, Width = w, StrokeThickness = thick, Stroke = b };
+            this.ellipse = new Ellipse { Height = h, Width = w, StrokeThickness = thick, Stroke = b };
             this.offset = offset;
         }
 
         public void moveDot(Canvas c, Point p)
         {
-            Canvas.SetLeft(this.a, p.X + offset.X);
-            Canvas.SetTop(this.a, p.Y + offset.Y);
-            c.Children.Add(this.a);
+            Canvas.SetLeft(this.ellipse, p.X + offset.X);
+            Canvas.SetTop(this.ellipse, p.Y + offset.Y);
+            c.Children.Add(this.ellipse);
 
         }
         public void refreshDot(Canvas c, Point p)
         {
-            Canvas.SetLeft(this.a, p.X + offset.X);
-            Canvas.SetTop(this.a, p.Y + offset.Y);
-            //c.Children.Add(this.a);
+            Canvas.SetLeft(this.ellipse, p.X + offset.X);
+            Canvas.SetTop(this.ellipse, p.Y + offset.Y);
+            //c.Children.Add(this.ellipse);
 
         }
     }

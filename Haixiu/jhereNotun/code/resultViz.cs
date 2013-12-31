@@ -10,6 +10,9 @@ using System.Windows.Controls.DataVisualization;
 using System.Windows.Controls.DataVisualization.Charting;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Shapes;
+
 
 namespace WpfApplication1
 {
@@ -190,14 +193,21 @@ namespace WpfApplication1
     {
         bone xAxis, yAxis;
         dot d;
+        int counter;
+        int threshold;
         Point prev;
         bool reddot = true;
-        public circumplexViz()
+
+        dotQ dotqueue = new dotQ();
+
+
+        public circumplexViz(int threshold = 3)
         {
             Point p1 = new Point(0,200);
             Point p2 = new Point(0,0);
-            
-            d = new dot(1);
+            counter = 1;
+            this.threshold = threshold;
+            d = new dot(1, counter);
             xAxis = new bone(13,0,13,244);
             yAxis = new bone(3,234,330,234);
             //a = new dot(7, 7, 2, Brushes.Red, off);
@@ -206,31 +216,146 @@ namespace WpfApplication1
             // xAxis.moveBone(globalVars.Circumplex, p2);
 
             
+            
         }
 
         public void draw(double Arousal, double Valence)
         {
+            ++counter;
             //dot a;
-            Point p = new Point(Convert.ToInt16(Valence*3.3),Convert.ToInt16( (100 - Arousal)*2.25));
+            Point p = new Point(Math.Round(Valence*3.3),Math.Round( (100 - Arousal)*2.25));
             Point off = new Point(0, 5);
             if (reddot == true)
             {
                 d.moveDot(globalVars.Circumplex, p);
+                animate(d.ellipse);
                 reddot = false;
             }
             else
             {
-                d.refreshDot(globalVars.Circumplex, p);
-                dot pdot = new dot(2);
+                //d.refreshDot(globalVars.Circumplex, p);
+                smoothmove(d.ellipse, prev, p);
+                dot pdot = new dot(2);//, counter);
                 pdot.moveDot(globalVars.Circumplex, prev);
+                //animate(pdot.ellipse);
+                dotqueue.Enqueue(pdot);
+
+            }
+
+            if (dotqueue.numberOfDots >= this.threshold)
+            {
+                fadeOut(dotqueue.Dequeue().ellipse);
             }
 
 
             prev = p;
         }
 
-    
+
+        /**** Animation part ****/
+
+
+        public void animate(Ellipse elem)
+        {
+            DoubleAnimation myDoubleAnimation = new DoubleAnimation();
+            myDoubleAnimation.From = 1.0;
+            myDoubleAnimation.To = 0.0;
+            myDoubleAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.5));
+
+
+            myDoubleAnimation.AutoReverse = true;
+            myDoubleAnimation.RepeatBehavior = RepeatBehavior.Forever;
+
+
+            
+        Storyboard myStoryboard;
+        myStoryboard = new Storyboard();
+            myStoryboard.Children.Add(myDoubleAnimation);
+            //Storyboard.SetTargetName(myDoubleAnimation, elem.Name);
+            Storyboard.SetTarget(myDoubleAnimation, elem);
+            Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(Ellipse.OpacityProperty));
+            myStoryboard.Begin();
+        }
+
+        public void fadeOut(Ellipse elem)
+        {
+            DoubleAnimation myDoubleAnimation = new DoubleAnimation();
+            myDoubleAnimation.From = 1.0;
+            myDoubleAnimation.To = 0.0;
+            myDoubleAnimation.Duration = new Duration(TimeSpan.FromSeconds(1));
+
+
+            //myDoubleAnimation.AutoReverse = true;
+            //myDoubleAnimation.RepeatBehavior = RepeatBehavior.Forever;
+
+
+            
+        Storyboard myStoryboard;
+        myStoryboard = new Storyboard();
+            myStoryboard.Children.Add(myDoubleAnimation);
+            //Storyboard.SetTargetName(myDoubleAnimation, elem.Name);
+            Storyboard.SetTarget(myDoubleAnimation, elem);
+            Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(Ellipse.OpacityProperty));
+            myStoryboard.Begin();
+        }
+
+        public void smoothmove (Ellipse elem, Point prev, Point newpoint)
+        {
+            PointAnimation myDoubleAnimation = new PointAnimation();
+            myDoubleAnimation.From = prev;
+            myDoubleAnimation.To = newpoint;
+            myDoubleAnimation.Duration = new Duration(TimeSpan.FromSeconds(1));
+
+
+            //myDoubleAnimation.AutoReverse = true;
+            //myDoubleAnimation.RepeatBehavior = RepeatBehavior.Forever;
+
+
+
+            Storyboard myStoryboard;
+            myStoryboard = new Storyboard();
+            myStoryboard.Children.Add(myDoubleAnimation);
+            //Storyboard.SetTargetName(myDoubleAnimation, elem.Name);
+            Storyboard.SetTarget(myDoubleAnimation, elem);
+            Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(EllipseGeometry.CenterProperty));
+            myStoryboard.Begin();
+        }
     }
 
+
+    public class dotQ
+    {
+        /// <summary>Used as a lock target to ensure thread safety.</summary>
+        //private readonly Locker _Locker = new Locker();
+        public int numberOfDots = 0;
+
+        private readonly System.Collections.Generic.Queue<dot> _Queue = new System.Collections.Generic.Queue<dot>();
+
+        /// <summary></summary>
+        public void Enqueue(dot dot)
+        {
+            lock (this)
+            {
+                _Queue.Enqueue(dot);
+                numberOfDots++;
+            }
+        }
+        public dot Dequeue()
+        {
+            dot data;
+
+            lock (this)
+            {
+                if (_Queue.Count > 0)
+                {
+                    data = _Queue.Dequeue();
+                    return data;
+                    numberOfDots--;
+                }
+                else
+                    return null;
+            }
+        }
+    }
 
 }
