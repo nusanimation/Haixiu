@@ -502,9 +502,11 @@ namespace WpfApplication1
 //                asd[0] = mVal; asd[1] = pVal;
                 /////strictly experimental
                 //asd[0] = globalVars.idk; asd[1] = pVal;
-                if (mVal == double.NaN)
+                if (double.IsNaN(mVal))
                     mVal = -1;
-                asd[0] = Math.Round(mVal,2); asd[1] = Math.Round(pVal,2);
+                if (double.IsNaN(pVal))
+                    pVal = -1;
+                asd[0] = Math.Round(mVal, 2); asd[1] = Math.Round(pVal, 2);
 
                 globalVars.ArousalOutput.Content = "Arousal : " + Math.Round(asd[0], 2) + " %";
                 globalVars.ValenceOutput.Content = "Valence : " + Math.Round(asd[1],2) + " %";
