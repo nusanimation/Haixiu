@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
+
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
@@ -12,6 +15,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using Coding4Fun.Kinect.Wpf;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using System.Windows.Data;
+using System.Windows.Documents;
+
 
 
 namespace WpfApplication1
@@ -301,24 +310,35 @@ namespace WpfApplication1
 
         public void smoothmove (Ellipse elem, Point prev, Point newpoint)
         {
-            PointAnimation myDoubleAnimation = new PointAnimation();
-            myDoubleAnimation.From = prev;
-            myDoubleAnimation.To = newpoint;
+            DoubleAnimation myDoubleAnimation = new DoubleAnimation();
+            myDoubleAnimation.From = prev.Y;
+            myDoubleAnimation.To = newpoint.Y;
             myDoubleAnimation.Duration = new Duration(TimeSpan.FromSeconds(1));
-
-
             //myDoubleAnimation.AutoReverse = true;
             //myDoubleAnimation.RepeatBehavior = RepeatBehavior.Forever;
-
-
-
             Storyboard myStoryboard;
             myStoryboard = new Storyboard();
             myStoryboard.Children.Add(myDoubleAnimation);
             //Storyboard.SetTargetName(myDoubleAnimation, elem.Name);
             Storyboard.SetTarget(myDoubleAnimation, elem);
-            Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(EllipseGeometry.CenterProperty));
+            Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(Canvas.TopProperty));
             myStoryboard.Begin();
+
+
+            DoubleAnimation myDoubleAnimation1 = new DoubleAnimation();
+            myDoubleAnimation1.From = prev.X;
+            myDoubleAnimation1.To = newpoint.X;
+            myDoubleAnimation1.Duration = new Duration(TimeSpan.FromSeconds(1));
+            //myDoubleAnimation.AutoReverse = true;
+            //myDoubleAnimation.RepeatBehavior = RepeatBehavior.Forever;
+            Storyboard myStoryboard1;
+            myStoryboard1 = new Storyboard();
+            myStoryboard1.Children.Add(myDoubleAnimation1);
+            //Storyboard.SetTargetName(myDoubleAnimation, elem.Name);
+            Storyboard.SetTarget(myDoubleAnimation1, elem);
+            Storyboard.SetTargetProperty(myDoubleAnimation1, new PropertyPath(Canvas.LeftProperty));
+            myStoryboard1.Begin();
+
         }
     }
 
