@@ -186,7 +186,7 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                 </Canvas>
                 <Canvas Name="canvas2" Background="#40484848" Canvas.Left="6" Canvas.Top="16" Height="235" Width="330"></Canvas>
                 <Label Content="Kinect State" Height="27" Name="label2" Width="84" VerticalAlignment="Top" Canvas.Left="599" Canvas.Top="266" />
-                <Label Content="Live Skeleton Tracking" Height="27" Name="skeleton" Width="137" VerticalAlignment="Top" Canvas.Left="487" Canvas.Top="14" Foreground="#FF67F219" />
+                <Label Content="Live Skeleton Tracking" Height="27" Name="skeleton" Width="137" VerticalAlignment="Top" Canvas.Left="487" Canvas.Top="-4" Foreground="#FF196CF2" />
 
                 
                 <Image Name="image1" Stretch="Fill" Source="/Haixiu;component/images/red.png" ImageFailed="image1_ImageFailed"  Canvas.Left="673" Canvas.Top="270" Height="20" Width="24" />
@@ -194,15 +194,23 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                 <Label Content="spine pos: " Name="label1" FontSize="14" Canvas.Left="9" Canvas.Top="305" Width="680" Background="#FFE8E8E8" />
                 <Label Content="000000000000" Height="28" HorizontalAlignment="Left"  Name="labelFrame" VerticalAlignment="Top" Width="91" Canvas.Left="594" Canvas.Top="306" />
                 <Label Content="Frames" Height="28" HorizontalAlignment="Left"  Name="label5" VerticalAlignment="Top" Canvas.Left="530" Canvas.Top="306" />
-                <Canvas Height="244" Name="vgaCanvas" Width="330" Background="#FFECF7FC" Canvas.Left="6" Canvas.Top="16" />
-
+                <Canvas Height="244" Name="vgaCanvas" Width="330" Canvas.Left="6" Canvas.Top="16">
+                    <Canvas.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FFFC3434" Offset="0" />
+                            <GradientStop Color="WhiteSmoke" Offset="0.415" />
+                            <GradientStop Color="#FFE5F5F5" Offset="0.571" />
+                            <GradientStop Color="#FF0099F8" Offset="1" />
+                        </LinearGradientBrush>
+                    </Canvas.Background>
+                </Canvas>
                 <Label Content="Normal" Height="28" HorizontalAlignment="Right" Name="normal" VerticalAlignment="Top" Margin="0,119,531,0" Grid.Row="2" Canvas.Top="4" Canvas.Left="144" />
 
                 <Label Content="Anger" Height="28" HorizontalAlignment="Right" Name="anger" VerticalAlignment="Top" Margin="0,53,613,0" Grid.Row="2" Canvas.Left="53" Canvas.Top="19" />
 
                 <Label Content="OverJoyed" Height="28" HorizontalAlignment="Right" Name="overjoy" VerticalAlignment="Top" Margin="0,40,385,0" Grid.Row="2" Canvas.Left="254" />
 
-                <Label Content="Sad" Height="28" HorizontalAlignment="Right" Name="Sad" VerticalAlignment="Top" Margin="0,175,613,0" Grid.Row="2" Canvas.Left="74" Canvas.Top="21" />
+                <Label Content="Sad" Height="28" HorizontalAlignment="Right" Name="Sad" VerticalAlignment="Top" Margin="0,175,613,0" Grid.Row="2" Canvas.Left="80" Canvas.Top="13" />
 
                 <Label Content="Happy" Height="28" HorizontalAlignment="Right" Name="happy" VerticalAlignment="Top" Margin="0,108,439,0" Grid.Row="2" Canvas.Left="229" Canvas.Top="-17" />
 
@@ -226,7 +234,7 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                 </Label>
                 <Label Content="Affectionate" Height="28" HorizontalAlignment="Right" Margin="0,184,419,0" Name="label10" VerticalAlignment="Top" Grid.Row="2" Canvas.Left="230" Canvas.Top="-6" />
 
-                <Label Content="Emotion Tracking Chart" Height="27" Name="emotionchart" Width="137" VerticalAlignment="Top" Canvas.Left="99" Canvas.Top="10" Foreground="#FFF21C55" />
+                <Label Content="Emotion Tracking Chart" Height="27" Name="emotionchart" Width="137" VerticalAlignment="Top" Canvas.Left="99" Canvas.Top="-6" Foreground="#FF466DEF" />
 <Button Content="snapshot of skeleton" Grid.Row="2" Height="23" HorizontalAlignment="Left"  Name="snap" VerticalAlignment="Top" Width="136" Canvas.Top="268" Canvas.Left="387" Click="snap_Click" />
             </Canvas>
         </Grid>
