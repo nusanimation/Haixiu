@@ -23,6 +23,10 @@ namespace WpfApplication1
 {
     public class globalVars
     {
+
+        public static Button circumplexMaximizeButton;
+        public static Window mainwin;
+
         public static JointID[] jid = new JointID[20]{JointID.AnkleLeft, JointID.AnkleRight, JointID.ElbowLeft, JointID.ElbowRight, JointID.FootLeft, JointID.FootRight, JointID.HandLeft, JointID.HandRight, 
                                 JointID.Head, JointID.HipCenter, JointID.HipLeft, JointID.HipRight, JointID.KneeLeft, JointID.KneeRight, JointID.ShoulderCenter, JointID.ShoulderLeft, JointID.ShoulderRight,
                                 JointID.Spine, JointID.WristLeft, JointID.WristRight};
@@ -40,6 +44,9 @@ namespace WpfApplication1
 
 
         public static Canvas Circumplex;
+        public static bool isCircmplexBigOpen = false;
+        public static code.circumplexWindow bigCircumpexWindow;
+
 
         public static Label a1/*, a2*/, error, annIter, /*jerkLabel,*/ ValenceOutput, ArousalOutput;
         public static Button saveANNbutn;

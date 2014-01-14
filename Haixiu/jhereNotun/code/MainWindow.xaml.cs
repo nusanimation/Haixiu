@@ -34,6 +34,7 @@ namespace WpfApplication1
     {
         kinectApp app;
         int valueChanged = 0;
+        private double linechartWidth;
         private featureExtractor fExtract;
 
         private bool learnOn, recordOn, detectOn, settingsOn;
@@ -57,12 +58,37 @@ namespace WpfApplication1
             }
 
             globalVars.chart = new resultViz(lineChart, gpt, 2);
-            globalVars.chart2 = new resultViz(featureChart, gpt, 5);
+            //experimental chart was there for feature data checking
+            //globalVars.chart2 = new resultViz(featureChart, gpt, 5);
 
             slider1.Value = (double)-3;
             slider1.Maximum = Camera.ElevationMaximum;
             slider1.Minimum = Camera.ElevationMinimum;
 
+            linechartWidth = this.Width - 20;
+            recordCanvas.Visibility = System.Windows.Visibility.Hidden;
+            learnCanvas.Visibility = System.Windows.Visibility.Hidden;
+            settingsCanvas.Visibility = System.Windows.Visibility.Hidden;
+        }
+
+        protected override void OnStateChanged(EventArgs e)
+        {
+            double screenWidth = SystemParameters.PrimaryScreenWidth;
+            //double screenHeight = SystemParameters.PrimaryScreenHeight;
+            double windowWidth = this.Width;
+            if (this.WindowState == System.Windows.WindowState.Maximized)
+            {
+                //double windowHeight = this.Height;
+                //this.Left = (screenWidth / 2) - (windowWidth / 2);
+                //this.Top = (screenHeight / 2) - (windowHeight / 2);
+                lineChart.Width = screenWidth - 20;
+            }
+            else if (this.WindowState != System.Windows.WindowState.Maximized)
+            {
+                lineChart.Width = linechartWidth;
+            }
+            //System.Windows.MessageBox.Show("state changed", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            base.OnStateChanged(e);
         }
 
         public void SaveCanvasToFile(String filename = "snap.bmp")
@@ -710,6 +736,26 @@ namespace WpfApplication1
             else
                 System.Windows.MessageBox.Show("Kinect is already running buddy. No need to refresh", "Kinect is okay", MessageBoxButton.OK, MessageBoxImage.Information);
 
+        }
+
+        private void bigCircumplexWindowButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (globalVars.isCircmplexBigOpen == false)
+            {
+                globalVars.isCircmplexBigOpen = true;
+                globalVars.bigCircumpexWindow = new code.circumplexWindow();
+
+                globalVars.bigCircumpexWindow.Show();
+                //bigCircumplexWindowOpenButton.Content = "Close new window";
+            }
+            else
+            {
+
+                globalVars.isCircmplexBigOpen = false;
+                if (globalVars.bigCircumpexWindow != null)
+                    globalVars.bigCircumpexWindow.Close();
+                bigCircumplexWindowButton.Content = "Open in bigger window";
+            } 
         }
 
 

@@ -186,7 +186,7 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                 </Canvas>
                 <Canvas Name="canvas2" Background="#40484848" Canvas.Left="6" Canvas.Top="16" Height="235" Width="330"></Canvas>
                 <Label Content="Kinect State" Height="27" Name="label2" Width="84" VerticalAlignment="Top" Canvas.Left="599" Canvas.Top="266" />
-                <Label Content="Live Skeleton Tracking" Height="27" Name="skeleton" Width="137" VerticalAlignment="Top" Canvas.Left="487" Canvas.Top="-4" Foreground="#FF196CF2" />
+                <Label Content="Live Skeleton Tracking" Height="27" Name="skeleton" Width="137" VerticalAlignment="Top" Canvas.Left="487" Canvas.Top="-7" Foreground="#FF196CF2" />
 
                 
                 <Image Name="image1" Stretch="Fill" Source="/Haixiu;component/images/red.png" ImageFailed="image1_ImageFailed"  Canvas.Left="673" Canvas.Top="270" Height="20" Width="24" />
@@ -234,8 +234,9 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                 </Label>
                 <Label Content="Affectionate" Height="28" HorizontalAlignment="Right" Margin="0,184,419,0" Name="label10" VerticalAlignment="Top" Grid.Row="2" Canvas.Left="230" Canvas.Top="-6" />
 
-                <Label Content="Emotion Tracking Chart" Height="27" Name="emotionchart" Width="137" VerticalAlignment="Top" Canvas.Left="99" Canvas.Top="-6" Foreground="#FF466DEF" />
+                <Label Content="Emotion Tracking Chart" Height="27" Name="emotionchart" Width="137" VerticalAlignment="Top" Canvas.Left="3" Canvas.Top="-8" Foreground="#FF466DEF" />
 <Button Content="snapshot of skeleton" Grid.Row="2" Height="23" HorizontalAlignment="Left"  Name="snap" VerticalAlignment="Top" Width="136" Canvas.Top="268" Canvas.Left="387" Click="snap_Click" />
+                <Button Canvas.Left="200" Canvas.Top="-10" Content="Open in bigger winidow" Grid.Row="2" Height="23" Name="bigCircumplexWindowButton" Width="136" Click="bigCircumplexWindowButton_Click" />
             </Canvas>
         </Grid>
 
@@ -245,6 +246,7 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="10" />
             </Grid.ColumnDefinitions>
+           <!--
             <Canvas Name="chartHolder" Grid.Column="1" Background="Transparent">
                 <charting:Chart Background="White" BorderThickness="0" Height="120" Name="featureChart" VerticalAlignment="Top" Canvas.Top="416" MinWidth="1464" Canvas.Left="8">
                     <charting:Chart.Axes>
@@ -269,12 +271,12 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                     <charting:LineSeries Background="Yellow" Name="a5" DependentValuePath="Value" IndependentValuePath="Key" ItemsSource="{Binding [4]}" IsSelectionEnabled="True" />
                 </charting:Chart>
                 <CheckBox Content="rHand Charting toggle" Height="16" Name="rHandChartingOn" Canvas.Left="26" Canvas.Top="438" IsChecked="False" Checked="rHandChartingOn_Checked" Unchecked="rHandChartingOn_Unchecked" />
-                <Label Content="Arousal :" Height="50" Name="label14" Width="325" FontSize="32" FontWeight="Bold" Grid.Row="1" Canvas.Left="840" Canvas.Top="3" Foreground="#FF3E5AF2" />
-                <Label Content="Valence : " Height="64" Name="outputLabel" Width="330" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="32" Canvas.Left="1117" Canvas.Top="0" Foreground="#FFE20E0E" />
+                
             </Canvas>
+-->
 
-
-
+            <Label Content="Arousal :" Height="50" Name="label14" FontSize="32" FontWeight="Bold" Canvas.Left="840" Canvas.Top="3" Foreground="#FF3E5AF2" Grid.Column="1" Margin="930,6,265,474" />
+            <Label Content="Valence : " Height="64" Name="outputLabel" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="32" Canvas.Left="1117" Canvas.Top="0" Foreground="#FFE20E0E" Grid.Column="1" Margin="1192,0,2,466" />
             <chartingToolkit:Chart Name="lineChart" Background="Transparent" BorderThickness="0"   MinWidth="1459" HorizontalAlignment="Left" VerticalAlignment="Top" Height="436" Canvas.Left="2" Canvas.Top="2" HorizontalContentAlignment="Center" Width="Auto" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,18,0,0">
                 <charting:Chart.LegendStyle>
                     <Style TargetType="datavis:Legend">
