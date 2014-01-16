@@ -26,6 +26,7 @@ namespace WpfApplication1.code
         private void CircumplexWindow_Loaded(object sender, RoutedEventArgs e)
         {
             //this.Show();
+            globalVars.CircumplexBig = CircumplexCanvas;
 
         }
         private void CircumplexWindow_Closed(object sender, EventArgs e)

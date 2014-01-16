@@ -43,7 +43,7 @@ namespace WpfApplication1
         public static featureExtractor fExtract;
 
 
-        public static Canvas Circumplex;
+        public static Canvas Circumplex, CircumplexBig;
         public static bool isCircmplexBigOpen = false;
         public static code.circumplexWindow bigCircumpexWindow;
 

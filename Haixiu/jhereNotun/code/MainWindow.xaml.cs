@@ -166,16 +166,10 @@ namespace WpfApplication1
 
             globalVars.typeOfLearning = 1;//= Convert.ToInt32(typeofann.Text.ToString());
             try { globalVars.outputCount = Convert.ToInt32(outputCount.Text.ToString()); }
-            catch
-            {
-                System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); globalVars.outputCount = 1;
-            }
+            catch{System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); globalVars.outputCount = 1;}
 
             try { globalVars.hiddenCount = Convert.ToInt32(hiddenCount.Text.ToString()); }
-            catch
-            {
-                System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); globalVars.hiddenCount = 4;
-            }
+            catch{System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); globalVars.hiddenCount = 4;}
 
 
             recordCanvas.Visibility = System.Windows.Visibility.Hidden;
@@ -185,16 +179,10 @@ namespace WpfApplication1
             double a, b, c, d, ef;
 
             try { a = Math.Abs(Convert.ToDouble(lThres.Text.ToString())); }
-            catch
-            {
-                System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); a = 0.005;
-            }
+            catch{System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); a = 0.005;}
 
             try { b = Math.Abs(Convert.ToDouble(uThres.Text.ToString())); }
-            catch
-            {
-                System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); b = 1;
-            }
+            catch{System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); b = 1;}
 
             if (a >= b)
             {
@@ -206,22 +194,13 @@ namespace WpfApplication1
             }
 
             try { c = Math.Abs(Convert.ToDouble(surgeThres.Text.ToString())); }
-            catch
-            {
-                System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); c = 10;
-            }
+            catch{System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); c = 10;}
 
             try { d = Math.Abs(Convert.ToDouble(ufDelay.Text.ToString())); }
-            catch
-            {
-                System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); d = 0.2;
-            }
+            catch{System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); d = 0.2;}
 
             try { ef = Math.Abs(Convert.ToDouble(gfDelay.Text.ToString())); }
-            catch
-            {
-                System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); ef = 1;
-            }
+            catch{System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); ef = 1;}
 
             if (d >= ef)
             {
@@ -346,7 +325,7 @@ namespace WpfApplication1
                         try { globalVars.detector.updateInterval = Convert.ToInt32(updateIntervalText.Text.ToString()); }
                         catch
                         {
-                            System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); globalVars.detector.updateInterval = 10;
+                            System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation);                                                    globalVars.detector.updateInterval = 10;
                         }
 
 

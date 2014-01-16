@@ -12,7 +12,7 @@
 
     <Grid>
         <Canvas>
-            <Canvas Height="712" Name="CircumplexvgaCanvas" Width="753" Canvas.Left="24" Canvas.Top="16">
+            <Canvas Height="700" Name="CircumplexCanvas" Width="700" Canvas.Left="42" Canvas.Top="24">
                 <Canvas.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#FFFC3434" Offset="0" />
@@ -21,17 +21,18 @@
                         <GradientStop Color="#FF0099F8" Offset="1" />
                     </LinearGradientBrush>
                 </Canvas.Background>
-                <Label Content="Affectionate" Height="28" Name="label10" Grid.Row="2" Canvas.Left="566" Canvas.Top="553" />
-                <Label Content="Sad" Height="28" Name="CircumplexSad" Grid.Row="2" Canvas.Left="157" Canvas.Top="553" />
-                <Label Content="Normal" Height="28" Name="Circumplexnormal" Grid.Row="2" Canvas.Top="349" Canvas.Left="354" />
-                <Label Content="Happy" Height="28" Name="Circumplexhappy" Grid.Row="2" Canvas.Left="517" Canvas.Top="207" />
-                <Label Content="OverJoyed" Height="28" Name="Circumplexoverjoy" Grid.Row="2" Canvas.Left="603" Canvas.Top="91" />
-                <Label Content="Anger" Height="28" Name="Circumplexanger" Grid.Row="2" Canvas.Left="157" Canvas.Top="149" />
+                <Label Content="Affectionate" Height="28" Name="label10" Grid.Row="2" Canvas.Left="517" Canvas.Top="553" />
+                <Label Content="Sad" Height="28" Name="CircumplexSad" Grid.Row="2" Canvas.Left="149" Canvas.Top="537" />
+                <Label Content="Normal" Height="28" Name="Circumplexnormal" Grid.Row="2" Canvas.Top="367" Canvas.Left="336" />
+                <Label Content="Happy" Height="28" Name="Circumplexhappy" Grid.Row="2" Canvas.Left="493" Canvas.Top="222" />
+                <Label Content="OverJoyed" Height="28" Name="Circumplexoverjoy" Grid.Row="2" Canvas.Left="562" Canvas.Top="112" />
+                <Label Content="Hot Anger" Height="28" Name="CircumplexHotAnger" Grid.Row="2" Canvas.Left="66" Canvas.Top="91" />
+                <Label Content="Anger" Height="28" Name="Circumplexanger" Grid.Row="2" Canvas.Left="136" Canvas.Top="233" />
             </Canvas>
-            <Label Content="Postitive Valence" Height="28" HorizontalAlignment="Right" Name="Circumplexval1" VerticalAlignment="Top" Margin="0,253,385,0" Grid.Row="2" Canvas.Left="634" Canvas.Top="473" Foreground="#FFFF1010" FontWeight="Bold" FontSize="16" />
-            <Label Content="Negative Valence" Height="35" HorizontalAlignment="Left" Name="Circumplexval0" VerticalAlignment="Top"  Grid.Row="2" Canvas.Left="24" Canvas.Top="726" FontSize="16" FontWeight="Bold" Foreground="#FF0026FF" />
+            <Label Content="Postitive Valence" Height="28" HorizontalAlignment="Right" Name="Circumplexval1" VerticalAlignment="Top" Margin="0,253,385,0" Grid.Row="2" Canvas.Left="604" Canvas.Top="474" Foreground="#FFFF1010" FontWeight="Bold" FontSize="16" />
+            <Label Content="Negative Valence" Height="35" HorizontalAlignment="Left" Name="Circumplexval0" VerticalAlignment="Top"  Grid.Row="2" Canvas.Left="42" Canvas.Top="726" FontSize="16" FontWeight="Bold" Foreground="#FF0026FF" />
 
-            <Label Name="Circumplexaro0"  Grid.Row="2" VerticalContentAlignment="Top" Canvas.Top="624" Canvas.Left="-4" FontSize="16" FontWeight="Bold" Foreground="#FF00ACFF">
+            <Label Name="Circumplexaro0"  Grid.Row="2" VerticalContentAlignment="Top" Canvas.Top="613" Canvas.Left="0" FontSize="16" FontWeight="Bold" Foreground="#FF00ACFF">
 
                 <Label.Content>Low Arousal</Label.Content>
                 <Label.LayoutTransform>

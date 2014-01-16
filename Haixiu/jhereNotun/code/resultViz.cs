@@ -27,7 +27,7 @@ namespace WpfApplication1
 {
     public class resultViz
     {
-        circumplexViz cViz;
+        circumplexViz cViz, cVizBig;
 
         int length = 30, iter=0;
         private ObservableCollection<KeyValuePair<string, double>>[] Power;
@@ -36,7 +36,8 @@ namespace WpfApplication1
         Chart chart;
         public resultViz(Chart chart, int GraphLength, int numOfLines = 1) {
 
-            cViz = new circumplexViz();
+            cViz = new circumplexViz(globalVars.Circumplex);
+            cVizBig = new circumplexViz();
 
             if (numOfLines > 2)
             {
@@ -177,7 +178,18 @@ namespace WpfApplication1
 
         public void update(double[] data)
         {
-            cViz.draw(data[0], data[1]);
+            cViz.draw(data[0], data[1], 3.3, 2.25);
+            if (globalVars.isCircmplexBigOpen == true )
+            {
+                cVizBig.canvasToDraw = globalVars.CircumplexBig;
+                cVizBig.draw(data[0], data[1], 7, 7);
+
+            }
+            else if (globalVars.isCircmplexBigOpen == false)
+            {
+                cVizBig.canvasToDraw = null;
+            }
+            
 
             iter++;
             int i;
@@ -208,44 +220,59 @@ namespace WpfApplication1
         bool reddot = true;
 
         dotQ dotqueue = new dotQ();
+        bool firstTimeSmall = true; bool firstTimeBig = true;
 
+        public Canvas canvasToDraw;
+        private Canvas previousCanvas;
 
-        public circumplexViz(int threshold = 3)
+        public circumplexViz(Canvas canvasToDraw = null,int threshold = 3)
         {
+            this.canvasToDraw = canvasToDraw;
             Point p1 = new Point(0,200);
             Point p2 = new Point(0,0);
             counter = 1;
             this.threshold = threshold;
             d = new dot(1, counter);
-            xAxis = new bone(13,0,13,244);
-            yAxis = new bone(3,234,330,234);
-            //a = new dot(7, 7, 2, Brushes.Red, off);
-            xAxis.drawBone(globalVars.Circumplex);
-            yAxis.drawBone(globalVars.Circumplex);
-            // xAxis.moveBone(globalVars.Circumplex, p2);
+            if (this.canvasToDraw != null)
+            {
+                xAxis = new bone(13, 0, 13, 244);
+                yAxis = new bone(3, 234, 330, 234);
+                //a = new dot(7, 7, 2, Brushes.Red, off);
+                xAxis.drawBone(this.canvasToDraw);
+                yAxis.drawBone(this.canvasToDraw);
+            }            // xAxis.moveBone(this.canvasToDraw, p2);
 
             
             
         }
 
-        public void draw(double Arousal, double Valence)
+        public void draw(double Arousal, double Valence, double offsetA, double offsetV) 
         {
+            if (this.previousCanvas != null && this.previousCanvas != this.canvasToDraw)
+            {
+                try { previousCanvas.Children.Remove(d.ellipse); }
+                catch { System.Windows.MessageBox.Show("kaput.", "Kinect Not running", MessageBoxButton.OK, MessageBoxImage.Error); }
+                reddot = true;
+                dotqueue.numberOfDots = 0;
+            }
             ++counter;
+            //this counter is for name of the dot
+
             //dot a;
-            Point p = new Point(Math.Round(Valence*3.3),Math.Round( (100 - Arousal)*2.25));
+            Point p = new Point(Math.Round(Valence * offsetV), Math.Round((100 - Arousal) * offsetV));
             Point off = new Point(0, 5);
             if (reddot == true)
             {
-                d.moveDot(globalVars.Circumplex, p);
+                d.moveDot(this.canvasToDraw, p);
                 animate(d.ellipse);
                 reddot = false;
             }
             else
             {
-                //d.refreshDot(globalVars.Circumplex, p);
+                //d.refreshDot(this.canvasToDraw, p);
                 smoothmove(d.ellipse, prev, p);
                 dot pdot = new dot(2);//, counter);
-                pdot.moveDot(globalVars.Circumplex, prev);
+                pdot.moveDot(this.canvasToDraw, prev);
                 //animate(pdot.ellipse);
                 dotqueue.Enqueue(pdot);
 
@@ -258,6 +285,8 @@ namespace WpfApplication1
 
 
             prev = p;
+            previousCanvas = this.canvasToDraw;
+
         }
 
 
@@ -357,7 +386,8 @@ namespace WpfApplication1
             lock (this)
             {
                 _Queue.Enqueue(dot);
-                numberOfDots++;
+                //numberOfDots++;
+                numberOfDots = _Queue.Count;
             }
         }
         public dot Dequeue()
@@ -370,7 +400,9 @@ namespace WpfApplication1
                 {
                     data = _Queue.Dequeue();
                     return data;
-                    numberOfDots--;
+                    //numberOfDots--;
+                    numberOfDots = _Queue.Count;
+
                 }
                 else
                     return null;
