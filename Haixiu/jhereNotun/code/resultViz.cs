@@ -250,6 +250,7 @@ namespace WpfApplication1
         {
             if (this.previousCanvas != null && this.previousCanvas != this.canvasToDraw)
             {
+                //Basically refreshing everything. :/
                 try { previousCanvas.Children.Remove(d.ellipse); }
                 catch { System.Windows.MessageBox.Show("kaput.", "Kinect Not running", MessageBoxButton.OK, MessageBoxImage.Error); }
                 reddot = true;

@@ -321,10 +321,15 @@ namespace WpfApplication1
             for (int i = 0; i < 11; i++)
             {
                 feature[i].speed /= timeSlice;
+                if (double.IsNaN(feature[i].speed)) feature[i].speed = 0;
                 feature[i].Acc /= feature[i].spikePerSecAcc;
+                if (double.IsNaN(feature[i].Acc)) feature[i].Acc = 0;
                 feature[i].Dec /= feature[i].spikePerSecDcc;
+                if (double.IsNaN(feature[i].Dec)) feature[i].Dec = 0;
                 feature[i].spikePerSecAcc /= timeSlice;
+                if (double.IsNaN(feature[i].spikePerSecAcc)) feature[i].spikePerSecAcc = 0;
                 feature[i].spikePerSecDcc /= timeSlice;
+                if (double.IsNaN(feature[i].spikePerSecDcc)) feature[i].spikePerSecDcc = 0;
             }
 
             //for (int index = 0; index < 11; index++)
