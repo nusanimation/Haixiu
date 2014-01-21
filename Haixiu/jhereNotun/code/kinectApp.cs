@@ -31,7 +31,8 @@ namespace WpfApplication1
         Standing,
         Sitting,
         Lying,
-        Confused
+        Confused,
+        kinectoff
 
     };
     public class kinectApp //: MainWindow
@@ -252,7 +253,7 @@ namespace WpfApplication1
             refreshKinect.IsEnabled = false;
             refreshKinect.Content = "All system's go! Start detection";
            
-            updateUserContextVisualization(userContext.Standing);
+            updateUserContextVisualization(userContext.Confused);
 
             BitmapImage bi3 = new BitmapImage();
             bi3.BeginInit();
@@ -269,7 +270,7 @@ namespace WpfApplication1
             refreshKinect.IsEnabled = true;
             refreshKinect.Content = "Connect, Power up and press here";
 
-            updateUserContextVisualization(userContext.Confused);
+            updateUserContextVisualization(userContext.kinectoff);
 
             BitmapImage bi3 = new BitmapImage();
             bi3.BeginInit();
@@ -298,11 +299,18 @@ namespace WpfApplication1
                 poseContextLabel2.Content = "Sitting";
  
             }
-            else if (pose == userContext.Confused)
+            else if (pose == userContext.kinectoff)
             {
                 bi3.UriSource = new Uri("/Haixiu;component/images/zoozoo.jpg", UriKind.Relative);
                 poseContextLabel1.Content = "Can't see you,";
-                poseContextLabel2.Content = "   Kinect is off";
+                poseContextLabel2.Content = "   kinect is off.";
+            }
+
+            else if (pose == userContext.Confused)
+            {
+                bi3.UriSource = new Uri("/Haixiu;component/images/moveToKinect.jpg", UriKind.Relative);
+                poseContextLabel1.Content = "Please face to";
+                poseContextLabel2.Content = "    kinect and move";
             }
             else if (pose == userContext.Lying)
             {
