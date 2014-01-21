@@ -196,9 +196,11 @@ namespace WpfApplication1
             try { c = Math.Abs(Convert.ToDouble(surgeThres.Text.ToString())); }
             catch{System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); c = 10;}
 
+            //ufdelay = update feature delay
             try { d = Math.Abs(Convert.ToDouble(ufDelay.Text.ToString())); }
             catch{System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); d = 0.2;}
 
+            // gfdelay = get feature delay
             try { ef = Math.Abs(Convert.ToDouble(gfDelay.Text.ToString())); }
             catch{System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation); ef = 1;}
 
@@ -220,8 +222,25 @@ namespace WpfApplication1
             //Thread kinAppThrd = new Thread(() => { app = new kinectApp(canvas1, canvas2, label1, image1, fExtract); });
             //kinAppThrd.Start();
 
-            app = new kinectApp(canvas1, canvas2, label1, image1, fExtract);
+
+            app = new kinectApp(canvas1, canvas2, label1, fExtract);
+            // delivering wpf control referencess to kinectapp
+            app.poseContextLabel1 = poseContextLabel1;
+            app.poseContextLabel2 = poseContextLabel2;
+            app.poseContextImage = poseContextImage;
+            app.kinectstateLabel = kinectstateLabel;
+            app.refreshKinect = refreshKinect;
+            app.kinectBulb = kinectBulb;
+
+            //if (globalVars.kinectOn == true)
+                //updateKinectStatusOn();
+            if (app.isKinectRunning)
+                globalVars.kinectOn = app.initKinect();
+            else
+               System.Windows.MessageBox.Show("Kinect is not running. Please power on the Kinect and connect the USB connector to your computer.", "Kinect Not running", MessageBoxButton.OK, MessageBoxImage.Error);
         }
+
+        
 
         private void Window_Closed(object sender, EventArgs e)
         {
@@ -317,7 +336,6 @@ namespace WpfApplication1
                     try
                     {
 
-
                         //elow, this was for just a test purpose
                         //recognizer R = new recognizer(loadANN.Text.ToString());
 
@@ -325,7 +343,8 @@ namespace WpfApplication1
                         try { globalVars.detector.updateInterval = Convert.ToInt32(updateIntervalText.Text.ToString()); }
                         catch
                         {
-                            System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation);                                                    globalVars.detector.updateInterval = 10;
+                            System.Windows.MessageBox.Show("conversion to number failed. Reverting to default value.", "probably your fault.", MessageBoxButton.OK, MessageBoxImage.Exclamation);                                                               globalVars.detector.updateInterval = 10;
+                            updateIntervalText.Text = "10";
                         }
 
 
@@ -341,15 +360,15 @@ namespace WpfApplication1
 
 
                         globalVars.detectorOn = true;
-                        startDetect.Content = "Stop Emotion Detection";
-
+                        startDetect.Content = "Stop";
+                        startDetect.BorderBrush = new SolidColorBrush(Colors.Red);
                         ufDelay.IsEnabled = false;
                         gfDelay.IsEnabled = false;
-
-                    }
+                        button1.IsEnabled = false;
+                                            }
                     catch
                     {
-                        System.Windows.MessageBox.Show("osme problem with detector moduel.", "meh.", MessageBoxButton.OK, MessageBoxImage.Error);
+                        System.Windows.MessageBox.Show("Some problem with detector moduel. Probably Neural Network files you've specified does not exist. Care to double check?", "Detector module error.", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }
@@ -358,13 +377,24 @@ namespace WpfApplication1
                 ufDelay.IsEnabled = true;
                 gfDelay.IsEnabled = true;
 
-                globalVars.detector.stopDetection();
-                //globalVars.detector1.stopDetection();
-                globalVars.detectorOn = false;
-                startDetect.Content = "Start Emotion Detection";
-            }
+                if (globalVars.avq != null)
+                    button1.IsEnabled = true;
+                try
+                {
+                    globalVars.detector.stopDetection();
+                    //globalVars.detector1.stopDetection();
+                    globalVars.detectorOn = false;
 
+                }
+                catch { System.Windows.MessageBox.Show("Can't stop detector module. restart program?", "Detector module error.", MessageBoxButton.OK, MessageBoxImage.Error); }
+                startDetect.Content = "Start";
+                startDetect.BorderBrush = new SolidColorBrush(Colors.LimeGreen);
+                
+            }
+            //to off focus the button
+            detectCanvas.Focus();
         }
+        
         ///Start Learning
         private void button3_Click(object sender, RoutedEventArgs e)
         {
@@ -571,6 +601,7 @@ namespace WpfApplication1
 
         }
 
+        // rapid update checkbox
         private void checkBox3_Checked(object sender, RoutedEventArgs e)
         {
             if (globalVars.detector != null)
@@ -586,6 +617,7 @@ namespace WpfApplication1
 
         }
 
+        //main menu labels
         private void DetectMenu_MouseEnter(object sender, MouseEventArgs e)
         {
 
@@ -664,6 +696,7 @@ namespace WpfApplication1
             //comboBox1.Tag.ToString();
         }
 
+        //no particular use now
         private void rHandChartingOn_Checked(object sender, RoutedEventArgs e)
         {
             globalVars.chartRighthand = true;
@@ -674,6 +707,7 @@ namespace WpfApplication1
             globalVars.chartRighthand = false;
         }
 
+        //takes a snap of the skeleton
         private void snap_Click(object sender, RoutedEventArgs e)
         {
             string fname = "snap.bmp";
@@ -708,15 +742,19 @@ namespace WpfApplication1
             return (a + temp + c);
         }
 
+        //refresh kinect app thingy
         private void refreshKinect_Click(object sender, RoutedEventArgs e)
         {
             if (globalVars.kinectOn == false)
-                globalVars.kinectOn = app.initKinect(image1);
+            {
+                globalVars.kinectOn = app.initKinect();
+            }
             else
-                System.Windows.MessageBox.Show("Kinect is already running buddy. No need to refresh", "Kinect is okay", MessageBoxButton.OK, MessageBoxImage.Information);
+                System.Windows.MessageBox.Show("Kinect is already running my friend. No need to refresh", "Kinect is okay", MessageBoxButton.OK, MessageBoxImage.Information);
 
         }
 
+        // opens a bigegr circumplex visualization widow. 
         private void bigCircumplexWindowButton_Click(object sender, RoutedEventArgs e)
         {
             if (globalVars.isCircmplexBigOpen == false)
@@ -729,7 +767,6 @@ namespace WpfApplication1
             }
             else
             {
-
                 globalVars.isCircmplexBigOpen = false;
                 if (globalVars.bigCircumpexWindow != null)
                     globalVars.bigCircumpexWindow.Close();

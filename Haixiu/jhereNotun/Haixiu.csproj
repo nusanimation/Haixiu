@@ -153,6 +153,18 @@
   <ItemGroup>
     <Folder Include="modernwindow\" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\confused.png" />
+    <Resource Include="images\sitting.png" />
+    <Resource Include="images\standing.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\zoozoo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\sittingXKCD.png" />
+    <Resource Include="images\standingXKCD.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

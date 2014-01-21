@@ -26,6 +26,14 @@ using System.Threading;
 
 namespace WpfApplication1
 {
+    public enum userContext
+    {
+        Standing,
+        Sitting,
+        Lying,
+        Confused
+
+    };
     public class kinectApp //: MainWindow
     {
         fileWriter file;
@@ -36,12 +44,24 @@ namespace WpfApplication1
         private Canvas canvas, topCanvas;
         Label spinePos;
         featureExtractor fExtractor;
-        
-        public kinectApp(Canvas c, Canvas top, Label l, Image i, featureExtractor featExtractor)
+
+        //wpf controls to change
+        public Label poseContextLabel1, poseContextLabel2, kinectstateLabel;
+        public Image poseContextImage, kinectBulb;
+        public Button refreshKinect;
+
+        //to let know mainwindow class when to init
+        public bool isKinectRunning;
+
+        private int contextCounter;
+        private userContext poseOfUser;
+
+        public kinectApp(Canvas c, Canvas top, Label l,  featureExtractor featExtractor)
         {
             //update the feature
 
             globalVars.kinectOn = false;
+            contextCounter = 0;
 
             this.kinect = null;
             this.fExtractor = featExtractor;            
@@ -60,36 +80,34 @@ namespace WpfApplication1
             //Runtime.Kinects.
             if (Runtime.Kinects.Count == 0)
             {
-                System.Windows.MessageBox.Show("Kinect is not running. Please power on the Kinect and connect the USB connector to your computer.", "Kinect Not running", MessageBoxButton.OK, MessageBoxImage.Error);
-
+                isKinectRunning = false;
             }
 
             else if (Runtime.Kinects.Count > 0 )
             {
-                globalVars.kinectOn = initKinect(i);
-
+                isKinectRunning = true;
             }
 
  
 
         }
 
-        public bool initKinect( Image i)
+        public bool initKinect()
         {
             kinect = Runtime.Kinects[0];
             if (kinect == null)
                 return false;
+            refreshKinect.Content = "Please wait a little...";
+            refreshKinect.IsEnabled = false;
 
             try
             {
+
                 kinect.Initialize(RuntimeOptions.UseDepthAndPlayerIndex | RuntimeOptions.UseSkeletalTracking | RuntimeOptions.UseColor);
 
                 //l.Content = "Kinect on";
-                BitmapImage bi3 = new BitmapImage();
-                bi3.BeginInit();
-                bi3.UriSource = new Uri("/Haixiu;component/images/green.png", UriKind.Relative);
-                bi3.EndInit();
-                i.Source = bi3;
+
+                updateKinectStatusOn();
 
                 var parameters = new TransformSmoothParameters();
                 kinect.SkeletonEngine.TransformSmooth = true;
@@ -107,11 +125,12 @@ namespace WpfApplication1
                 kinect.VideoFrameReady += new EventHandler<ImageFrameReadyEventArgs>(kinect_VideoFrameReady);
 
                 return true; 
-
+                
             }
             catch
             {
                 System.Windows.MessageBox.Show("Probably there is no power in Kinect. Kindly swtich on the power suppy and connect kinect's USB connector to your computer.", "Kinect problem", MessageBoxButton.OK, MessageBoxImage.Error);
+                updateKinectStatusOff();
                 return false;
             }
 
@@ -138,6 +157,16 @@ namespace WpfApplication1
 
                         }
                     }
+
+                    //check context every 30 frames = 1 sec
+                    contextCounter++;
+                    if (contextCounter % 30 == 0)
+                    {
+                        poseOfUser = getSittingOrStanding(skeleData);
+                        contextCounter = 0;
+                        updateUserContextVisualization(poseOfUser);
+                    }
+                    
                     if (globalVars.chartRighthand == true)
                     {
                         this.fExtractor.getFeatures(skeleData, spinePos);
@@ -160,7 +189,7 @@ namespace WpfApplication1
                         ////// strictly experimental
                         //globalVars.detector1.detect(skeleData);
 
-                        globalVars.detector.pollFeatures(skeleData);
+                        globalVars.detector.pollFeatures(skeleData, poseOfUser);
                     }
                 }
                 
@@ -216,6 +245,101 @@ namespace WpfApplication1
 
 
         }
+        private void updateKinectStatusOn()
+        {
+            kinectstateLabel.Content = "On";
+            kinectstateLabel.Foreground = Brushes.LimeGreen;
+            refreshKinect.IsEnabled = false;
+            refreshKinect.Content = "All system's go! Start detection";
+           
+            updateUserContextVisualization(userContext.Standing);
+
+            BitmapImage bi3 = new BitmapImage();
+            bi3.BeginInit();
+            bi3.UriSource = new Uri("/Haixiu;component/images/green.png", UriKind.Relative);
+            bi3.EndInit();
+            kinectBulb.Source = bi3;
+
+
+        }
+        private void updateKinectStatusOff()
+        {
+            kinectstateLabel.Content = "Off";
+            kinectstateLabel.Foreground = Brushes.Red;
+            refreshKinect.IsEnabled = true;
+            refreshKinect.Content = "Connect, Power up and press here";
+
+            updateUserContextVisualization(userContext.Confused);
+
+            BitmapImage bi3 = new BitmapImage();
+            bi3.BeginInit();
+            bi3.UriSource = new Uri("/Haixiu;component/images/red.png", UriKind.Relative);
+            bi3.EndInit();
+            kinectBulb.Source = bi3;
+
+        }
+
+        private void updateUserContextVisualization(userContext pose)
+        {
+            BitmapImage bi3 = new BitmapImage();
+            bi3.BeginInit();
+
+            if (pose == userContext.Standing)
+            {
+                bi3.UriSource = new Uri("/Haixiu;component/images/standingXKCD.jpg", UriKind.Relative); 
+                poseContextLabel1.Content = "I see you're";
+                poseContextLabel2.Content = "Standing";
+ 
+            }
+            else if (pose == userContext.Sitting)
+            {
+                bi3.UriSource = new Uri("/Haixiu;component/images/sittingXKCD.png", UriKind.Relative);
+                poseContextLabel1.Content = "I see you're";
+                poseContextLabel2.Content = "Sitting";
+ 
+            }
+            else if (pose == userContext.Confused)
+            {
+                bi3.UriSource = new Uri("/Haixiu;component/images/zoozoo.jpg", UriKind.Relative);
+                poseContextLabel1.Content = "Can't see you,";
+                poseContextLabel2.Content = "   Kinect is off";
+            }
+            else if (pose == userContext.Lying)
+            {
+                bi3.UriSource = new Uri("/Haixiu;component/images/zoozoo.jpg", UriKind.Relative);
+                poseContextLabel1.Content = "I see you're";
+                poseContextLabel2.Content = "Sleeping! Whoa";
+            }
+            bi3.EndInit();
+            poseContextImage.Source = bi3;
+        }
+
+        /// <summary>
+        /// gets the position of the tracked body whether it is stnding, sitting or sleeping.
+        /// returns 1 while standing, returns 2 while sitting and returens 3 while sleeping. returns 0 otherwise.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        /// 
+        public userContext getSittingOrStanding(SkeletonData s)
+        {
+
+                double a, b;
+                a = Math.Abs(s.Joints[JointID.ShoulderCenter].Position.Y - s.Joints[JointID.KneeLeft].Position.Y);
+                b = Math.Abs(s.Joints[JointID.ShoulderCenter].Position.Y - s.Joints[JointID.KneeRight].Position.Y);
+                //this.spinePos.Content = "left: "+a+" right: "+b+ "Kinect is okay";
+
+                if (a < 0.2 || b < 0.2)
+                    return userContext.Lying;
+                else if (a < 0.75 || b < 0.75)
+                    return userContext.Sitting;
+                else if (a > 0.75 || b > 0.75)
+                    return userContext.Standing;
+                else
+                    return userContext.Confused;
+            
+        }
+
 
         public void stopApp()
         {

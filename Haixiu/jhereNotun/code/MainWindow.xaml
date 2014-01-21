@@ -57,7 +57,7 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
             </Grid.ColumnDefinitions>
             <Canvas Name="mainCanvas" Grid.Row="1" Grid.Column="0">
 
-                <Label Content="Emotion Detection System" Height="45" HorizontalAlignment="Left" Name="label11" VerticalAlignment="Top" Width="274" FontSize="22" FontWeight="Normal" Background="White" Foreground="#FFAAAAAA" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Right" FontFamily="Segoe UI" FontStyle="Normal" Margin="25,60,0,0" Canvas.Left="417" Canvas.Top="-44" />
+                <Label Content="EmoMi System for Emotion Detection" Height="45" HorizontalAlignment="Left" Name="label11" VerticalAlignment="Top" Width="274" FontSize="22" FontWeight="Normal" Background="White" Foreground="#FFAAAAAA" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Right" FontFamily="Segoe UI" FontStyle="Normal" Margin="25,60,0,0" Canvas.Left="417" Canvas.Top="-44" />
 
                 <Label Content="Detect" Style="{StaticResource menuLabel}" Height="39" HorizontalAlignment="Left" Margin="37,116,0,0" Name="DetectMenu" VerticalAlignment="Top" Width="180" FontSize="20" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"  MouseEnter="DetectMenu_MouseEnter" MouseLeave="DetectMenu_MouseLeave" MouseLeftButtonUp="DetectMenu_MouseLeftButtonUp" Foreground="DeepSkyBlue">
 
@@ -68,26 +68,41 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                 <Label Content="Learn" Style="{StaticResource menuLabel}" FontSize="20" Height="39" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="37,213,0,0" Name="LearnMenu" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="181" MouseLeftButtonUp="LearnMenu_MouseLeftButtonUp" Foreground="Gainsboro">
 
                 </Label>
-                <Label Content="Other Settings" Style="{StaticResource menuLabel}" FontSize="20" Height="39" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="37,262,0,0" Name="advancedMenu" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="181" Foreground="Gainsboro" MouseLeftButtonUp="advancedMenu_MouseLeftButtonUp">
+                <Label Content="Settings" Style="{StaticResource menuLabel}" FontSize="20" Height="39" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="37,262,0,0" Name="advancedMenu" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="181" Foreground="Gainsboro" MouseLeftButtonUp="advancedMenu_MouseLeftButtonUp">
 
                 </Label>
 
                 <Canvas Name="settingsCanvas">
-                    <Label Content="M i s c l e n i o u s  S e t t i n g s" IsEnabled="False" Name="labe218" FlowDirection="RightToLeft" Grid.Row="1" Canvas.Left="558" Canvas.Top="88" />
-                    <Label Content="Lower Threshold: " Height="29" Name="setlab1" Width="163" Grid.Row="1" Canvas.Left="299" Canvas.Top="171" />
-                    <TextBox Height="22" Name="lThres" Width="49" Text="0.0005"  Grid.Row="1" Canvas.Left="401" Canvas.Top="172" />
-                    <Label Content="Meters" Height="29" Name="setlab2" Width="59" Grid.Row="1" Canvas.Left="454" Canvas.Top="170" />
-
-                    <Label Content="Upper Threshold: " Height="29" Name="setlab3" Width="163" Grid.Row="1" Canvas.Left="299" Canvas.Top="199" />
-                    <TextBox Height="22" Name="uThres" Width="25" Text="1"  Grid.Row="1" Canvas.Left="401" Canvas.Top="202" />
-                    <Label Content="Meter" Height="29" Name="setlab4" Width="42" Grid.Row="1" Canvas.Left="431" Canvas.Top="198" />
-                    <Label Content="Surge Threshold: " Height="29" Name="setlab5" Width="163" Grid.Row="1" Canvas.Left="299" Canvas.Top="230" />
-                    <TextBox Height="22" Name="surgeThres" Width="25" Text="10"  Grid.Row="1" Canvas.Left="400" Canvas.Top="232" />
-                    <Label Content="%" Height="29" Name="setlab6" Width="42" Grid.Row="1" Canvas.Left="429" Canvas.Top="231" />
-                    <Button Content="Refrech Kinecct to reinitialize" Grid.Row="2" Height="23" HorizontalAlignment="Left" Margin="589,202,0,0" Name="refreshKinect" VerticalAlignment="Top" Width="210" Canvas.Top="66" Canvas.Left="-286" Click="refreshKinect_Click" />
-                    <CheckBox Content="Log Kinect Skele" Height="19" HorizontalAlignment="Left"  Name="checkBox1" VerticalAlignment="Top" Click="checkBox1_Click" Checked="checkBox1_Checked" Canvas.Left="537" Canvas.Top="273" />
+                    <Label Content="M i s c l e n i o u s  S e t t i n g s" IsEnabled="False" Name="labe218" FlowDirection="RightToLeft" Grid.Row="1" Canvas.Left="533" Canvas.Top="63" />
+                    <Label Content="Upper Threshold: " Height="29" Name="setlab3" Width="163" Grid.Row="1" Canvas.Left="300" Canvas.Top="170" />
+                    <Label Content="Normalization window: " Height="29" Name="label13" Width="139" Grid.Row="1" Canvas.Left="300" Canvas.Top="115" />
+                    <TextBox Height="22" Name="updateIntervalText" Width="25" Text="10" Grid.Row="1" Canvas.Left="432" Canvas.Top="116" />
+                    <Label Content="Sec" Height="29" Name="label114" Width="42" Grid.Row="1" Canvas.Left="456" Canvas.Top="114" />
+                    <Label Content="Calculate Emotion in every" Height="29" Name="labe2l13" Width="163" Grid.Row="2" Margin="300,222,1009,86" Canvas.Top="4" />
+                    <TextBox Height="22" Name="gfDelay" Width="25" Text="2" Grid.Row="2" Margin="446,224,1000,94" Canvas.Top="1" Canvas.Left="2" />
+                    <Label Content="Sec" Height="29" Name="labe21114" Width="42" Grid.Row="2" Margin="468,223,961,87" Canvas.Left="5" Canvas.Top="2" />
+                    <Label Content="Arousal ANN" Height="23" IsEnabled="False" Name="label9" Width="108" Grid.Row="2" Margin="533,178,830,138" Canvas.Left="9" />
+                    <TextBox Height="23" Name="loadANN" Text="C:\Users\workshop\Desktop\work\data\Arousal.dat" Grid.Row="2" FlowDirection="RightToLeft" Margin="537,204,791,112" Width="125" Canvas.Left="8" />
+                    <Label Content="Update features every" Height="29" Name="labe1l13" Width="128" Grid.Row="2" Margin="300,252,1042,60" Canvas.Left="1" Canvas.Top="2" />
+                    <TextBox Height="22" Name="ufDelay" Width="25" Text="0.2" Grid.Row="2" Margin="429,252,1017,66" Canvas.Top="5" Canvas.Left="-3" />
+                    <Label Content="Sec" Height="29" Name="label1114" Width="42" Grid.Row="2" Margin="456,250,973,60" Canvas.Top="3" Canvas.Left="-3" />
+                    <Label Content="Lower Threshold: " Height="29" Name="setlab1" Width="163" Grid.Row="2" Margin="300,142,1008,168" />
+                    <TextBox Height="22" Name="lThres" Width="49" Text="0.0005" Grid.Row="2" Margin="401,142,1021,175" />
+                    <Label Content="Meters" Height="29" Name="setlab2" Width="59" Grid.Row="2" Margin="0,140,961,170" HorizontalAlignment="Right" />
+                    <TextBox Height="22" Name="uThres" Width="25" Text="1" Grid.Row="2" Margin="401,170,1045,147" />
+                    <Label Content="Meter" Height="29" Name="setlab4" Width="42" Grid.Row="2" Margin="429,168,1000,142" Canvas.Top="1" Canvas.Left="-2" />
+                    <Label Content="Surge Threshold: " Height="29" Name="setlab5" Width="163" Grid.Row="2" Margin="300,198,1009,112" />
+                    <TextBox Height="22" Name="surgeThres" Width="25" Text="10" Grid.Row="2" Margin="401,198,1045,119" Canvas.Left="-1" Canvas.Top="1" />
+                    <Label Content="%" Height="29" Name="setlab6" Width="42" Grid.Row="2" Margin="431,196,998,114" Canvas.Top="1" Canvas.Left="-8" />
+                    <TextBox Height="23" Name="loadANNValence" Text="C:\Users\workshop\Desktop\work\data\Valence.dat" Grid.Row="2" TextWrapping="NoWrap" TextAlignment="Left" HorizontalContentAlignment="Right" FlowDirection="RightToLeft" Margin="537,148,791,168" Width="125" Canvas.Left="6" Canvas.Top="103" />
+                    
+                    <Label Content="Valence ANN" Height="23" IsEnabled="False" Name="arousalannlabel" Width="108" Grid.Row="2" Margin="533,124,830,192" Canvas.Left="7" Canvas.Top="104" />
+                    <Button Content="lookUp" Height="30" Name="button2valence" Width="49" Grid.Row="2" Click="button2valence_Click" Margin="686,195,736,114" Canvas.Top="49" Canvas.Left="-14" />
+                    <Button Content="lookUp" Height="30" Name="button2" Width="49" Click="button2_Click_1" Grid.Row="2" Margin="686,140,736,169" Canvas.Top="55" Canvas.Left="-13" />
+                    <CheckBox Content="Rapid Update" Height="24" Name="checkBox3" IsChecked="True" Checked="checkBox3_Checked" Unchecked="checkBox3_Unchecked" Grid.Row="2" Margin="537,262,845,53" Canvas.Top="-110" Canvas.Left="94" />
+                    <CheckBox Content="Log Kinect" Height="19" HorizontalAlignment="Left" Name="checkBox1" VerticalAlignment="Top" Click="checkBox1_Click" Checked="checkBox1_Checked" Margin="537,233,0,0" Grid.Row="2" Canvas.Top="-82" Canvas.Left="8" />
+                    <Label Canvas.Left="449" Canvas.Top="140" Content="Meter" Grid.Row="2" Height="29" Name="otherlabel3" Width="42" />
                 </Canvas>
-
 
 
 
@@ -134,35 +149,22 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
 
                 </Canvas>
 
-
+    
 
                 <Canvas Name="detectCanvas">
-                    <Label Content="D e t e c t i n g   M o d u l e" IsEnabled="False" Name="label8" FlowDirection="RightToLeft" Grid.Row="1" Canvas.Left="558" Canvas.Top="88" />
-                    <Label Content="Arousal ANN" Height="23" IsEnabled="False" Name="label9" Width="108" Grid.Row="1" Canvas.Left="301" Canvas.Top="202" />
-                    <TextBox Height="23" Name="loadANN" Width="197" Text="C:\Users\workshop\Desktop\work\data\Arousal.dat" Grid.Row="1" Canvas.Left="301" Canvas.Top="222" FlowDirection="RightToLeft" />
-                    <Button Content="lookUp" Height="30" Name="button2" Width="49" Click="button2_Click_1" Grid.Row="1" Canvas.Left="502" Canvas.Top="219" />
-
-                    <Label Content="Valence ANN" Height="23" IsEnabled="False" Name="arousalannlabel" Width="108" Grid.Row="1" Canvas.Left="301" Canvas.Top="250" />
-                    <TextBox Height="23" Name="loadANNValence" Width="197" Text="C:\Users\workshop\Desktop\work\data\Valence.dat" Grid.Row="1" Canvas.Left="301" Canvas.Top="272" TextWrapping="NoWrap" TextAlignment="Left" HorizontalContentAlignment="Right" FlowDirection="RightToLeft" />
-                    <Button Content="lookUp" Height="30" Name="button2valence" Width="49"  Grid.Row="1" Canvas.Left="502" Canvas.Top="266" Click="button2valence_Click" />
-
-                    <Button Content="Start Emotion Detection" Height="85" Name="startDetect" Width="157" Click="button4_Click" Grid.Row="1" Canvas.Left="561" Canvas.Top="213" />
-                    <CheckBox Content="Rapid Update" Height="24" Name="checkBox3" IsChecked="True" Checked="checkBox3_Checked" Unchecked="checkBox3_Unchecked" Grid.Row="1" Grid.Column="2" Canvas.Left="561" Canvas.Top="176" />
-                    <Button Content="save" Height="25" Name="button1" Width="35" Click="button1_Click_2" Grid.Row="1" Canvas.Left="680" Canvas.Top="184" />
-                    <Label Content="Normalization window: " Height="29" Name="label13" Width="139" Grid.Row="1" Canvas.Left="299" Canvas.Top="118" />
-                    <TextBox Height="22" Name="updateIntervalText" Width="25" Text="10" Grid.Row="1" Canvas.Left="432" Canvas.Top="120" />
-                    <Label Content="Sec" Height="29" Name="label114" Width="42" Grid.Row="1" Canvas.Left="456" Canvas.Top="118" />
-                    <Label Content="Update features every" Height="29" Name="labe1l13" Width="128" Grid.Row="1" Canvas.Left="299" Canvas.Top="144" />
-                    <TextBox Height="22" Name="ufDelay" Width="25" Text="0.2"  Grid.Row="1" Canvas.Left="426" Canvas.Top="147" />
-                    <Label Content="Sec" Height="29" Name="label1114" Width="42" Grid.Row="1" Canvas.Left="450" Canvas.Top="145" />
-                    <Label Content="Calculate Emotion in every" Height="29" Name="labe2l13" Width="163" Grid.Row="1" Canvas.Left="299" Canvas.Top="171" />
-                    <TextBox Height="22" Name="gfDelay" Width="25" Text="2"  Grid.Row="1" Canvas.Left="451" Canvas.Top="172" />
-                    <Label Content="Sec" Height="29" Name="labe21114" Width="42" Grid.Row="1" Canvas.Left="480" Canvas.Top="170" />
-
-                    <Label Content="Graph shows" Height="29" Name="labe2l14" Width="163" Grid.Row="1" Canvas.Left="555" Canvas.Top="150" />
-                    <TextBox Height="22" Name="graphPt" Width="25" Text="50"  Grid.Row="1" Canvas.Left="634" Canvas.Top="150"/>
-                    <Label Content="Points" Height="29" Name="labe21115" Width="42" Grid.Row="1" Canvas.Left="658" Canvas.Top="150" />
+                    <Label Content="D e t e c t i n g   M o d u l e" IsEnabled="False" Name="label8" FlowDirection="RightToLeft" Grid.Row="1" Canvas.Left="558" Canvas.Top="66" />
+                    <Label Content="Kinect is" Grid.Row="2" Height="35" HorizontalAlignment="Left" Margin="289,123,0,0" Name="detectmodulelabel3" VerticalAlignment="Top" Width="123" FontSize="22" FontWeight="Bold" FontFamily="Microsoft Sans Serif" Foreground="#FF7C7C7C" />
+                    <Label Content="Off" FontFamily="Microsoft Sans Serif" FontSize="22" FontWeight="Bold" Foreground="Red" Height="35" HorizontalAlignment="Left" Margin="381,124,0,0" Name="kinectstateLabel" VerticalAlignment="Top" Width="123" Grid.Row="2" Canvas.Top="-1" Canvas.Left="1" />
+                    <Button Content="If off, connect it and press here" Grid.Row="2" Height="23" HorizontalAlignment="Left" Margin="290,156,0,0" Name="refreshKinect" VerticalAlignment="Top" Width="196" Click="refreshKinect_Click" />
+                    <Button Content="save results" Name="button1" Click="button1_Click_2" Grid.Row="2" Margin="0,251,936,38" HorizontalAlignment="Right" Width="78" Canvas.Left="436" Height="42" IsEnabled="False" />
+                    <Button Content="Start" Name="startDetect" Click="button4_Click" Grid.Row="2" Margin="290,251,1020,38" Foreground="#FF161D0F" BorderBrush="#FF7ED845" Height="42" Width="140" Focusable="False" />
+                    <Label Content="Emotion Detection" FontFamily="Microsoft Sans Serif" FontSize="22" FontWeight="Bold" Foreground="#FF7C7C7C" Height="35" HorizontalAlignment="Left" Margin="287,219,0,0" Name="detionctmodulelabel4" VerticalAlignment="Top" Width="199" Grid.Row="2" />
+                    <Image Name="poseContextImage" Stretch="Fill" Source="/Haixiu;component/images/confused.png" ImageFailed="image1_ImageFailed" Margin="636,103,758,123" Grid.Row="2" Height="113" Width="107" Canvas.Top="37" Canvas.Left="-56" />
+                   
+                    <Label Content="Cant Detect:" FlowDirection="LeftToRight" Grid.Row="2" IsEnabled="False" Name="poseContextLabel1" Margin="604,0,771,77" Height="27" VerticalAlignment="Bottom" Canvas.Top="248" Canvas.Left="-37" HorizontalAlignment="Center" HorizontalContentAlignment="Center" />
+                    <Label Content="  Kinect off" FlowDirection="LeftToRight" Height="27" IsEnabled="False" Margin="598,0,771,50" Name="poseContextLabel2" VerticalAlignment="Center" Grid.Row="2" Canvas.Top="248" Canvas.Left="33" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
                 </Canvas>
+
 
 
             </Canvas>
@@ -189,7 +191,7 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                 <Label Content="Live Skeleton Tracking" Height="27" Name="skeleton" Width="137" VerticalAlignment="Top" Canvas.Left="487" Canvas.Top="-7" Foreground="#FF196CF2" />
 
                 
-                <Image Name="image1" Stretch="Fill" Source="/Haixiu;component/images/red.png" ImageFailed="image1_ImageFailed"  Canvas.Left="673" Canvas.Top="270" Height="20" Width="24" />
+                <Image Name="kinectBulb" Stretch="Fill" Source="/Haixiu;component/images/red.png" ImageFailed="image1_ImageFailed"  Canvas.Left="673" Canvas.Top="270" Height="20" Width="24" />
 
                 <Label Content="spine pos: " Name="label1" FontSize="14" Canvas.Left="9" Canvas.Top="305" Width="680" Background="#FFE8E8E8" />
                 <Label Content="000000000000" Height="28" HorizontalAlignment="Left"  Name="labelFrame" VerticalAlignment="Top" Width="91" Canvas.Left="594" Canvas.Top="306" />
@@ -275,9 +277,13 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
             </Canvas>
 -->
 
-            <Label Content="Arousal :" Height="50" Name="label14" FontSize="32" FontWeight="Bold" Canvas.Left="840" Canvas.Top="3" Foreground="#FF3E5AF2" Grid.Column="1" Margin="932,66,263,414" />
-            <Label Content="Valence : " Height="64" Name="outputLabel" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="32" Canvas.Left="1117" Canvas.Top="0" Foreground="#FFE20E0E" Grid.Column="1" Margin="1204,60,0,406" Grid.ColumnSpan="2" />
-            <chartingToolkit:Chart Name="lineChart" Background="Transparent" BorderThickness="0"   MinWidth="1459" HorizontalAlignment="Left" VerticalAlignment="Top" Height="436" Canvas.Left="2" Canvas.Top="2" HorizontalContentAlignment="Center" Width="Auto" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,82,0,0">
+            <Label Content="Arousal :" Height="50" Name="label14" FontSize="32" FontWeight="Bold" Canvas.Left="840" Canvas.Top="3" Foreground="#FF3E5AF2" Grid.Column="1" Margin="931,66,264,414" />
+            <Label Content="Valence : " Height="64" Name="outputLabel" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="32" Canvas.Left="1117" Canvas.Top="0" Foreground="#FFE20E0E" Grid.Column="1" Margin="1191,60,3,406" />
+
+            <Label Content="Graph shows" Height="29" Name="labe2l14" Width="163" Canvas.Left="0" Canvas.Top="0" Margin="10,86,1278,415" Grid.Column="1" />
+            <TextBox Height="22" Name="graphPt" Width="25" Text="50" Canvas.Left="634" Canvas.Top="150" Grid.Column="1" Margin="98,86,1328,422" />
+            <Label Content="Points" Height="29" Name="labe21115" Width="42" Canvas.Left="658" Canvas.Top="150" Grid.Column="1" Margin="131,84,1278,417" />
+            <chartingToolkit:Chart Name="lineChart" Background="Transparent" BorderThickness="0"   MinWidth="1459" HorizontalAlignment="Left" VerticalAlignment="Top" Height="441" Canvas.Left="2" Canvas.Top="2" HorizontalContentAlignment="Center" Width="Auto" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,78,0,0">
                 <charting:Chart.LegendStyle>
                     <Style TargetType="datavis:Legend">
                         <Setter Property="Width" Value="0" />
@@ -302,6 +308,7 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                 </chartingToolkit:Chart.Axes>
             </chartingToolkit:Chart>
         </Grid>
+
     </Grid>
 
 </Window>

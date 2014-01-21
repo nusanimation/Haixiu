@@ -318,6 +318,7 @@ namespace WpfApplication1
         private fileWriter file = new fileWriter(null, "checking.csv");
         private List<double[]> movementFeatureList, positionFeatureList;     //  protected double[] featureSet;
         private recognizer mRecog, posRecog;
+        private recognizer arousalSittingRecognizer, arousalStandingRecognizer, valenceSittingRecognizer, valenceStandingRecognizer;
         
         private featureExtractor feature;
         double[] movement = null, position = null;
@@ -364,25 +365,37 @@ namespace WpfApplication1
 
         public newDynamicDetection(String s, String s1)
         {
-
             try
             {
                 mRecog = new recognizer(s);
                 //posRecog = new recognizer(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\" + "positionANN.dat");
                 posRecog = new recognizer(s1);
+                
+                arousalSittingRecognizer = new recognizer(s);
+                arousalStandingRecognizer = new recognizer(s);
+                valenceSittingRecognizer = new recognizer(s1);
+                valenceStandingRecognizer = new recognizer(s1); ;
+                
+                this.iter = 0;
+                movementFeatureList = new List<double[]>();
+                positionFeatureList = new List<double[]>();
+                globalVars.detectorOn = true;
+                globalVars.fExtract.frames = 0;
             }
             catch
             {
-                System.Windows.MessageBox.Show("Some problem with the Saved Networks. CHeck your files.", "ANN init error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.MessageBox.Show("Some problem with the Saved Networks. CHeck your files and try again.", "ANN init error", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.stopDetection();
+                globalVars.detectorOn = false;
             }
                 //this.feature = featureExtractor();
-            this.iter = 0;
-            movementFeatureList = new List<double[]>();
-            positionFeatureList = new List<double[]>();
         }
 
-        public int pollFeatures(SkeletonData s)
+
+
+        public int pollFeatures(SkeletonData s, userContext poseofUser)
         {
+
             iter++; //frame++;
             double[][] ans = globalVars.fExtract.getRawDataStream(s);
             
@@ -406,8 +419,30 @@ namespace WpfApplication1
                 position[i] += ans[1][i];
             positionTick++;
 
+            //System.Windows.MessageBox.Show("iter: "+iter, "ANN init error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            /* Here the detection starts */
+
             if (iter % 30 == 0 && iter != 0)
             {
+                /*this awesome part automates the recognizer choice for Sitting or Standing context*/
+                if (poseofUser == userContext.Sitting)
+                {
+                    mRecog = arousalSittingRecognizer;
+                    posRecog = valenceSittingRecognizer;
+                }
+                else if (poseofUser == userContext.Standing)
+                {
+                    mRecog = arousalStandingRecognizer;
+                    posRecog = valenceStandingRecognizer;
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show("there is no saved network for this pose. Please try standing or sitting only.",
+                           "detection error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return -1;
+                }
+
 
                 double[] temp1, temp2;
                 temp1 = new double[ans[0].Length];
@@ -435,51 +470,51 @@ namespace WpfApplication1
 
                 if (slidingWindow == true)
                 {
-                        /*adding them in a list for sliding window*/
-                        movementFeatureList.Add(temp1);
-                        positionFeatureList.Add(temp2);
+                    /*adding them in a list for sliding window*/
+                    movementFeatureList.Add(temp1);
+                    positionFeatureList.Add(temp2);
 
 
-                        double[] finalFeature = new double[movement.Length];
-                        for (int i = 0; i < movement.Length; i++)
+                    double[] finalFeature = new double[movement.Length];
+                    for (int i = 0; i < movement.Length; i++)
+                    {
+                        foreach (double[] d in this.movementFeatureList)
                         {
-                            foreach (double[] d in this.movementFeatureList)
-                            {
-                                finalFeature[i] += d[i];
-                                //Console.Write(d[i]+", ");
-                            }
-                            finalFeature[i] /= movementFeatureList.Count;
-                            //Console.WriteLine("ffm: "+finalFeature[i]);
+                            finalFeature[i] += d[i];
+                            //Console.Write(d[i]+", ");
                         }
-
-
-                        double[] finalFeature1 = new double[position.Length];
-
-                        for (int i = 0; i < position.Length; i++)
-                        {
-                            foreach (double[] d in this.positionFeatureList)
-                            {
-                                finalFeature1[i] += d[i];
-                                //Console.Write(d[i]+", ");
-                            }
-                            finalFeature1[i] /= positionFeatureList.Count;
-                            //Console.WriteLine("ffp: " + finalFeature1[i]);
-                        }
-
-                        //Console.WriteLine(featureList.Count);
-                        if (movementFeatureList.Count == interval / 30)
-                        {
-                            movementFeatureList.RemoveAt(0);
-                            positionFeatureList.RemoveAt(0);
-                        }
-                        detect(finalFeature, finalFeature1);
+                        finalFeature[i] /= movementFeatureList.Count;
+                        //Console.WriteLine("ffm: "+finalFeature[i]);
                     }
+
+
+                    double[] finalFeature1 = new double[position.Length];
+
+                    for (int i = 0; i < position.Length; i++)
+                    {
+                        foreach (double[] d in this.positionFeatureList)
+                        {
+                            finalFeature1[i] += d[i];
+                            //Console.Write(d[i]+", ");
+                        }
+                        finalFeature1[i] /= positionFeatureList.Count;
+                        //Console.WriteLine("ffp: " + finalFeature1[i]);
+                    }
+
+                    //Console.WriteLine(featureList.Count);
+                    if (movementFeatureList.Count == interval / 30)
+                    {
+                        movementFeatureList.RemoveAt(0);
+                        positionFeatureList.RemoveAt(0);
+                    }
+                    detect(finalFeature, finalFeature1);
+                }
                 
 
-                    else
-                    {
-                        detect(temp1, temp2);
-                    }
+                else
+                {
+                    detect(temp1, temp2);
+                }
             }
             return iter;
 
@@ -487,6 +522,7 @@ namespace WpfApplication1
 
         public void detect(double [] movement, double[] position)
         {
+
             if (globalVars.avq == null)
                 globalVars.avq = new AVQueue();
 
@@ -554,7 +590,7 @@ namespace WpfApplication1
             }
             catch
             {
-                System.Windows.MessageBox.Show("Detection Module: --" + r.name + "-- has failed for some reason",
+                System.Windows.MessageBox.Show("Detection Module: --" + r.name + "-- has failed for some reason. Most probably wrong Network file selected.",
                     "detection error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return -2;
             }
@@ -591,5 +627,18 @@ namespace WpfApplication1
         //        file.Close();
 
         //    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     }
 }
