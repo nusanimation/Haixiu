@@ -88,7 +88,6 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                     <Label Content="Sec" Height="29" Name="label1114" Width="42" Grid.Row="2" Margin="456,250,973,60" Canvas.Top="3" Canvas.Left="-3" />
                     <Label Content="Lower Threshold: " Height="29" Name="setlab1" Width="163" Grid.Row="2" Margin="300,142,1008,168" />
                     <TextBox Height="22" Name="lThres" Width="49" Text="0.0005" Grid.Row="2" Margin="401,142,1021,175" />
-                    <Label Content="Meters" Height="29" Name="setlab2" Width="59" Grid.Row="2" Margin="0,140,961,170" HorizontalAlignment="Right" />
                     <TextBox Height="22" Name="uThres" Width="25" Text="1" Grid.Row="2" Margin="401,170,1045,147" />
                     <Label Content="Meter" Height="29" Name="setlab4" Width="42" Grid.Row="2" Margin="429,168,1000,142" Canvas.Top="1" Canvas.Left="-2" />
                     <Label Content="Surge Threshold: " Height="29" Name="setlab5" Width="163" Grid.Row="2" Margin="300,198,1009,112" />
@@ -159,7 +158,7 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                     <Button Content="save results" Name="button1" Click="button1_Click_2" Grid.Row="2" Margin="0,251,936,38" HorizontalAlignment="Right" Width="78" Canvas.Left="436" Height="42" IsEnabled="False" />
                     <Button Content="Start" Name="startDetect" Click="button4_Click" Grid.Row="2" Margin="290,251,1020,38" Foreground="#FF161D0F" BorderBrush="#FF7ED845" Height="42" Width="140" Focusable="False" />
                     <Label Content="Emotion Detection" FontFamily="Microsoft Sans Serif" FontSize="22" FontWeight="Bold" Foreground="#FF7C7C7C" Height="35" HorizontalAlignment="Left" Margin="287,219,0,0" Name="detionctmodulelabel4" VerticalAlignment="Top" Width="199" Grid.Row="2" />
-                    <Image Name="poseContextImage" Stretch="Fill" Source="/Haixiu;component/images/confused.png" ImageFailed="image1_ImageFailed" Margin="636,103,758,123" Grid.Row="2" Height="113" Width="107" Canvas.Top="37" Canvas.Left="-56" />
+                    <Image Name="poseContextImage" Stretch="Fill" Source="/Haixiu;component/images/confused.png" ImageFailed="image1_ImageFailed" Margin="636,103,758,123" Grid.Row="2" Height="150" Width="150" Canvas.Top="10" Canvas.Left="-78" />
                    
                     <Label Content="Cant Detect:" FlowDirection="LeftToRight" Grid.Row="2" IsEnabled="False" Name="poseContextLabel1" Margin="604,0,771,77" Height="27" VerticalAlignment="Bottom" Canvas.Top="248" Canvas.Left="-37" HorizontalAlignment="Center" HorizontalContentAlignment="Center" />
                     <Label Content="  Kinect off" FlowDirection="LeftToRight" Height="27" IsEnabled="False" Margin="598,0,771,50" Name="poseContextLabel2" VerticalAlignment="Center" Grid.Row="2" Canvas.Top="248" Canvas.Left="33" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
@@ -296,7 +295,7 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
 
                 <chartingToolkit:Chart.Axes>
 
-                    <chartingToolkit:LinearAxis Interval="10" Orientation="Y" Minimum="-1" Maximum="102" Title="Level of Arousal" ShowGridLines="True">
+                    <chartingToolkit:LinearAxis Interval="10" Orientation="Y" Minimum="-1" Maximum="102" Title="Level of Arousal and Valence" ShowGridLines="True">
 
                         <charting:LinearAxis.Background>
                             <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
