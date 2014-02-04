@@ -169,8 +169,15 @@ namespace WpfApplication1
             {
                 this.Power1.RemoveAt(0);
             }
-            if (data>=-1 && data <= 100)
-                this.Power1.Add(new KeyValuePair<string, double>(DateTime.Now.Hour+ ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second, (data)));
+
+            //This was showing current time in the X axis of graph. Ma'm said otherwise. So commenting out
+/*            if (data >= -1 && data <= 100)
+                this.Power1.Add(new KeyValuePair<string, double>(DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second, (data)));
+            else
+                this.Power1.Add(new KeyValuePair<string, double>(DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second, -1));
+  */        
+            if (data >= -1 && data <= 100)
+                this.Power1.Add(new KeyValuePair<string, double>(" " , (data)));
             else
                 this.Power1.Add(new KeyValuePair<string, double>(DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second, -1));
             
@@ -178,7 +185,7 @@ namespace WpfApplication1
 
         public void update(double[] data)
         {
-            cViz.draw(data[0], data[1], 3.3, 2.25);
+            cViz.draw(data[0], data[1], 7, 5.2);
             if (globalVars.isCircmplexBigOpen == true )
             {
                 cVizBig.canvasToDraw = globalVars.CircumplexBig;
@@ -201,9 +208,15 @@ namespace WpfApplication1
                     this.Power[i].RemoveAt(0);
                 }
                 if (data[i] >= -1 && data[i] <= 100)
-                    this.Power[i].Add(new KeyValuePair<string, double>(DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second, (data[i])));
+                {
+//                    if (iter % 5 == 0)
+                        this.Power[i].Add(new KeyValuePair<string, double>(iter + "s", (data[i])));
+  //                  else
+    //                    this.Power[i].Add(new KeyValuePair<string, double>(".", (data[i])));
+                }
+
                 else
-                    this.Power[i].Add(new KeyValuePair<string, double>(DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second, -1));
+                    this.Power[i].Add(new KeyValuePair<string, double>(iter+"s", -1));
             }
 
         }
@@ -235,8 +248,8 @@ namespace WpfApplication1
             d = new dot(1, counter);
             if (this.canvasToDraw != null)
             {
-                xAxis = new bone(13, 0, 13, 244);
-                yAxis = new bone(3, 234, 330, 234);
+                xAxis = new bone(26, 0, 26, 520);
+                yAxis = new bone(3, 520, 665, 520);
                 //a = new dot(7, 7, 2, Brushes.Red, off);
                 xAxis.drawBone(this.canvasToDraw);
                 yAxis.drawBone(this.canvasToDraw);
@@ -260,7 +273,7 @@ namespace WpfApplication1
             //this counter is for name of the dot
 
             //dot a;
-            Point p = new Point(Math.Round(Valence * offsetV), Math.Round((100 - Arousal) * offsetV));
+            Point p = new Point(Math.Round(Valence * offsetV)+20, Math.Round((100 - Arousal) * offsetV));
             Point off = new Point(0, 5);
             if (reddot == true)
             {

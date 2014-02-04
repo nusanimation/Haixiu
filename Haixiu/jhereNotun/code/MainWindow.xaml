@@ -1,7 +1,7 @@
 ﻿<Window x:Class="WpfApplication1.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="EmoMi" Loaded="Window_Loaded" Closed="Window_Closed" IsEnabled="True" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+        Title="EMMO" Loaded="Window_Loaded" Closed="Window_Closed" IsEnabled="True" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
 xmlns:charting="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
 xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit" Height="958" Width="1493"
         WindowStyle="SingleBorderWindow"
@@ -41,34 +41,36 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
 
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="0"/>
+            <RowDefinition Height="339*"/>
             <RowDefinition Height="530"/>
 
         </Grid.RowDefinitions>
+        <Canvas Name="canvas2" Background="#40484848" Margin="766,299,44,48" Grid.Row="2" Grid.RowSpan="2"></Canvas>
         <Button Command="ApplicationCommands.Close" 
-                Content="Close Window" Height="23" HorizontalAlignment="Left" Margin="1361,0,0,0" Name="button3" VerticalAlignment="Top" Width="75" Visibility="Hidden"/>
+                Content="Close Window" Height="23" HorizontalAlignment="Left" Margin="1405,0,0,0" Name="button3" VerticalAlignment="Top" Width="31" Visibility="Hidden"/>
 
         <Grid Name="upgrid"  Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="750"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="721" />
+                <ColumnDefinition Width="520" />
+                <ColumnDefinition Width="201" />
             </Grid.ColumnDefinitions>
             <Canvas Name="mainCanvas" Grid.Row="1" Grid.Column="0">
 
-                <Label Content="EmoMi System for Emotion Detection" Height="45" HorizontalAlignment="Left" Name="label11" VerticalAlignment="Top" Width="274" FontSize="22" FontWeight="Normal" Background="White" Foreground="#FFAAAAAA" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Right" FontFamily="Segoe UI" FontStyle="Normal" Margin="25,60,0,0" Canvas.Left="417" Canvas.Top="-44" />
+                <Label Content="EMMO: Emotion Detection System" Height="45" HorizontalAlignment="Left" Name="label11" VerticalAlignment="Top" Width="387" FontSize="22" FontWeight="Normal" Background="White" Foreground="#FFAAAAAA" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Right" FontFamily="Segoe UI" FontStyle="Normal" Margin="25,60,0,0" Canvas.Left="304" Canvas.Top="-44" />
 
-                <Label Content="Detect" Style="{StaticResource menuLabel}" Height="39" HorizontalAlignment="Left" Margin="37,116,0,0" Name="DetectMenu" VerticalAlignment="Top" Width="180" FontSize="20" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"  MouseEnter="DetectMenu_MouseEnter" MouseLeave="DetectMenu_MouseLeave" MouseLeftButtonUp="DetectMenu_MouseLeftButtonUp" Foreground="DeepSkyBlue">
-
-                </Label>
-                <Label Content="Record" Style="{StaticResource menuLabel}" FontSize="20" Height="39" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="37,164,0,0" Name="RecordMenu" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="181" MouseLeftButtonUp="RecordMenu_MouseLeftButtonUp" Foreground="Gainsboro">
+                <Label Content="Detect" Style="{StaticResource menuLabel}" Height="39" HorizontalAlignment="Left" Margin="37,116,0,0" Name="DetectMenu" VerticalAlignment="Top" Width="180" FontSize="22" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"  MouseEnter="DetectMenu_MouseEnter" MouseLeave="DetectMenu_MouseLeave" MouseLeftButtonUp="DetectMenu_MouseLeftButtonUp" Foreground="DeepSkyBlue">
 
                 </Label>
-                <Label Content="Learn" Style="{StaticResource menuLabel}" FontSize="20" Height="39" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="37,213,0,0" Name="LearnMenu" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="181" MouseLeftButtonUp="LearnMenu_MouseLeftButtonUp" Foreground="Gainsboro">
+                <Label Content="Record" Style="{StaticResource menuLabel}" FontSize="22" Height="39" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="37,164,0,0" Name="RecordMenu" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="181" MouseLeftButtonUp="RecordMenu_MouseLeftButtonUp" Foreground="Gainsboro">
 
                 </Label>
-                <Label Content="Settings" Style="{StaticResource menuLabel}" FontSize="20" Height="39" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="37,262,0,0" Name="advancedMenu" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="181" Foreground="Gainsboro" MouseLeftButtonUp="advancedMenu_MouseLeftButtonUp">
+                <Label Content="Learn" Style="{StaticResource menuLabel}" FontSize="22" Height="39" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="37,213,0,0" Name="LearnMenu" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="181" MouseLeftButtonUp="LearnMenu_MouseLeftButtonUp" Foreground="Gainsboro">
+
+                </Label>
+                <Label Content="Settings" Style="{StaticResource menuLabel}" FontSize="22" Height="39" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="37,262,0,0" Name="advancedMenu" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="181" Foreground="Gainsboro" MouseLeftButtonUp="advancedMenu_MouseLeftButtonUp">
 
                 </Label>
 
@@ -117,7 +119,7 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                     <Label Content="Iterations" Height="28" Name="label3" Width="79" Canvas.Left="287" Canvas.Top="254" />
                     <Label Content="0" Height="32" Name="iterCount" Width="71" Canvas.Left="366" Canvas.Top="254" />
                     <Label Content="Error" Height="28" Name="label4" Width="56" Canvas.Left="287" Canvas.Top="280" />
-                    <Button Content="Save NewuralNet" Height="62" Name="saveANNbutn" Width="177" IsEnabled="True" Click="button1_Click_1" Canvas.Left="533" Canvas.Top="250" />
+                    <Button Content="Save NeuralNet" Height="58" Name="saveANNbutn" Width="177" IsEnabled="True" Click="button1_Click_1" Canvas.Left="533" Canvas.Top="250" FontSize="16" />
                     <ComboBox Height="25" HorizontalAlignment="Left"  Canvas.Left="273" Canvas.Top="200" Name="comboBox1" VerticalAlignment="Top" Width="120" SelectionChanged="comboBox1_SelectionChanged" >
                         <ComboBoxItem Content="Bipolar Sigmoid" Tag="1"  />
                         <ComboBoxItem Content="Binary Sigmoid" Tag="2"  />
@@ -155,13 +157,13 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                     <Label Content="Kinect is" Grid.Row="2" Height="35" HorizontalAlignment="Left" Margin="289,123,0,0" Name="detectmodulelabel3" VerticalAlignment="Top" Width="123" FontSize="22" FontWeight="Bold" FontFamily="Microsoft Sans Serif" Foreground="#FF7C7C7C" />
                     <Label Content="Off" FontFamily="Microsoft Sans Serif" FontSize="22" FontWeight="Bold" Foreground="Red" Height="35" HorizontalAlignment="Left" Margin="381,124,0,0" Name="kinectstateLabel" VerticalAlignment="Top" Width="123" Grid.Row="2" Canvas.Top="-1" Canvas.Left="1" />
                     <Button Content="If off, connect it and press here" Grid.Row="2" Height="23" HorizontalAlignment="Left" Margin="290,156,0,0" Name="refreshKinect" VerticalAlignment="Top" Width="196" Click="refreshKinect_Click" />
-                    <Button Content="save results" Name="button1" Click="button1_Click_2" Grid.Row="2" Margin="0,251,936,38" HorizontalAlignment="Right" Width="78" Canvas.Left="436" Height="42" IsEnabled="False" />
-                    <Button Content="Start" Name="startDetect" Click="button4_Click" Grid.Row="2" Margin="290,251,1020,38" Foreground="#FF161D0F" BorderBrush="#FF7ED845" Height="42" Width="140" Focusable="False" />
+                    <Button Content="save results" Name="button1" Click="button1_Click_2" Grid.Row="2" Margin="0,251,936,38" HorizontalAlignment="Right" Width="78" Canvas.Left="436" Height="57" IsEnabled="False" />
+                    <Button Content="Start" Name="startDetect" Click="button4_Click" Grid.Row="2" Margin="290,251,1020,38" Foreground="#FF161D0F" BorderBrush="#FF7ED845" Height="57" Width="140" Focusable="False" FontSize="16" />
                     <Label Content="Emotion Detection" FontFamily="Microsoft Sans Serif" FontSize="22" FontWeight="Bold" Foreground="#FF7C7C7C" Height="35" HorizontalAlignment="Left" Margin="287,219,0,0" Name="detionctmodulelabel4" VerticalAlignment="Top" Width="199" Grid.Row="2" />
                     <Image Name="poseContextImage" Stretch="Fill" Source="/Haixiu;component/images/confused.png" ImageFailed="image1_ImageFailed" Margin="636,103,758,123" Grid.Row="2" Height="150" Width="150" Canvas.Top="10" Canvas.Left="-78" />
                    
-                    <Label Content="Cant Detect:" FlowDirection="LeftToRight" Grid.Row="2" IsEnabled="False" Name="poseContextLabel1" Margin="604,0,771,77" Height="27" VerticalAlignment="Bottom" Canvas.Top="248" Canvas.Left="-37" HorizontalAlignment="Center" HorizontalContentAlignment="Center" />
-                    <Label Content="  Kinect off" FlowDirection="LeftToRight" Height="27" IsEnabled="False" Margin="598,0,771,50" Name="poseContextLabel2" VerticalAlignment="Center" Grid.Row="2" Canvas.Top="248" Canvas.Left="33" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+                    <Label Content="Cant Detect:" FlowDirection="LeftToRight" Grid.Row="2" IsEnabled="False" Name="poseContextLabel1" Margin="604,0,771,77" Height="27" VerticalAlignment="Bottom" Canvas.Top="261" Canvas.Left="-51" HorizontalAlignment="Center" HorizontalContentAlignment="Center" />
+                    <Label Content="  Kinect off" FlowDirection="LeftToRight" Height="27" IsEnabled="False" Margin="598,0,771,50" Name="poseContextLabel2" VerticalAlignment="Center" Grid.Row="2" Canvas.Top="261" Canvas.Left="19" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
                 </Canvas>
 
 
@@ -171,83 +173,17 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
 
 
 
-            <Canvas Name="VisualizationCanvas" Height="Auto" Width="Auto" Grid.Column="2"  Grid.Row="1" Background="#FFDF2B2B">
-                <Label Content="SensorAngle" Height="24" HorizontalAlignment="Left"  Name="label12" VerticalAlignment="Top" Width="53" FontSize="8" Canvas.Left="333" Canvas.Top="6" />
-                <Slider Height="210" HorizontalAlignment="Left"  Name="slider1" VerticalAlignment="Top" Width="42" Orientation="Vertical" SmallChange="1" TickPlacement="Both" ValueChanged="slider1_ValueChanged" MouseLeave="slider1_MouseLeave" AutoToolTipPlacement="BottomRight" Canvas.Left="344" Canvas.Top="40" />
-                <Canvas Height="244" HorizontalAlignment="Left"  Name="canvas1" VerticalAlignment="Top" Width="310" Canvas.Left="387" Canvas.Top="18">
-                    <Canvas.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="Black" Offset="0" />
-                            <GradientStop Color="#FE9BE863" Offset="0" />
-                            <GradientStop Color="White" Offset="0.592" />
-                            <GradientStop Color="#DF007396" Offset="0" />
-                        </LinearGradientBrush>
-                    </Canvas.Background>
-
-                </Canvas>
-                <Canvas Name="canvas2" Background="#40484848" Canvas.Left="6" Canvas.Top="16" Height="235" Width="330"></Canvas>
-                <Label Content="Kinect State" Height="27" Name="label2" Width="84" VerticalAlignment="Top" Canvas.Left="599" Canvas.Top="266" />
-                <Label Content="Live Skeleton Tracking" Height="27" Name="skeleton" Width="137" VerticalAlignment="Top" Canvas.Left="487" Canvas.Top="-7" Foreground="#FF196CF2" />
-
-                
-                <Image Name="kinectBulb" Stretch="Fill" Source="/Haixiu;component/images/red.png" ImageFailed="image1_ImageFailed"  Canvas.Left="673" Canvas.Top="270" Height="20" Width="24" />
-
-                <Label Content="spine pos: " Name="label1" FontSize="14" Canvas.Left="9" Canvas.Top="305" Width="680" Background="#FFE8E8E8" />
-                <Label Content="000000000000" Height="28" HorizontalAlignment="Left"  Name="labelFrame" VerticalAlignment="Top" Width="91" Canvas.Left="594" Canvas.Top="306" />
-                <Label Content="Frames" Height="28" HorizontalAlignment="Left"  Name="label5" VerticalAlignment="Top" Canvas.Left="530" Canvas.Top="306" />
-                <Canvas Height="244" Name="vgaCanvas" Width="330" Canvas.Left="6" Canvas.Top="16">
-                    <Canvas.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FFFC3434" Offset="0" />
-                            <GradientStop Color="WhiteSmoke" Offset="0.415" />
-                            <GradientStop Color="#FFE5F5F5" Offset="0.571" />
-                            <GradientStop Color="#FF0099F8" Offset="1" />
-                        </LinearGradientBrush>
-                    </Canvas.Background>
-                </Canvas>
-                <Label Content="Normal" Height="28" HorizontalAlignment="Right" Name="normal" VerticalAlignment="Top" Margin="0,119,531,0" Grid.Row="2" Canvas.Top="4" Canvas.Left="144" />
-
-                <Label Content="Anger" Height="28" HorizontalAlignment="Right" Name="anger" VerticalAlignment="Top" Margin="0,53,613,0" Grid.Row="2" Canvas.Left="53" Canvas.Top="19" />
-
-                <Label Content="OverJoyed" Height="28" HorizontalAlignment="Right" Name="overjoy" VerticalAlignment="Top" Margin="0,40,385,0" Grid.Row="2" Canvas.Left="254" />
-
-                <Label Content="Sad" Height="28" HorizontalAlignment="Right" Name="Sad" VerticalAlignment="Top" Margin="0,175,613,0" Grid.Row="2" Canvas.Left="80" Canvas.Top="13" />
-
-                <Label Content="Happy" Height="28" HorizontalAlignment="Right" Name="happy" VerticalAlignment="Top" Margin="0,108,439,0" Grid.Row="2" Canvas.Left="229" Canvas.Top="-17" />
-
-
-                <Label Content="Postitive Valence" Height="28" HorizontalAlignment="Right" Name="val1" VerticalAlignment="Top" Margin="0,253,385,0" Grid.Row="2" Canvas.Left="244" />
-                <Label Content="Negative Valence" Height="28" HorizontalAlignment="Left" Name="val0" VerticalAlignment="Top"  Grid.Row="2" Canvas.Left="1" Canvas.Top="252" />
-                <Label Name="aro0"  Grid.Row="2" VerticalContentAlignment="Top" Canvas.Top="171" Canvas.Left="-3">
-
-                    <Label.Content>Low Arousal</Label.Content>
-                    <Label.LayoutTransform>
-                        <RotateTransform Angle="-90"/>
-                    </Label.LayoutTransform>
-                </Label>
-
-                <Label Name="aro1"  VerticalContentAlignment="Top" Grid.RowSpan="3" Canvas.Left="-3" Canvas.Top="13">
-
-                    <Label.Content>High Arousal</Label.Content>
-                    <Label.LayoutTransform>
-                        <RotateTransform Angle="-90"/>
-                    </Label.LayoutTransform>
-                </Label>
-                <Label Content="Affectionate" Height="28" HorizontalAlignment="Right" Margin="0,184,419,0" Name="label10" VerticalAlignment="Top" Grid.Row="2" Canvas.Left="230" Canvas.Top="-6" />
-
-                <Label Content="Emotion Tracking Chart" Height="27" Name="emotionchart" Width="137" VerticalAlignment="Top" Canvas.Left="3" Canvas.Top="-8" Foreground="#FF466DEF" />
-<Button Content="snapshot of skeleton" Grid.Row="2" Height="23" HorizontalAlignment="Left"  Name="snap" VerticalAlignment="Top" Width="136" Canvas.Top="268" Canvas.Left="387" Click="snap_Click" />
-                <Button Canvas.Left="200" Canvas.Top="-10" Content="Open in bigger winidow" Grid.Row="2" Height="23" Name="bigCircumplexWindowButton" Width="136" Click="bigCircumplexWindowButton_Click" />
-            </Canvas>
+            <Canvas Name="VisualizationCanvas" Height="Auto" Width="Auto" Grid.Column="1" Background="#FFDF2B2B" Grid.ColumnSpan="3" Margin="0,0,1,0"></Canvas>
         </Grid>
 
         <Grid Name="chartGrid" Grid.Row="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Width="Auto">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="10"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="161*"/>
+                <ColumnDefinition Width="1290*" />
                 <ColumnDefinition Width="10" />
             </Grid.ColumnDefinitions>
-           <!--
+            <!--
             <Canvas Name="chartHolder" Grid.Column="1" Background="Transparent">
                 <charting:Chart Background="White" BorderThickness="0" Height="120" Name="featureChart" VerticalAlignment="Top" Canvas.Top="416" MinWidth="1464" Canvas.Left="8">
                     <charting:Chart.Axes>
@@ -276,13 +212,13 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
             </Canvas>
 -->
 
-            <Label Content="Arousal :" Height="50" Name="label14" FontSize="32" FontWeight="Bold" Canvas.Left="840" Canvas.Top="3" Foreground="#FF3E5AF2" Grid.Column="1" Margin="931,66,264,414" />
-            <Label Content="Valence : " Height="64" Name="outputLabel" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="32" Canvas.Left="1117" Canvas.Top="0" Foreground="#FFE20E0E" Grid.Column="1" Margin="1191,60,3,406" />
+            <Label Content="Arousal :" Height="50" Name="label14" FontSize="32" FontWeight="Bold" Canvas.Left="840" Canvas.Top="3" Foreground="#FF3E5AF2" Grid.Column="1" Margin="18,18,1110,462" Grid.ColumnSpan="2" />
+            <Label Content="Valence : " Height="64" Name="outputLabel" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="32" Canvas.Left="1117" Canvas.Top="0" Foreground="#FFE20E0E" Grid.Column="1" Margin="0,56,1115,410" HorizontalAlignment="Right" Width="326" Grid.ColumnSpan="2" />
 
-            <Label Content="Graph shows" Height="29" Name="labe2l14" Width="163" Canvas.Left="0" Canvas.Top="0" Margin="10,86,1278,415" Grid.Column="1" />
-            <TextBox Height="22" Name="graphPt" Width="25" Text="50" Canvas.Left="634" Canvas.Top="150" Grid.Column="1" Margin="98,86,1328,422" />
-            <Label Content="Points" Height="29" Name="labe21115" Width="42" Canvas.Left="658" Canvas.Top="150" Grid.Column="1" Margin="131,84,1278,417" />
-            <chartingToolkit:Chart Name="lineChart" Background="Transparent" BorderThickness="0"   MinWidth="1459" HorizontalAlignment="Left" VerticalAlignment="Top" Height="441" Canvas.Left="2" Canvas.Top="2" HorizontalContentAlignment="Center" Width="Auto" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,78,0,0">
+            <Label Content="Graph shows" Height="29" Name="labe2l14" Width="163" Canvas.Left="0" Canvas.Top="0" Margin="362,78,765,423" Grid.Column="2" />
+            <TextBox Height="22" Name="graphPt" Width="25" Text="50" Canvas.Left="634" Canvas.Top="150" Grid.Column="2" Margin="446,79,819,429" />
+            <Label Content="Points" Height="29" Name="labe21115" Width="42" Canvas.Left="658" Canvas.Top="150" Grid.Column="2" Margin="477,78,771,423" />
+            <chartingToolkit:Chart Name="lineChart" Background="Transparent" BorderThickness="0"   MinWidth="730" HorizontalAlignment="Left" VerticalAlignment="Top" Height="446" Canvas.Left="2" Canvas.Top="2" HorizontalContentAlignment="Center" Width="730" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,78,0,0">
                 <charting:Chart.LegendStyle>
                     <Style TargetType="datavis:Legend">
                         <Setter Property="Width" Value="0" />
@@ -295,7 +231,7 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
 
                 <chartingToolkit:Chart.Axes>
 
-                    <chartingToolkit:LinearAxis Interval="10" Orientation="Y" Minimum="-1" Maximum="102" Title="Level of Arousal and Valence" ShowGridLines="True">
+                    <chartingToolkit:LinearAxis Interval="10" Orientation="Y" Minimum="-1" Maximum="102" Title="Level of Arousal and Valence" ShowGridLines="True" FontSize="18">
 
                         <charting:LinearAxis.Background>
                             <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
@@ -306,8 +242,62 @@ xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=
                     </chartingToolkit:LinearAxis>
                 </chartingToolkit:Chart.Axes>
             </chartingToolkit:Chart>
+            <Canvas Name="vgaCanvas" Grid.Column="2" Margin="595,-40,34,48">
+                <Canvas.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFFC3434" Offset="0" />
+                        <GradientStop Color="WhiteSmoke" Offset="0.415" />
+                        <GradientStop Color="#FFE5F5F5" Offset="0.571" />
+                        <GradientStop Color="#FF0099F8" Offset="1" />
+                    </LinearGradientBrush>
+                </Canvas.Background>
+                <Label Name="aro0" VerticalContentAlignment="Top" Canvas.Left="-7" Canvas.Top="399" FontSize="18" Foreground="Black">
+                    <Label.Content>Low Arousal</Label.Content>
+                    <Label.LayoutTransform>
+                        <RotateTransform Angle="-90" />
+                    </Label.LayoutTransform>
+                </Label>
+                <Label Name="aro1" VerticalContentAlignment="Top" Canvas.Left="-8" Canvas.Top="11" FontSize="18" Height="43" Width="117" Foreground="Black">
+                    <Label.Content>High Arousal</Label.Content>
+                    <Label.LayoutTransform>
+                        <RotateTransform Angle="-90" />
+                    </Label.LayoutTransform>
+                </Label>
+                <Label Content="Affectionate" Height="43" Name="label10" Canvas.Left="401" Canvas.Top="336" FontSize="22" Width="139" />
+                <Label Content="- - N  o  r  m  a  l - - " Height="49" Name="normal" Width="208" Canvas.Left="188" Canvas.Top="237" FontSize="20" />
+                <Label Content="Depressed" Height="39" Name="negstress" Canvas.Left="117" Canvas.Top="483" FontSize="20" Width="117" />
+                <Label Content="Sad" Height="47" Name="Sad" Canvas.Left="54" Canvas.Top="450" FontSize="22" Width="73" />
+                <Label Content="Happy" Height="43" Name="happy" Canvas.Left="387" Canvas.Top="147" FontSize="22" Width="102" />
+                <Label Content="OverJoyed" Height="42" Name="overjoy" Canvas.Left="393" Canvas.Top="70" FontSize="22" Width="133" />
+                <Label Content="Stressed" Height="41" Name="plustress" Canvas.Left="89" Canvas.Top="119" FontSize="22" Width="111" />
+                <Label Content=" Very Stressed" Height="41" Name="plusverystress" Canvas.Left="134" Canvas.Top="-2" FontSize="22" Width="196" />
+                <Label Content="Angry" Height="44" Name="anger" Canvas.Left="37" Canvas.Top="40" FontSize="22" Width="73" />
+                <Label Content="Relaxed" Name="relaxed" FontSize="20" Canvas.Left="147" Canvas.Top="342" />
+            </Canvas>
+            <Label Content="Postitive Valence" Height="37" HorizontalAlignment="Right" Name="val1" VerticalAlignment="Top" Margin="0,478,34,0" Grid.Column="2" FontSize="18" />
+            <Label Content="Negative Valence" Height="37" HorizontalAlignment="Left" Name="val0" VerticalAlignment="Top" Grid.Column="2" Margin="595,478,0,0" FontSize="18" />
         </Grid>
-
+        <Slider Height="173" HorizontalAlignment="Left" Name="slider1" VerticalAlignment="Top" Width="42" Orientation="Vertical" SmallChange="1" TickPlacement="Both" ValueChanged="slider1_ValueChanged" MouseLeave="slider1_MouseLeave" AutoToolTipPlacement="BottomRight" Margin="823,0,0,0" Grid.Row="2" />
+        <Label Content="SensorAngle" Height="38" HorizontalAlignment="Left" Name="label12" VerticalAlignment="Top" Width="100" FontSize="14" Margin="795,22,0,0" Grid.RowSpan="3" />
+        <Label Content=" " Name="label1" FontSize="14" Background="#FFE8E8E8" Margin="895,29,0,285" HorizontalAlignment="Left" Width="180" Grid.RowSpan="3" />
+        <Canvas Height="280" HorizontalAlignment="Left" Name="canvas1" VerticalAlignment="Top" Width="335" Margin="1092,29,0,0" Grid.RowSpan="3">
+            <Canvas.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0" />
+                    <GradientStop Color="#FE9BE863" Offset="0" />
+                    <GradientStop Color="White" Offset="0.592" />
+                    <GradientStop Color="#DF007396" Offset="0" />
+                </LinearGradientBrush>
+            </Canvas.Background>
+        </Canvas>
+        <Label Content="Frames" Height="28" HorizontalAlignment="Left" Name="label5" VerticalAlignment="Top" Margin="900,26,0,0" Grid.Row="2" />
+        <Button Content="snapshot of skeleton &gt;" Height="37" HorizontalAlignment="Left" Name="snap" VerticalAlignment="Top" Width="180" Click="snap_Click" Margin="895,66,0,0" Grid.Row="2" FontSize="14" />
+        <Label Content="000000000000" Height="28" HorizontalAlignment="Left" Name="labelFrame" VerticalAlignment="Top" Width="91" Margin="984,26,0,0" Grid.Row="2" />
+        <Label Content="Emotion Tracking Chart" Height="35" Name="emotionchart" VerticalAlignment="Top" Foreground="#FF466DEF" Margin="766,266,550,0" Grid.Row="2" FontSize="14" />
+        <Button Content="Open in bigger winidow" Height="23" Name="bigCircumplexWindowButton" Width="136" Click="bigCircumplexWindowButton_Click" Margin="927,268,408,48" Grid.Row="2" />
+        <Image Name="kinectBulb" Stretch="Fill" Source="/Haixiu;component/images/red.png" ImageFailed="image1_ImageFailed" Height="20" Width="24" Margin="990,35,457,334" Grid.RowSpan="3" />
+        <Label Content="Kinect State" Height="27" Name="label2" Width="84" VerticalAlignment="Top" Margin="898,30,489,0" Grid.RowSpan="3" />
+        <Label Content="^  Live Skeleton Tracking" Height="31" Name="skeleton" Foreground="#FF0085BE" FontSize="14" Margin="1259,254,44,54" Grid.Row="2" />
     </Grid>
 
 </Window>

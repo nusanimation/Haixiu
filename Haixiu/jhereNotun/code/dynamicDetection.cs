@@ -502,7 +502,9 @@ namespace WpfApplication1
                     }
 
                     //Console.WriteLine(featureList.Count);
-                    if (movementFeatureList.Count == interval / 30)
+
+                    //Here the slidingwindow length is determined. ehich can be controlled with the variable: "interval".
+                    if (movementFeatureList.Count == 6)
                     {
                         movementFeatureList.RemoveAt(0);
                         positionFeatureList.RemoveAt(0);
@@ -520,6 +522,8 @@ namespace WpfApplication1
 
         }
 
+        
+        
         public void detect(double [] movement, double[] position)
         {
 
@@ -551,8 +555,6 @@ namespace WpfApplication1
             }
 
         }
-
-
 
 
         private double sendToANN(double[] feat, recognizer r)

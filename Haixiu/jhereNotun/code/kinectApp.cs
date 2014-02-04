@@ -386,9 +386,14 @@ namespace WpfApplication1
         Point offset;
         public dot(int type = 1, int name = 0) 
         {
-            if (type == 1)
+            if (type == 0)
             {
                 this.ellipse = new Ellipse { Height = 15, Width = 15, StrokeThickness = 4, Stroke = Brushes.Red };
+                this.offset = new Point(0, 0);
+            }
+            else if (type == 1)
+            {
+                this.ellipse = new Ellipse { Height = 15, Width = 15, StrokeThickness = 4, Stroke = Brushes.Blue };
                 this.offset = new Point(0, 0);
             }
             else if (type == 2)
